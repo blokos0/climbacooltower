@@ -1,0 +1,159 @@
+[gd_scene load_steps=10 format=3 uid="uid://bakroqjs5k4fk"]
+
+[ext_resource type="PackedScene" uid="uid://cth72fb5mrt1k" path="res://scenes/bgdigital.tscn" id="1_c2cl3"]
+[ext_resource type="Script" path="res://scenes/editor.gd" id="1_yt3fo"]
+[ext_resource type="AudioStream" uid="uid://b38cfdaku0xa8" path="res://music/gloomyfactory.ogg" id="3_7dgj0"]
+[ext_resource type="Texture2D" uid="uid://bwxrie6232fid" path="res://sprites/tiles.png" id="3_36nse"]
+[ext_resource type="Texture2D" uid="uid://bbosxkksv3i0t" path="res://sprites/grid.png" id="4_b15pm"]
+[ext_resource type="TileSet" uid="uid://cifrghmfvrh7v" path="res://tileset.tres" id="6_2xnlh"]
+[ext_resource type="Theme" uid="uid://im7lovh8mede" path="res://theme.tres" id="6_frrc5"]
+[ext_resource type="Texture2D" uid="uid://ce06ho8jmxmxu" path="res://sprites/selectedtile.png" id="7_hjxn5"]
+[ext_resource type="Texture2D" uid="uid://b04wh1di8es32" path="res://sprites/fuckingeditorthing.png" id="8_lqslm"]
+
+[node name="editor" type="Node2D"]
+script = ExtResource("1_yt3fo")
+
+[node name="bg" parent="." instance=ExtResource("1_c2cl3")]
+
+[node name="music" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_7dgj0")
+volume_db = -3.0
+autoplay = true
+
+[node name="ui" type="CanvasLayer" parent="."]
+
+[node name="fuckingeditorthing" type="Sprite2D" parent="ui"]
+modulate = Color(1, 1, 1, 0.501961)
+position = Vector2(0, 328)
+texture = ExtResource("8_lqslm")
+centered = false
+
+[node name="panel" type="PanelContainer" parent="ui"]
+offset_right = 640.0
+offset_bottom = 360.0
+theme = ExtResource("6_frrc5")
+
+[node name="uibox" type="VBoxContainer" parent="ui/panel"]
+layout_mode = 2
+
+[node name="tiles" type="TextureRect" parent="ui/panel/uibox"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+texture = ExtResource("3_36nse")
+
+[node name="selectedtile" type="Sprite2D" parent="ui/panel/uibox/tiles"]
+modulate = Color(1, 1, 1, 0.5)
+texture = ExtResource("7_hjxn5")
+centered = false
+
+[node name="propertiesbox" type="HBoxContainer" parent="ui/panel/uibox"]
+layout_mode = 2
+
+[node name="tileroombox" type="VBoxContainer" parent="ui/panel/uibox/propertiesbox"]
+layout_mode = 2
+
+[node name="createroom" type="Button" parent="ui/panel/uibox/propertiesbox/tileroombox"]
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+size_flags_horizontal = 0
+focus_mode = 0
+theme = ExtResource("6_frrc5")
+text = "create room"
+alignment = 0
+
+[node name="roomname" type="LineEdit" parent="ui/panel/uibox/propertiesbox/tileroombox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+size_flags_horizontal = 0
+theme = ExtResource("6_frrc5")
+placeholder_text = "room name"
+
+[node name="roomthemelabel" type="Label" parent="ui/panel/uibox/propertiesbox/tileroombox"]
+layout_mode = 2
+size_flags_horizontal = 0
+text = "theme:"
+
+[node name="roomtheme" type="ItemList" parent="ui/panel/uibox/propertiesbox/tileroombox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+size_flags_horizontal = 0
+focus_mode = 0
+allow_search = false
+auto_height = true
+item_count = 2
+item_0/text = "digital"
+item_1/text = "snowy"
+
+[node name="roomsonglabel" type="Label" parent="ui/panel/uibox/propertiesbox/tileroombox"]
+layout_mode = 2
+size_flags_horizontal = 0
+text = "song:"
+
+[node name="roomsong" type="ItemList" parent="ui/panel/uibox/propertiesbox/tileroombox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+size_flags_horizontal = 0
+focus_mode = 0
+allow_search = false
+auto_height = true
+text_overrun_behavior = 1
+item_count = 3
+item_0/text = "placeholder"
+item_1/text = "gloomyfactory"
+item_2/text = "snowstorm"
+
+[node name="otherbox" type="VBoxContainer" parent="ui/panel/uibox/propertiesbox"]
+custom_minimum_size = Vector2(256, 0)
+layout_mode = 2
+
+[node name="roomlistlabel" type="Label" parent="ui/panel/uibox/propertiesbox/otherbox"]
+layout_mode = 2
+text = "rooms:"
+
+[node name="roomlist" type="ItemList" parent="ui/panel/uibox/propertiesbox/otherbox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(96, 128)
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="towernamelabel" type="Label" parent="ui/panel/uibox/propertiesbox/otherbox"]
+layout_mode = 2
+text = "tower name:"
+
+[node name="towername" type="LineEdit" parent="ui/panel/uibox/propertiesbox/otherbox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+size_flags_horizontal = 0
+theme = ExtResource("6_frrc5")
+placeholder_text = "tower name"
+
+[node name="selectingroom" type="Label" parent="ui"]
+visible = false
+offset_right = 40.0
+offset_bottom = 14.0
+text = "selecting room"
+
+[node name="camera" type="Camera2D" parent="."]
+offset = Vector2(320, 180)
+
+[node name="grid" type="Sprite2D" parent="camera"]
+modulate = Color(1, 1, 1, 0.25)
+texture_repeat = 2
+position = Vector2(320, 176)
+texture = ExtResource("4_b15pm")
+region_enabled = true
+region_rect = Rect2(0, 0, 2560, 1440)
+metadata/_edit_lock_ = true
+
+[node name="floors" type="TileMapLayer" parent="."]
+tile_set = ExtResource("6_2xnlh")
+
+[node name="walls" type="TileMapLayer" parent="."]
+tile_set = ExtResource("6_2xnlh")
+
+[connection signal="item_activated" from="ui/panel/uibox/propertiesbox/otherbox/roomlist" to="." method="_on_roomlist_item_activated"]

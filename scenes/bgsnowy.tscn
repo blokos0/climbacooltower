@@ -1,0 +1,51 @@
+[gd_scene load_steps=7 format=3 uid="uid://c4qjitt38182n"]
+
+[ext_resource type="Texture2D" uid="uid://bccojle8duh5c" path="res://sprites/bgsnowy.png" id="1_xknt7"]
+[ext_resource type="Texture2D" uid="uid://dse25qh8dtppc" path="res://sprites/snowyparticles.png" id="2_dcowh"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_flwl4"]
+particles_animation = true
+particles_anim_h_frames = 2
+particles_anim_v_frames = 1
+particles_anim_loop = false
+
+[sub_resource type="Gradient" id="Gradient_ty7l5"]
+offsets = PackedFloat32Array(0.918033, 1)
+colors = PackedColorArray(1, 1, 1, 1, 0.913333, 0.9, 1, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_juew1"]
+gradient = SubResource("Gradient_ty7l5")
+width = 6
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_jip0f"]
+particle_flag_disable_z = true
+emission_shape = 3
+emission_box_extents = Vector3(360, 1, 1)
+angle_min = -720.0
+angle_max = 720.0
+direction = Vector3(-0.5, 1, 0)
+spread = 15.0
+initial_velocity_min = 100.0
+initial_velocity_max = 125.0
+angular_velocity_min = 90.0
+angular_velocity_max = 180.0
+gravity = Vector3(0, 0, 0)
+color_ramp = SubResource("GradientTexture1D_juew1")
+anim_offset_max = 1.0
+
+[node name="bgdigital" type="CanvasLayer"]
+layer = -1
+
+[node name="bg" type="Sprite2D" parent="."]
+texture = ExtResource("1_xknt7")
+centered = false
+
+[node name="particles" type="GPUParticles2D" parent="."]
+material = SubResource("CanvasItemMaterial_flwl4")
+position = Vector2(380, -12)
+amount = 128
+process_material = SubResource("ParticleProcessMaterial_jip0f")
+texture = ExtResource("2_dcowh")
+lifetime = 4.0
+preprocess = 4.0
+visibility_rect = Rect2(-643.207, -24.6404, 1025.59, 531.064)

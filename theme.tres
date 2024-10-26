@@ -1,0 +1,24 @@
+[gd_resource type="Theme" load_steps=4 format=3 uid="uid://im7lovh8mede"]
+
+[ext_resource type="StyleBox" uid="uid://bmeqqapev47q5" path="res://stylebox.tres" id="1_0o7wj"]
+
+[sub_resource type="StyleBoxLine" id="StyleBoxLine_060hv"]
+color = Color(1, 1, 1, 1)
+grow_begin = 0.0
+grow_end = 0.0
+thickness = 2
+
+[sub_resource type="StyleBoxLine" id="StyleBoxLine_drn7s"]
+color = Color(1, 1, 1, 1)
+grow_begin = 0.0
+grow_end = 0.0
+thickness = 2
+vertical = true
+
+[resource]
+HSeparator/constants/separation = 2
+HSeparator/styles/separator = SubResource("StyleBoxLine_060hv")
+Panel/styles/panel = ExtResource("1_0o7wj")
+PanelContainer/styles/panel = ExtResource("1_0o7wj")
+VSeparator/constants/separation = 2
+VSeparator/styles/separator = SubResource("StyleBoxLine_drn7s")

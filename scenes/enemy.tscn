@@ -1,0 +1,31 @@
+[gd_scene load_steps=6 format=3 uid="uid://fq72viq4y1n7"]
+
+[ext_resource type="Texture2D" uid="uid://b68y5ybtb82sj" path="res://sprites/blob.png" id="1_bm4ir"]
+[ext_resource type="Script" path="res://scenes/enemy.gd" id="2_7smh1"]
+[ext_resource type="Texture2D" uid="uid://bato54gly6vwf" path="res://sprites/light.png" id="2_ja4km"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_nul1c"]
+blend_mode = 1
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_3wv78"]
+size = Vector2(32, 32)
+
+[node name="enemy" type="Sprite2D"]
+texture = ExtResource("1_bm4ir")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 0, 32, 32)
+script = ExtResource("2_7smh1")
+
+[node name="light" type="Sprite2D" parent="."]
+modulate = Color(0.85, 0.86, 1, 0.0980392)
+show_behind_parent = true
+material = SubResource("CanvasItemMaterial_nul1c")
+position = Vector2(16, 16)
+texture = ExtResource("2_ja4km")
+
+[node name="area" type="Area2D" parent="." groups=["enemy"]]
+position = Vector2(16, 16)
+
+[node name="shape" type="CollisionShape2D" parent="area"]
+shape = SubResource("RectangleShape2D_3wv78")
