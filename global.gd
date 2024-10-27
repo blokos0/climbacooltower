@@ -23,7 +23,8 @@ var leveldata: Dictionary = {
 	"floors": "",
 	"walls": "",
 	"rooms": [],
-	"enemydata": enemies
+	"enemydata": enemies,
+	"enemyplace": ""
 }
 func calcbattlevalues(pstats: Dictionary, estats: Dictionary) -> Dictionary:
 	var turncount: int = ceil(estats.hp / (pstats.atk - estats.def))

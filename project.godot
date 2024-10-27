@@ -13,7 +13,7 @@ config_version=5
 config/name="climb a cool tower"
 run/main_scene="res://scenes/editor.tscn"
 config/features=PackedStringArray("4.3", "Forward Plus")
-config/icon="res://icon.png"
+config/icon="res://sprites/icon.png"
 
 [autoload]
 
