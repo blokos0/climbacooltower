@@ -86,11 +86,11 @@ func _process(_delta: float) -> void:
 		if len(%towername.text):
 			towername = %towername.text
 		global.leveldata["name"] = towername
-		var file: FileAccess = FileAccess.open("user://" + towername + ".txt", FileAccess.WRITE)
+		var file: FileAccess = FileAccess.open("user://" + towername + ".cact", FileAccess.WRITE)
 		file.store_buffer(str(global.leveldata).to_utf8_buffer().compress(FileAccess.COMPRESSION_GZIP))
 		OS.shell_open(file.get_path_absolute())
 	if Input.is_action_just_pressed(&"ui_paste"):
-		var file: PackedByteArray = FileAccess.get_file_as_bytes("user://tower.txt")
+		var file: PackedByteArray = FileAccess.get_file_as_bytes("user://tower.cact")
 		print(file.decompress_dynamic(-1, FileAccess.COMPRESSION_GZIP).get_string_from_utf8())
 	queue_redraw()
 func _draw() -> void:
