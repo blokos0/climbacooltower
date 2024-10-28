@@ -87,8 +87,11 @@ func _process(_delta: float) -> void:
 			towername = %towername.text
 		global.leveldata["name"] = towername
 		var file: FileAccess = FileAccess.open("user://" + towername + ".txt", FileAccess.WRITE)
-		file.store_string(JSON.stringify(global.leveldata, "	"))
+		file.store_buffer(str(global.leveldata).to_utf8_buffer().compress(FileAccess.COMPRESSION_GZIP))
 		OS.shell_open(file.get_path_absolute())
+	if Input.is_action_just_pressed(&"ui_paste"):
+		var file: PackedByteArray = FileAccess.get_file_as_bytes("user://tower.txt")
+		print(file.decompress_dynamic(-1, FileAccess.COMPRESSION_GZIP).get_string_from_utf8())
 	queue_redraw()
 func _draw() -> void:
 	if !$ui/panel.visible && !selectingroom:
