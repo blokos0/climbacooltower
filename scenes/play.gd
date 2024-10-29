@@ -5,7 +5,6 @@ extends Node2D
 		if rooms != val && Engine.is_editor_hint():
 			queue_redraw()
 		rooms = val
-# room format: {pos, name}
 var room: int = 0:
 	set(val):
 		room = val

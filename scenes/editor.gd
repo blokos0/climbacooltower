@@ -1,5 +1,6 @@
 extends Node2D
 var currenttile: Vector2i
+var currentenemyvariant: int
 var menuopen: bool
 var selectingroom: bool:
 	set(val):
@@ -32,6 +33,10 @@ func _process(_delta: float) -> void:
 			if Rect2($ui/panel/uibox/tiles.position, $ui/panel/uibox/tiles.texture.get_size()).has_point($ui/panel/uibox/tiles.get_local_mouse_position()):
 				currenttile = floor($ui/panel/uibox/tiles.get_local_mouse_position() / 32)
 				$ui/panel/uibox/tiles/selectedtile.position = currenttile * 32
+			elif Rect2($ui/panel/uibox/propertiesbox/enemybox/enemyvariants.position, $ui/panel/uibox/propertiesbox/enemybox/enemyvariants.texture.get_size()).has_point($ui/panel/uibox/propertiesbox/enemybox/enemyvariants.get_local_mouse_position()):
+				currentenemyvariant = floor($ui/panel/uibox/propertiesbox/enemybox/enemyvariants.get_local_mouse_position() / 32)
+				$ui/panel/uibox/propertiesbox/enemybox/enemyvariants/selectedenemyvariant.position = currentenemyvariant * 32
+				print(currentenemyvariant)
 			elif $ui/panel/uibox/propertiesbox/tileroombox/createroom.is_hovered():
 				$ui/panel.visible = false
 				$ui/fuckingeditorthing.visible = true
@@ -60,7 +65,7 @@ func _process(_delta: float) -> void:
 	if Input.is_action_pressed(&"removetile"):
 		tm.erase_cell(floor(get_local_mouse_position() / 32))
 	if !$ui/panel.visible:
-		$camera.position += Input.get_vector(&"left", &"right", &"up", &"down") * 12
+		$camera.position += Input.get_vector(&"left", &"right", &"up", &"down") * 12 * (int(Input.is_action_pressed("sneak")) + 1) * (0.5 / $camera.zoom.x + 0.5)
 		if Input.is_action_just_pressed(&"zoomin") || Input.is_action_just_pressed(&"zoomout"):
 			var cammouse: Vector2 = get_global_mouse_position()
 			var zoomval: float = (int(Input.is_action_just_pressed(&"zoomin")) - int(Input.is_action_just_pressed(&"zoomout"))) * 0.1
@@ -88,10 +93,13 @@ func _process(_delta: float) -> void:
 		global.leveldata["name"] = towername
 		var file: FileAccess = FileAccess.open("user://" + towername + ".cact", FileAccess.WRITE)
 		file.store_buffer(str(global.leveldata).to_utf8_buffer().compress(FileAccess.COMPRESSION_GZIP))
-		OS.shell_open(file.get_path_absolute())
+		OS.shell_show_in_file_manager(file.get_path_absolute())
+		print("saved")
+		var fileuncompressed: FileAccess = FileAccess.open("user://" + towername + "_uncompressed.cact", FileAccess.WRITE)
+		fileuncompressed.store_string(str(global.leveldata))
 	if Input.is_action_just_pressed(&"ui_paste"):
 		var file: PackedByteArray = FileAccess.get_file_as_bytes("user://tower.cact")
-		print(file.decompress_dynamic(-1, FileAccess.COMPRESSION_GZIP).get_string_from_utf8())
+		print(file.decompress_dynamic(100000000, FileAccess.COMPRESSION_GZIP).get_string_from_utf8())
 	queue_redraw()
 func _draw() -> void:
 	if !$ui/panel.visible && !selectingroom:
