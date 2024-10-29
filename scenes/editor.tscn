@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://bakroqjs5k4fk"]
+[gd_scene load_steps=11 format=3 uid="uid://bakroqjs5k4fk"]
 
 [ext_resource type="PackedScene" uid="uid://cth72fb5mrt1k" path="res://scenes/bgdigital.tscn" id="1_c2cl3"]
 [ext_resource type="Script" path="res://scenes/editor.gd" id="1_yt3fo"]
@@ -9,22 +9,7 @@
 [ext_resource type="Theme" uid="uid://im7lovh8mede" path="res://theme.tres" id="6_frrc5"]
 [ext_resource type="Texture2D" uid="uid://ce06ho8jmxmxu" path="res://sprites/selectedtile.png" id="7_hjxn5"]
 [ext_resource type="Texture2D" uid="uid://b04wh1di8es32" path="res://sprites/fuckingeditorthing.png" id="8_lqslm"]
-[ext_resource type="Texture2D" uid="uid://b68y5ybtb82sj" path="res://sprites/blob.png" id="8_vony7"]
-[ext_resource type="Texture2D" uid="uid://byddnsy8blsc1" path="res://sprites/wall.png" id="9_derc6"]
-[ext_resource type="Texture2D" uid="uid://b7t872dk8epmy" path="res://sprites/flarp.png" id="10_7cqu4"]
 [ext_resource type="Texture2D" uid="uid://b5cx8m44ih6pm" path="res://sprites/enemyvariants.png" id="11_1sy0f"]
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_wok0e"]
-atlas = ExtResource("8_vony7")
-region = Rect2(0, 0, 32, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_w04cf"]
-atlas = ExtResource("9_derc6")
-region = Rect2(0, 0, 32, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_excvm"]
-atlas = ExtResource("10_7cqu4")
-region = Rect2(0, 0, 32, 32)
 
 [node name="editor" type="Node2D"]
 script = ExtResource("1_yt3fo")
@@ -79,7 +64,6 @@ text = "create room"
 alignment = 0
 
 [node name="roomname" type="LineEdit" parent="ui/panel/uibox/propertiesbox/tileroombox"]
-unique_name_in_owner = true
 custom_minimum_size = Vector2(160, 0)
 layout_mode = 2
 size_flags_horizontal = 0
@@ -92,7 +76,6 @@ size_flags_horizontal = 0
 text = "theme:"
 
 [node name="roomtheme" type="ItemList" parent="ui/panel/uibox/propertiesbox/tileroombox"]
-unique_name_in_owner = true
 custom_minimum_size = Vector2(160, 0)
 layout_mode = 2
 size_flags_horizontal = 0
@@ -109,7 +92,6 @@ size_flags_horizontal = 0
 text = "song:"
 
 [node name="roomsong" type="ItemList" parent="ui/panel/uibox/propertiesbox/tileroombox"]
-unique_name_in_owner = true
 custom_minimum_size = Vector2(160, 0)
 layout_mode = 2
 size_flags_horizontal = 0
@@ -131,7 +113,6 @@ layout_mode = 2
 text = "rooms:"
 
 [node name="roomlist" type="ItemList" parent="ui/panel/uibox/propertiesbox/otherbox"]
-unique_name_in_owner = true
 custom_minimum_size = Vector2(96, 128)
 layout_mode = 2
 size_flags_vertical = 3
@@ -143,7 +124,6 @@ layout_mode = 2
 text = "tower name:"
 
 [node name="towername" type="LineEdit" parent="ui/panel/uibox/propertiesbox/otherbox"]
-unique_name_in_owner = true
 custom_minimum_size = Vector2(160, 0)
 layout_mode = 2
 size_flags_horizontal = 0
@@ -155,18 +135,10 @@ custom_minimum_size = Vector2(196, 0)
 layout_mode = 2
 
 [node name="enemylist" type="ItemList" parent="ui/panel/uibox/propertiesbox/enemybox"]
-unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
 focus_mode = 0
 allow_search = false
-item_count = 3
-item_0/text = "blob"
-item_0/icon = SubResource("AtlasTexture_wok0e")
-item_1/text = "wall"
-item_1/icon = SubResource("AtlasTexture_w04cf")
-item_2/text = "flarp"
-item_2/icon = SubResource("AtlasTexture_excvm")
 
 [node name="enemyvariants" type="TextureRect" parent="ui/panel/uibox/propertiesbox/enemybox"]
 layout_mode = 2
@@ -204,3 +176,4 @@ tile_set = ExtResource("6_2xnlh")
 tile_set = ExtResource("6_2xnlh")
 
 [connection signal="item_activated" from="ui/panel/uibox/propertiesbox/otherbox/roomlist" to="." method="_on_roomlist_item_activated"]
+[connection signal="item_activated" from="ui/panel/uibox/propertiesbox/enemybox/enemylist" to="." method="_on_enemylist_item_activated"]

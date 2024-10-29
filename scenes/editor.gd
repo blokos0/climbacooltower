@@ -1,6 +1,6 @@
 extends Node2D
 var currenttile: Vector2i
-var currentenemyvariant: int
+var currentenemyvariant: float
 var menuopen: bool
 var selectingroom: bool:
 	set(val):
@@ -9,8 +9,9 @@ var selectingroom: bool:
 var selectedroom: Variant
 var rooms: Array[Dictionary] = []
 func _ready() -> void:
-	%roomtheme.select(0)
-	%roomsong.select(0)
+	$ui/panel/uibox/propertiesbox/tileroombox/roomtheme.select(0)
+	$ui/panel/uibox/propertiesbox/tileroombox/roomsong.select(0)
+	genenemylist()
 func _process(_delta: float) -> void:
 	if !$ui/panel.visible && $ui/fuckingeditorthing.get_local_mouse_position().y > 0 && !selectingroom:
 		$ui/panel.visible = true
@@ -30,17 +31,19 @@ func _process(_delta: float) -> void:
 		$floors.modulate.a = 1
 	if Input.is_action_pressed(&"placetile"):
 		if $ui/panel.visible:
-			if Rect2($ui/panel/uibox/tiles.position, $ui/panel/uibox/tiles.texture.get_size()).has_point($ui/panel/uibox/tiles.get_local_mouse_position()):
-				currenttile = floor($ui/panel/uibox/tiles.get_local_mouse_position() / 32)
-				$ui/panel/uibox/tiles/selectedtile.position = currenttile * 32
-			elif Rect2($ui/panel/uibox/propertiesbox/enemybox/enemyvariants.position, $ui/panel/uibox/propertiesbox/enemybox/enemyvariants.texture.get_size()).has_point($ui/panel/uibox/propertiesbox/enemybox/enemyvariants.get_local_mouse_position()):
-				currentenemyvariant = floor($ui/panel/uibox/propertiesbox/enemybox/enemyvariants.get_local_mouse_position() / 32)
-				$ui/panel/uibox/propertiesbox/enemybox/enemyvariants/selectedenemyvariant.position = currentenemyvariant * 32
-				print(currentenemyvariant)
-			elif $ui/panel/uibox/propertiesbox/tileroombox/createroom.is_hovered():
-				$ui/panel.visible = false
-				$ui/fuckingeditorthing.visible = true
-				selectingroom = true
+			if Input.is_action_just_pressed(&"placetile"):
+				if mouseintexturerect($ui/panel/uibox/tiles):
+					currenttile = floor($ui/panel/uibox/tiles.get_local_mouse_position() / 32)
+					$ui/panel/uibox/tiles/selectedtile.position = currenttile * 32
+				elif mouseintexturerect($ui/panel/uibox/propertiesbox/enemybox/enemyvariants):
+					var pos: Vector2 = floor($ui/panel/uibox/propertiesbox/enemybox/enemyvariants.get_local_mouse_position() / 32)
+					currentenemyvariant = pos.x + pos.y * 4
+					$ui/panel/uibox/propertiesbox/enemybox/enemyvariants/selectedenemyvariant.position = pos * 32
+					genenemylist()
+				elif $ui/panel/uibox/propertiesbox/tileroombox/createroom.is_hovered():
+					$ui/panel.visible = false
+					$ui/fuckingeditorthing.visible = true
+					selectingroom = true
 		elif !selectingroom:
 			tm.set_cell(floor(get_local_mouse_position() / 32), 0, currenttile)
 		else:
@@ -52,24 +55,24 @@ func _process(_delta: float) -> void:
 		selectedroom = selectedroom.abs()
 		selectingroom = false
 		rooms.append({
-			"name": %roomname.text,
+			"name": $ui/panel/uibox/propertiesbox/tileroombox/roomname.text,
 			"rect": selectedroom,
-			"theme": %roomtheme.get_item_text(%roomtheme.get_selected_items()[0]),
-			"song": %roomsong.get_item_text(%roomsong.get_selected_items()[0])
+			"theme": $ui/panel/uibox/propertiesbox/tileroombox/roomtheme.get_item_text($ui/panel/uibox/propertiesbox/tileroombox/roomtheme.get_selected_items()[0]),
+			"song": $ui/panel/uibox/propertiesbox/tileroombox/roomsong.get_item_text($ui/panel/uibox/propertiesbox/tileroombox/roomsong.get_selected_items()[0])
 		})
 		selectedroom = null
 		var roomname: String = " " # for easier selecting
-		if %roomname.text != "":
-			roomname = %roomname.text
-		%roomlist.add_item(roomname)
+		if $ui/panel/uibox/propertiesbox/tileroombox/roomname.text != "":
+			roomname = $ui/panel/uibox/propertiesbox/tileroombox/roomname.text
+		$ui/panel/uibox/propertiesbox/otherbox/roomlist.add_item(roomname)
 	if Input.is_action_pressed(&"removetile"):
 		tm.erase_cell(floor(get_local_mouse_position() / 32))
 	if !$ui/panel.visible:
 		$camera.position += Input.get_vector(&"left", &"right", &"up", &"down") * 12 * (int(Input.is_action_pressed("sneak")) + 1) * (0.5 / $camera.zoom.x + 0.5)
 		if Input.is_action_just_pressed(&"zoomin") || Input.is_action_just_pressed(&"zoomout"):
 			var cammouse: Vector2 = get_global_mouse_position()
-			var zoomval: float = (int(Input.is_action_just_pressed(&"zoomin")) - int(Input.is_action_just_pressed(&"zoomout"))) * 0.1
-			$camera.zoom = clamp($camera.zoom + Vector2(zoomval, zoomval), Vector2(0.125, 0.125), Vector2(4, 4))
+			var zoomval: float = 1 + (int(Input.is_action_just_pressed(&"zoomin")) - int(Input.is_action_just_pressed(&"zoomout"))) * 0.2
+			$camera.zoom = clamp($camera.zoom * Vector2(zoomval, zoomval), Vector2(0.03125, 0.03125), Vector2(4, 4))
 			$camera/grid.modulate.a = lerpf(0.25, 0, 0.25 / $camera.zoom.x)
 			$camera.position += cammouse - get_global_mouse_position()
 		$camera/grid.region_rect.position = $camera.position
@@ -88,8 +91,8 @@ func _process(_delta: float) -> void:
 		global.leveldata["walls"] = strr
 		global.leveldata["rooms"] = rooms
 		var towername: String = "tower"
-		if len(%towername.text):
-			towername = %towername.text
+		if len($ui/panel/uibox/propertiesbox/otherbox/towername.text):
+			towername = $ui/panel/uibox/propertiesbox/otherbox/towername.text
 		global.leveldata["name"] = towername
 		var file: FileAccess = FileAccess.open("user://" + towername + ".cact", FileAccess.WRITE)
 		file.store_buffer(str(global.leveldata).to_utf8_buffer().compress(FileAccess.COMPRESSION_GZIP))
@@ -112,5 +115,19 @@ func _draw() -> void:
 		draw_string(ThemeDB.fallback_font, i.rect.position * 32 - Vector2i(0, 24), i.name)
 		ind += 1
 func _on_roomlist_item_activated(index: int) -> void:
-	%roomlist.remove_item(index)
+	$ui/panel/uibox/propertiesbox/otherbox/roomlist.remove_item(index)
 	rooms.remove_at(index)
+func _on_enemylist_item_activated(index: int) -> void:
+	print(global.enemyvariants[currentenemyvariant] + " " + global.enemies.keys()[index])
+func mouseintexturerect(t: TextureRect) -> bool:
+	return Rect2(Vector2(0, 0), t.texture.get_size()).has_point(t.get_local_mouse_position())
+func genenemylist() -> void:
+	var sel: PackedInt32Array = $ui/panel/uibox/propertiesbox/enemybox/enemylist.get_selected_items()
+	$ui/panel/uibox/propertiesbox/enemybox/enemylist.clear()
+	for i in global.enemies.keys():
+		var t: AtlasTexture = AtlasTexture.new()
+		t.atlas = load("res://sprites/" + i + ".png")
+		t.region = Rect2(currentenemyvariant * 32, 0, 32, 32)
+		$ui/panel/uibox/propertiesbox/enemybox/enemylist.add_item(global.enemyvariants[currentenemyvariant] + " " + i, t)
+	if sel:
+		$ui/panel/uibox/propertiesbox/enemybox/enemylist.select(sel[0])
