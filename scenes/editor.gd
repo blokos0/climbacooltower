@@ -5,15 +5,25 @@ var menuopen: bool
 var selectingroom: bool:
 	set(val):
 		selectingroom = val
-		$ui/selectingroom.visible = selectingroom
+		$ui/tooltipthing.text = "selecting room"
+		$ui/tooltipthing.visible = selectingroom
 var selectedroom: Variant
 var rooms: Array[Dictionary] = []
+var placingenemy: bool:
+	set(val):
+		placingenemy = val
+		$ui/tooltipthing.text = "place the " + global.enemyvariants[currentenemyvariant] + " " + placingenemykind
+		$ui/tooltipthing.visible = placingenemy
+var didthepaneljustclose: bool # i hate this
+var placingenemykind: String
+var placedenemies: Array[Array]
+# [[(12, 12), "blob", 1], [(12, 15), "wall", 3]]
 func _ready() -> void:
 	$ui/panel/uibox/propertiesbox/tileroombox/roomtheme.select(0)
 	$ui/panel/uibox/propertiesbox/tileroombox/roomsong.select(0)
 	genenemylist()
 func _process(_delta: float) -> void:
-	if !$ui/panel.visible && $ui/fuckingeditorthing.get_local_mouse_position().y > 0 && !selectingroom:
+	if !$ui/panel.visible && $ui/fuckingeditorthing.get_local_mouse_position().y > 0 && !selectingroom && !placingenemy:
 		$ui/panel.visible = true
 		$ui/fuckingeditorthing.visible = false
 	elif $ui/fuckingeditorthing.get_local_mouse_position().y < -328:
@@ -44,27 +54,41 @@ func _process(_delta: float) -> void:
 					$ui/panel.visible = false
 					$ui/fuckingeditorthing.visible = true
 					selectingroom = true
-		elif !selectingroom:
+		elif !selectingroom && !placingenemy:
 			tm.set_cell(floor(get_local_mouse_position() / 32), 0, currenttile)
-		else:
+		elif selectingroom:
 			if Input.is_action_just_pressed(&"placetile"):
 				selectedroom = Rect2i(floor(get_local_mouse_position() / 32), Vector2i(0, 0))
 			elif selectedroom != null:
 				selectedroom.size = Vector2i(ceil(get_local_mouse_position() / 32)) - selectedroom.position
-	if Input.is_action_just_released(&"placetile") && selectedroom != null && selectedroom.abs().has_area():
-		selectedroom = selectedroom.abs()
-		selectingroom = false
-		rooms.append({
-			"name": $ui/panel/uibox/propertiesbox/tileroombox/roomname.text,
-			"rect": selectedroom,
-			"theme": $ui/panel/uibox/propertiesbox/tileroombox/roomtheme.get_item_text($ui/panel/uibox/propertiesbox/tileroombox/roomtheme.get_selected_items()[0]),
-			"song": $ui/panel/uibox/propertiesbox/tileroombox/roomsong.get_item_text($ui/panel/uibox/propertiesbox/tileroombox/roomsong.get_selected_items()[0])
-		})
-		selectedroom = null
-		var roomname: String = " " # for easier selecting
-		if $ui/panel/uibox/propertiesbox/tileroombox/roomname.text != "":
-			roomname = $ui/panel/uibox/propertiesbox/tileroombox/roomname.text
-		$ui/panel/uibox/propertiesbox/otherbox/roomlist.add_item(roomname)
+	if Input.is_action_just_pressed("placetile") && placingenemy && !$ui/panel.visible && !didthepaneljustclose:
+		var pe: Array = [floor(get_local_mouse_position() / 32), placingenemykind, currentenemyvariant]
+		var invalid: bool = placedenemies.has(pe)
+		for i in placedenemies:
+			if i[0] == floor(get_local_mouse_position() / 32):
+				invalid = true
+		if !invalid:
+			placedenemies.append(pe)
+		placingenemy = false
+		print(placedenemies)
+	didthepaneljustclose = false
+	if Input.is_action_just_released(&"placetile") && selectedroom != null:
+		if selectedroom.abs().has_area():
+			selectedroom = selectedroom.abs()
+			selectingroom = false
+			rooms.append({
+				"name": $ui/panel/uibox/propertiesbox/tileroombox/roomname.text,
+				"rect": selectedroom,
+				"theme": $ui/panel/uibox/propertiesbox/tileroombox/roomtheme.get_item_text($ui/panel/uibox/propertiesbox/tileroombox/roomtheme.get_selected_items()[0]),
+				"song": $ui/panel/uibox/propertiesbox/tileroombox/roomsong.get_item_text($ui/panel/uibox/propertiesbox/tileroombox/roomsong.get_selected_items()[0])
+			})
+			selectedroom = null
+			var roomname: String = " " # for easier selecting
+			if $ui/panel/uibox/propertiesbox/tileroombox/roomname.text != "":
+				roomname = $ui/panel/uibox/propertiesbox/tileroombox/roomname.text
+			$ui/panel/uibox/propertiesbox/otherbox/roomlist.add_item(roomname)
+		else:
+			$ui/tooltipthing.text = "sorry its too flat"
 	if Input.is_action_pressed(&"removetile"):
 		tm.erase_cell(floor(get_local_mouse_position() / 32))
 	if !$ui/panel.visible:
@@ -94,18 +118,19 @@ func _process(_delta: float) -> void:
 		if len($ui/panel/uibox/propertiesbox/otherbox/towername.text):
 			towername = $ui/panel/uibox/propertiesbox/otherbox/towername.text
 		global.leveldata["name"] = towername
+		global.leveldata["enemyplace"] = placedenemies
 		var file: FileAccess = FileAccess.open("user://" + towername + ".cact", FileAccess.WRITE)
 		file.store_buffer(str(global.leveldata).to_utf8_buffer().compress(FileAccess.COMPRESSION_GZIP))
-		OS.shell_show_in_file_manager(file.get_path_absolute())
 		print("saved")
 		var fileuncompressed: FileAccess = FileAccess.open("user://" + towername + "_uncompressed.cact", FileAccess.WRITE)
 		fileuncompressed.store_string(str(global.leveldata))
+		OS.shell_open(fileuncompressed.get_path_absolute())
 	if Input.is_action_just_pressed(&"ui_paste"):
 		var file: PackedByteArray = FileAccess.get_file_as_bytes("user://tower.cact")
 		print(file.decompress_dynamic(100000000, FileAccess.COMPRESSION_GZIP).get_string_from_utf8())
 	queue_redraw()
 func _draw() -> void:
-	if !$ui/panel.visible && !selectingroom:
+	if !$ui/panel.visible && !selectingroom && !placingenemy:
 		draw_texture_rect_region(preload("res://sprites/tiles.png"), Rect2(floor(get_local_mouse_position() / 32) * 32, Vector2(32, 32)), Rect2(currenttile * 32, Vector2i(32, 32)), Color(1, 1, 1, 0.5))
 	if selectedroom != null:
 		draw_rect(Rect2i(selectedroom.position * 32, selectedroom.size * 32), Color.RED, false, 4)
@@ -118,7 +143,13 @@ func _on_roomlist_item_activated(index: int) -> void:
 	$ui/panel/uibox/propertiesbox/otherbox/roomlist.remove_item(index)
 	rooms.remove_at(index)
 func _on_enemylist_item_activated(index: int) -> void:
-	print(global.enemyvariants[currentenemyvariant] + " " + global.enemies.keys()[index])
+	placingenemykind = global.enemies.keys()[index]
+	$ui/panel.visible = false
+	$ui/fuckingeditorthing.visible = true
+	placingenemy = true
+	didthepaneljustclose = true
+	$ui/panel/uibox/propertiesbox/enemybox/enemylist.get_item_icon(index) # this will be useful for drawing the preview
+	$ui/panel/uibox/propertiesbox/enemybox/enemylist.deselect_all()
 func mouseintexturerect(t: TextureRect) -> bool:
 	return Rect2(Vector2(0, 0), t.texture.get_size()).has_point(t.get_local_mouse_position())
 func genenemylist() -> void:

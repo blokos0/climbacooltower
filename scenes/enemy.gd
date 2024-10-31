@@ -1,9 +1,9 @@
 @tool
 extends Sprite2D
-@export var id: String = "blob":
+@export var kind: String = "blob":
 	set(val):
-		id = val
-		texture = load("res://sprites/" + str(id) + ".png")
+		kind = val
+		texture = load("res://sprites/" + str(kind) + ".png")
 @export var variant: int:
 	set(val):
 		variant = val

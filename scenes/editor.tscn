@@ -151,11 +151,13 @@ modulate = Color(1, 1, 1, 0.5)
 texture = ExtResource("7_hjxn5")
 centered = false
 
-[node name="selectingroom" type="Label" parent="ui"]
+[node name="tooltipthing" type="Label" parent="ui"]
 visible = false
-offset_right = 40.0
-offset_bottom = 14.0
-text = "selecting room"
+offset_left = 4.0
+offset_top = 4.0
+offset_right = 331.0
+offset_bottom = 18.0
+text = "i dont think youre supposed to see this one"
 
 [node name="camera" type="Camera2D" parent="."]
 offset = Vector2(320, 180)
