@@ -1,0 +1,16 @@
+[gd_scene load_steps=2 format=3 uid="uid://c7an5o6fcsflw"]
+
+[ext_resource type="Texture2D" uid="uid://cfri3td18vid2" path="res://sprites/logo.png" id="1_8x8wf"]
+
+[node name="title" type="Node2D"]
+
+[node name="logo" type="Sprite2D" parent="."]
+position = Vector2(192, 160)
+texture = ExtResource("1_8x8wf")
+
+[node name="epictext" type="Label" parent="."]
+offset_left = 416.0
+offset_top = 128.0
+offset_right = 608.0
+offset_bottom = 142.0
+text = "this logo is so cool isnt it"
