@@ -47,7 +47,7 @@ func _process(_delta: float) -> void:
 			spr.region = e.region_rect
 			var estats: Dictionary = formenemystats(e)
 			var vals: Dictionary = global.calcbattlevalues($/root/play.stats, estats)
-			$/root/play/ui/container/box/enemystuff/enemyname.text = global.enemyvariants[e.variant] + " " + e.id
+			$/root/play/ui/container/box/enemystuff/enemyname.text = global.enemyvariants[e.variant] + " " + e.kind
 			$/root/play/ui/container/box/enemystuff/enemybox/enemysprite.texture = spr
 			$/root/play/ui/container/box/enemystuff/enemybox/stats.text = "hp: " + str(estats.hp) + "\natk: " + str(estats.atk) + "\ndef: " + str(estats.def) + "\ndamage: "
 			if vals.turncount > 0:
@@ -59,15 +59,14 @@ func _process(_delta: float) -> void:
 	movetimer = max(movetimer - 1, 0)
 func moveinput(inp: String) -> void:
 	if Input.is_action_just_pressed(inp):
-		if !dirspressed.has(dirs.get(inp)):
-			dirspressed.append(dirs.get(inp))
+		if !dirspressed.has(dirs[inp]):
+			dirspressed.append(dirs[inp])
 			movetimer = 0
 	if Input.is_action_just_released(inp) && dirspressed.size():
-		dirspressed.remove_at(dirspressed.find(dirs.get(inp)))
+		dirspressed.remove_at(dirspressed.find(dirs[inp]))
 func formenemystats(enemy: Sprite2D):
-	var id: String = enemy.id
 	return {
-		"hp": global.enemies.get(id).hp[enemy.variant],
-		"atk": global.enemies.get(id).atk[enemy.variant],
-		"def": global.enemies.get(id).def[enemy.variant],
+		"hp": global.enemies.get(enemy.kind).hp[enemy.variant],
+		"atk": global.enemies.get(enemy.kind).atk[enemy.variant],
+		"def": global.enemies.get(enemy.kind).def[enemy.variant],
 	}
