@@ -26,6 +26,12 @@ func _ready() -> void:
 		var bg: CanvasLayer = load("res://scenes/bg" + theme + ".tscn").instantiate()
 		add_child(bg)
 		move_child(bg, 2)
+		if theme == "snowy":
+			$gamelayer/gameworldcontainer/gameworld/shader.material = ShaderMaterial.new()
+			$gamelayer/gameworldcontainer/gameworld/shader.material.shader = preload("res://shaders/glitch.gdshader")
+			$gamelayer/gameworldcontainer/gameworld/shader.material.set_shader_parameter(&"shake_power", 0.003)
+			$gamelayer/gameworldcontainer/gameworld/shader.material.set_shader_parameter(&"shake_rate", 1)
+			$gamelayer/gameworldcontainer/gameworld/shader.material.set_shader_parameter(&"shake_color_rate", 0.005)
 func _process(_delta: float) -> void:
 	if Engine.is_editor_hint():
 		return
