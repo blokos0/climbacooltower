@@ -172,9 +172,11 @@ region_rect = Rect2(0, 0, 2560, 1440)
 metadata/_edit_lock_ = true
 
 [node name="floors" type="TileMapLayer" parent="."]
+show_behind_parent = true
 tile_set = ExtResource("6_2xnlh")
 
 [node name="walls" type="TileMapLayer" parent="."]
+show_behind_parent = true
 tile_set = ExtResource("6_2xnlh")
 
 [connection signal="item_activated" from="ui/panel/uibox/propertiesbox/otherbox/roomlist" to="." method="_on_roomlist_item_activated"]
