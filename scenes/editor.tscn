@@ -128,7 +128,7 @@ custom_minimum_size = Vector2(160, 0)
 layout_mode = 2
 size_flags_horizontal = 0
 theme = ExtResource("6_frrc5")
-placeholder_text = "tower name"
+placeholder_text = "tower"
 
 [node name="enemybox" type="VBoxContainer" parent="ui/panel/uibox/propertiesbox"]
 custom_minimum_size = Vector2(196, 0)

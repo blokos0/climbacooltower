@@ -17,11 +17,13 @@ var placingenemy: bool:
 var didthepaneljustclose: bool # i hate this
 var placingenemykind: String
 var placedenemies: Array[Array]
-# [[(12, 12), "blob", 1], [(12, 15), "wall", 3]]
 func _ready() -> void:
 	$ui/panel/uibox/propertiesbox/tileroombox/roomtheme.select(0)
 	$ui/panel/uibox/propertiesbox/tileroombox/roomsong.select(0)
 	genenemylist()
+	DiscordRPC.state = "in the editor"
+	DiscordRPC.large_image = "icon"
+	DiscordRPC.refresh()
 func _process(_delta: float) -> void:
 	if !$ui/panel.visible && $ui/fuckingeditorthing.get_local_mouse_position().y > 0 && !selectingroom && !placingenemy:
 		$ui/panel.visible = true
@@ -118,13 +120,15 @@ func _process(_delta: float) -> void:
 		if len($ui/panel/uibox/propertiesbox/otherbox/towername.text):
 			towername = $ui/panel/uibox/propertiesbox/otherbox/towername.text
 		global.leveldata["name"] = towername
+		DiscordRPC.details = "making " + towername
+		DiscordRPC.refresh()
 		global.leveldata["enemyplace"] = placedenemies
-		var file: FileAccess = FileAccess.open("user://" + towername + ".cact", FileAccess.WRITE)
-		file.store_buffer(str(global.leveldata).to_utf8_buffer().compress(FileAccess.COMPRESSION_GZIP))
-		print("saved")
-		var fileuncompressed: FileAccess = FileAccess.open("user://" + towername + "_uncompressed.cact", FileAccess.WRITE)
-		fileuncompressed.store_string(str(global.leveldata))
-		OS.shell_open(fileuncompressed.get_path_absolute())
+		var file: FileAccess = FileAccess.open("user://" + towername.validate_filename() + ".cact", FileAccess.WRITE)
+		if file:
+			file.store_buffer(str(global.leveldata).to_utf8_buffer().compress(FileAccess.COMPRESSION_GZIP))
+			global.notify("saved")
+		else:
+			global.notify("failed to save!!")
 	if Input.is_action_just_pressed(&"ui_paste"):
 		var file: PackedByteArray = FileAccess.get_file_as_bytes("user://tower.cact")
 		print(file.decompress_dynamic(100000000, FileAccess.COMPRESSION_GZIP).get_string_from_utf8())
@@ -139,6 +143,8 @@ func _draw() -> void:
 		draw_rect(Rect2i(i.rect.position * 32, i.rect.size * 32), Color.from_hsv(ind * 0.027, 1, 1), false, 8)
 		draw_string(ThemeDB.fallback_font, i.rect.position * 32 - Vector2i(0, 24), i.name)
 		ind += 1
+	for i in placedenemies:
+		draw_texture_rect_region(load("res://sprites/" + i[1] + ".png"), Rect2(i[0] * 32, Vector2(32, 32)), Rect2(i[2] * 32, 0, 32, 32))
 func _on_roomlist_item_activated(index: int) -> void:
 	$ui/panel/uibox/propertiesbox/otherbox/roomlist.remove_item(index)
 	rooms.remove_at(index)

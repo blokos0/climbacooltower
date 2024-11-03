@@ -1,0 +1,19 @@
+[gd_scene load_steps=3 format=3 uid="uid://cbharh6asoliw"]
+
+[ext_resource type="Script" path="res://scenes/notification.gd" id="1_of8gu"]
+[ext_resource type="AudioStream" uid="uid://d0mvm5qnnvqqw" path="res://sounds/notification.ogg" id="2_ydyd0"]
+
+[node name="notification" type="CanvasLayer"]
+layer = 128
+script = ExtResource("1_of8gu")
+
+[node name="panel" type="PanelContainer" parent="."]
+offset_right = 20.0
+offset_bottom = 20.0
+
+[node name="box" type="VBoxContainer" parent="panel"]
+layout_mode = 2
+
+[node name="sound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("2_ydyd0")
+autoplay = true

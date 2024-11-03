@@ -26,6 +26,10 @@ var leveldata: Dictionary = {
 	"enemydata": enemies,
 	"enemyplace": ""
 }
+func _ready() -> void:
+	DiscordRPC.app_id = 1302687543187210402
+	DiscordRPC.start_timestamp = int(Time.get_unix_time_from_system())
+	DiscordRPC.refresh()
 func calcbattlevalues(pstats: Dictionary, estats: Dictionary) -> Dictionary:
 	var turncount: int = ceil(estats.hp / (pstats.atk - estats.def))
 	var damage: int = estats.atk * (turncount - 1) - pstats.def
@@ -33,3 +37,10 @@ func calcbattlevalues(pstats: Dictionary, estats: Dictionary) -> Dictionary:
 		"turncount": turncount,
 		"damage": damage
 	}
+func notify(text: String) -> void:
+	if get_child_count():
+		get_child(0).addlabel(text)
+	else:
+		var n: CanvasLayer = preload("res://scenes/notification.tscn").instantiate()
+		n.addlabel(text)
+		add_child(n)
