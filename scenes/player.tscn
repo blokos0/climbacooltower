@@ -8,14 +8,14 @@
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_w5g30"]
 blend_mode = 1
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_cbhnf"]
-size = Vector2(30, 30)
-
 [sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_8m3nh"]
 playback_mode = 2
 random_pitch = 1.25
 streams_count = 1
 stream_0/stream = ExtResource("4_gehe3")
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_cbhnf"]
+size = Vector2(30, 30)
 
 [node name="player" type="Sprite2D"]
 texture = ExtResource("1_0sfw1")
@@ -30,6 +30,10 @@ material = SubResource("CanvasItemMaterial_w5g30")
 position = Vector2(16, 16)
 texture = ExtResource("3_3lwjp")
 
+[node name="walksound" type="AudioStreamPlayer" parent="."]
+stream = SubResource("AudioStreamRandomizer_8m3nh")
+volume_db = 8.0
+
 [node name="shapecast" type="ShapeCast2D" parent="."]
 position = Vector2(16, 16)
 shape = SubResource("RectangleShape2D_cbhnf")
@@ -37,10 +41,6 @@ target_position = Vector2(0, 0)
 max_results = 1
 collide_with_areas = true
 collide_with_bodies = false
-
-[node name="walksound" type="AudioStreamPlayer" parent="."]
-stream = SubResource("AudioStreamRandomizer_8m3nh")
-volume_db = 8.0
 
 [node name="raycast" type="RayCast2D" parent="."]
 position = Vector2(16, 16)

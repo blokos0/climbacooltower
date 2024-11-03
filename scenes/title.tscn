@@ -1,16 +1,28 @@
-[gd_scene load_steps=2 format=3 uid="uid://c7an5o6fcsflw"]
+[gd_scene load_steps=5 format=3 uid="uid://c7an5o6fcsflw"]
 
 [ext_resource type="Texture2D" uid="uid://cfri3td18vid2" path="res://sprites/logo.png" id="1_8x8wf"]
+[ext_resource type="AudioStream" uid="uid://c2afnq2wkmmp5" path="res://music/musictoclimbcooltowersto.ogg" id="1_ejrad"]
+[ext_resource type="Script" path="res://scenes/title.gd" id="1_ov0fw"]
+[ext_resource type="Texture2D" uid="uid://dvqo628r6h10" path="res://sprites/bgmenu.png" id="2_les1t"]
 
 [node name="title" type="Node2D"]
+script = ExtResource("1_ov0fw")
 
-[node name="logo" type="Sprite2D" parent="."]
-position = Vector2(192, 160)
+[node name="bg" type="Sprite2D" parent="."]
+texture_repeat = 2
+texture = ExtResource("2_les1t")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 0, 640, 360)
+
+[node name="music" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("1_ejrad")
+autoplay = true
+
+[node name="logotrail" type="Sprite2D" parent="."]
+position = Vector2(185, 130)
 texture = ExtResource("1_8x8wf")
 
-[node name="epictext" type="Label" parent="."]
-offset_left = 416.0
-offset_top = 128.0
-offset_right = 608.0
-offset_bottom = 142.0
-text = "this logo is so cool isnt it"
+[node name="logo" type="Sprite2D" parent="."]
+position = Vector2(185, 130)
+texture = ExtResource("1_8x8wf")

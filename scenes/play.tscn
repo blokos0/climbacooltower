@@ -80,7 +80,6 @@ position = Vector2(160, 160)
 
 [node name="enemy" parent="gamelayer/gameworldcontainer/gameworld/shader" instance=ExtResource("10_mdyli")]
 position = Vector2(160, 224)
-kind = "blob"
 
 [node name="env" type="WorldEnvironment" parent="gamelayer/gameworldcontainer/gameworld/shader"]
 environment = SubResource("Environment_140et")
