@@ -1,12 +1,39 @@
-[gd_scene load_steps=5 format=3 uid="uid://c7an5o6fcsflw"]
+[gd_scene load_steps=13 format=3 uid="uid://c7an5o6fcsflw"]
 
 [ext_resource type="Texture2D" uid="uid://cfri3td18vid2" path="res://sprites/logo.png" id="1_8x8wf"]
 [ext_resource type="AudioStream" uid="uid://c2afnq2wkmmp5" path="res://music/musictoclimbcooltowersto.ogg" id="1_ejrad"]
 [ext_resource type="Script" path="res://scenes/title.gd" id="1_ov0fw"]
 [ext_resource type="Texture2D" uid="uid://dvqo628r6h10" path="res://sprites/bgmenu.png" id="2_les1t"]
+[ext_resource type="AudioStream" uid="uid://bmpflppx1rloe" path="res://sounds/focus.ogg" id="3_bwrwy"]
+[ext_resource type="Texture2D" uid="uid://bhxllhc82hmjv" path="res://sprites/teleporter.png" id="5_70kob"]
+[ext_resource type="Texture2D" uid="uid://co07650lga4kc" path="res://sprites/menuart_startbutton.png" id="6_r0ty3"]
+[ext_resource type="Texture2D" uid="uid://d3cf6csbkta5v" path="res://sprites/menuicons.png" id="7_5k7p5"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mr41i"]
+atlas = ExtResource("5_70kob")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_sudal"]
+atlas = ExtResource("7_5k7p5")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_00v3u"]
+atlas = ExtResource("7_5k7p5")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_j55ty"]
+atlas = ExtResource("7_5k7p5")
+region = Rect2(64, 0, 32, 32)
 
 [node name="title" type="Node2D"]
 script = ExtResource("1_ov0fw")
+
+[node name="music" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("1_ejrad")
+autoplay = true
+
+[node name="focussound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_bwrwy")
 
 [node name="bg" type="Sprite2D" parent="."]
 texture_repeat = 2
@@ -15,10 +42,6 @@ centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 640, 360)
 
-[node name="music" type="AudioStreamPlayer" parent="."]
-stream = ExtResource("1_ejrad")
-autoplay = true
-
 [node name="logotrail" type="Sprite2D" parent="."]
 position = Vector2(185, 130)
 texture = ExtResource("1_8x8wf")
@@ -26,3 +49,53 @@ texture = ExtResource("1_8x8wf")
 [node name="logo" type="Sprite2D" parent="."]
 position = Vector2(185, 130)
 texture = ExtResource("1_8x8wf")
+
+[node name="art" type="Sprite2D" parent="."]
+position = Vector2(372, 8)
+texture = ExtResource("6_r0ty3")
+centered = false
+
+[node name="box" type="HBoxContainer" parent="."]
+offset_left = 16.0
+offset_top = 274.0
+offset_right = 463.0
+offset_bottom = 326.0
+
+[node name="startbutton" type="Button" parent="box"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+focus_neighbor_top = NodePath("../settingsbutton")
+text = "start"
+icon = SubResource("AtlasTexture_mr41i")
+
+[node name="createbutton" type="Button" parent="box"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "create"
+icon = SubResource("AtlasTexture_sudal")
+
+[node name="browsebutton" type="Button" parent="box"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "browse"
+icon = SubResource("AtlasTexture_00v3u")
+
+[node name="settingsbutton" type="Button" parent="box"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+focus_neighbor_bottom = NodePath("../startbutton")
+text = "settings"
+icon = SubResource("AtlasTexture_j55ty")
+
+[node name="credits" type="RichTextLabel" parent="."]
+offset_left = 2.0
+offset_top = 344.0
+offset_right = 218.0
+offset_bottom = 358.0
+bbcode_enabled = true
+text = "v27.63 [wave freq=5][rainbow sat=0.5 freq=0.1]made by blurpcause"
+fit_content = true

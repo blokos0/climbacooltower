@@ -1,6 +1,21 @@
-[gd_resource type="Theme" load_steps=4 format=3 uid="uid://im7lovh8mede"]
+[gd_resource type="Theme" load_steps=7 format=3 uid="uid://im7lovh8mede"]
 
 [ext_resource type="StyleBox" uid="uid://bmeqqapev47q5" path="res://stylebox.tres" id="1_0o7wj"]
+[ext_resource type="StyleBox" uid="uid://shk7qqgcchw0" path="res://styleboxpressed.tres" id="1_o0nxr"]
+[ext_resource type="StyleBox" uid="uid://hcc8hh46dhti" path="res://styleboxhovered.tres" id="1_towrh"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8pgcv"]
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 1, 1, 1)
+expand_margin_left = 4.0
+expand_margin_top = 4.0
+expand_margin_right = 4.0
+expand_margin_bottom = 4.0
+anti_aliasing = false
 
 [sub_resource type="StyleBoxLine" id="StyleBoxLine_060hv"]
 color = Color(1, 1, 1, 1)
@@ -16,9 +31,14 @@ thickness = 2
 vertical = true
 
 [resource]
+Button/styles/disabled = null
+Button/styles/focus = SubResource("StyleBoxFlat_8pgcv")
+Button/styles/hover = ExtResource("1_towrh")
+Button/styles/normal = ExtResource("1_0o7wj")
+Button/styles/pressed = ExtResource("1_o0nxr")
 HSeparator/constants/separation = 2
 HSeparator/styles/separator = SubResource("StyleBoxLine_060hv")
-Panel/styles/panel = ExtResource("1_0o7wj")
-PanelContainer/styles/panel = ExtResource("1_0o7wj")
+Panel/styles/panel = ExtResource("1_o0nxr")
+PanelContainer/styles/panel = ExtResource("1_o0nxr")
 VSeparator/constants/separation = 2
 VSeparator/styles/separator = SubResource("StyleBoxLine_drn7s")

@@ -18,11 +18,13 @@ var didthepaneljustclose: bool # i hate this
 var placingenemykind: String
 var placedenemies: Array[Array]
 func _ready() -> void:
+	$ui/panel/uibox/propertiesbox/otherbox/roomlist.item_activated.connect(roomlistselect)
+	$ui/panel/uibox/propertiesbox/enemybox/enemylist.item_activated.connect(enemylistselect)
 	$ui/panel/uibox/propertiesbox/tileroombox/roomtheme.select(0)
 	$ui/panel/uibox/propertiesbox/tileroombox/roomsong.select(0)
 	genenemylist()
 	DiscordRPC.state = "in the editor"
-	DiscordRPC.large_image = "icon"
+	DiscordRPC.details = "havent saved yet..."
 	DiscordRPC.refresh()
 func _process(_delta: float) -> void:
 	if !$ui/panel.visible && $ui/fuckingeditorthing.get_local_mouse_position().y > 0 && !selectingroom && !placingenemy:
@@ -102,7 +104,7 @@ func _process(_delta: float) -> void:
 			$camera/grid.modulate.a = lerpf(0.25, 0, 0.25 / $camera.zoom.x)
 			$camera.position += cammouse - get_global_mouse_position()
 		$camera/grid.region_rect.position = $camera.position
-	if Input.is_action_just_pressed(&"ui_copy"):
+	if Input.is_action_just_pressed(&"save"):
 		var arr: PackedStringArray = []
 		for pos in $floors.get_used_cells():
 			var i: int = $floors.get_cell_atlas_coords(pos).x
@@ -132,6 +134,8 @@ func _process(_delta: float) -> void:
 	if Input.is_action_just_pressed(&"ui_paste"):
 		var file: PackedByteArray = FileAccess.get_file_as_bytes("user://tower.cact")
 		print(file.decompress_dynamic(100000000, FileAccess.COMPRESSION_GZIP).get_string_from_utf8())
+	if Input.is_action_just_pressed(&"back"):
+		get_tree().change_scene_to_file("res://scenes/title.tscn")
 	queue_redraw()
 func _draw() -> void:
 	if !$ui/panel.visible && !selectingroom && !placingenemy:
@@ -145,10 +149,10 @@ func _draw() -> void:
 		ind += 1
 	for i in placedenemies:
 		draw_texture_rect_region(load("res://sprites/" + i[1] + ".png"), Rect2(i[0] * 32, Vector2(32, 32)), Rect2(i[2] * 32, 0, 32, 32))
-func _on_roomlist_item_activated(index: int) -> void:
+func roomlistselect(index: int) -> void:
 	$ui/panel/uibox/propertiesbox/otherbox/roomlist.remove_item(index)
 	rooms.remove_at(index)
-func _on_enemylist_item_activated(index: int) -> void:
+func enemylistselect(index: int) -> void:
 	placingenemykind = global.enemies.keys()[index]
 	$ui/panel.visible = false
 	$ui/fuckingeditorthing.visible = true

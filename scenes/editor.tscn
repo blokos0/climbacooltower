@@ -30,6 +30,7 @@ texture = ExtResource("8_lqslm")
 centered = false
 
 [node name="panel" type="PanelContainer" parent="ui"]
+visible = false
 offset_right = 640.0
 offset_bottom = 360.0
 theme = ExtResource("6_frrc5")
@@ -178,6 +179,3 @@ tile_set = ExtResource("6_2xnlh")
 [node name="walls" type="TileMapLayer" parent="."]
 show_behind_parent = true
 tile_set = ExtResource("6_2xnlh")
-
-[connection signal="item_activated" from="ui/panel/uibox/propertiesbox/otherbox/roomlist" to="." method="_on_roomlist_item_activated"]
-[connection signal="item_activated" from="ui/panel/uibox/propertiesbox/enemybox/enemylist" to="." method="_on_enemylist_item_activated"]

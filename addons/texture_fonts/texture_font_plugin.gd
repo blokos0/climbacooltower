@@ -20,17 +20,17 @@ func _handles(object: Object) -> bool:
 		return true
 	if _handled_font_ref: # No longer editing texture fonts.
 		_close_editor()
-	
+
 	return false
 
 func _edit(object: Object):
 	var font := object as TextureFont
 	if not font:
 		return
-	
+
 	_is_font_saved_on_disk = font.resource_path != ""
 	_handled_font_ref = weakref(font)
-	
+
 	_open_editor(font)
 
 
@@ -39,7 +39,7 @@ func _open_editor(font: TextureFont):
 		_font_editor = preload("./UI/FontEditor.tscn").instantiate()
 		add_control_to_bottom_panel(_font_editor, "Texture Font")
 		_font_editor.closed_requested.connect(_close_editor)
-	
+
 	_font_editor.edit_font(font)
 	make_bottom_panel_item_visible(_font_editor)
 
@@ -55,4 +55,3 @@ func _on_filesystem_changed():
 	if _handled_font_ref and _is_font_saved_on_disk:
 		if not _handled_font_ref.get_ref() or _handled_font_ref.get_ref().resource_path == "":
 			_close_editor()
-

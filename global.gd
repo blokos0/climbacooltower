@@ -26,9 +26,11 @@ var leveldata: Dictionary = {
 	"enemydata": enemies,
 	"enemyplace": ""
 }
+var version: String = "0.1"
 func _ready() -> void:
 	DiscordRPC.app_id = 1302687543187210402
 	DiscordRPC.start_timestamp = int(Time.get_unix_time_from_system())
+	DiscordRPC.large_image = "icon"
 	DiscordRPC.refresh()
 func calcbattlevalues(pstats: Dictionary, estats: Dictionary) -> Dictionary:
 	var turncount: int = ceil(estats.hp / (pstats.atk - estats.def))
