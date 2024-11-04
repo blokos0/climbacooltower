@@ -12,3 +12,4 @@ func addlabel(text: String) -> void:
 	var l: Label = Label.new()
 	l.text = text
 	$panel/box.add_child(l)
+	$sound.play()

@@ -31,8 +31,9 @@ func _process(_delta: float) -> void:
 	time += 1
 	$ui/container/box/playerbox/playerportrait.texture.region = Rect2i(wrap(floor(time / 20) * 100, 0, 300), 0, 100, 100)
 func setuproom() -> void:
-	$ui/container/box/roomname.text = rooms[room].name
-	$camera.position = rooms[room].pos * 32 + Vector2i(316, 176)
+	if !rooms.is_empty():
+		$ui/container/box/roomname.text = rooms[room].name
+		$camera.position = rooms[room].pos * 32 + Vector2i(316, 176)
 	$roomsound.play()
 func updatestats(hp: int = 0, atk: int = 0, def: int = 0) -> void:
 	stats.hp += hp

@@ -44,5 +44,5 @@ func notify(text: String) -> void:
 		get_child(0).addlabel(text)
 	else:
 		var n: CanvasLayer = preload("res://scenes/notification.tscn").instantiate()
-		n.addlabel(text)
 		add_child(n)
+		n.addlabel(text)

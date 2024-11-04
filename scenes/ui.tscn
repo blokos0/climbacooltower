@@ -23,7 +23,7 @@ layout_mode = 2
 
 [node name="roomname" type="Label" parent="container/box"]
 layout_mode = 2
-text = "roomname"
+text = "..."
 
 [node name="seperator" type="HSeparator" parent="container/box"]
 layout_mode = 2

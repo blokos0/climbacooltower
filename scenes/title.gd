@@ -6,7 +6,7 @@ func _ready() -> void:
 	$box/browsebutton.pressed.connect(browsebuttonpressed)
 	$box/settingsbutton.pressed.connect(settingsbuttonpressed)
 	$"/root".gui_focus_changed.connect(focuschanged)
-	$credits.text = "v0.1 [wave freq=5][rainbow sat=0.5 freq=0.1]made by blokos"
+	$credits.text = "v" + global.version + " [wave freq=5][rainbow sat=0.5 freq=0.1]made by blokos"
 	DiscordRPC.state = "on the titlescreen"
 	DiscordRPC.details = "yeah"
 	DiscordRPC.refresh()

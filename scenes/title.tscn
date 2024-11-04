@@ -59,13 +59,13 @@ centered = false
 offset_left = 16.0
 offset_top = 274.0
 offset_right = 463.0
-offset_bottom = 326.0
+offset_bottom = 330.0
 
 [node name="startbutton" type="Button" parent="box"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-focus_neighbor_top = NodePath("../settingsbutton")
+focus_neighbor_left = NodePath("../settingsbutton")
 text = "start"
 icon = SubResource("AtlasTexture_mr41i")
 
@@ -87,7 +87,7 @@ icon = SubResource("AtlasTexture_00v3u")
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-focus_neighbor_bottom = NodePath("../startbutton")
+focus_neighbor_right = NodePath("../startbutton")
 text = "settings"
 icon = SubResource("AtlasTexture_j55ty")
 

@@ -17,6 +17,7 @@ func _process(_delta: float) -> void:
 		movetimer = 5
 		if !Input.is_action_pressed(&"sneak"):
 			position += dirspressed[-1] * 32
+			offset -= dirspressed[-1] * 32
 			var invalidtile: bool = $"../walls".get_cell_atlas_coords(floor(position / 32)) != Vector2i(-1, -1) || $"../floors".get_cell_atlas_coords(floor(position / 32)) == Vector2i(-1, -1)
 			$shapecast.force_shapecast_update()
 			if $shapecast.is_colliding():
@@ -33,6 +34,7 @@ func _process(_delta: float) -> void:
 						i.get_node("..").free()
 			if invalidtile:
 				position -= dirspressed[-1] * 32
+				offset += dirspressed[-1] * 32
 			else:
 				$walksound.play()
 		lastdir = dirspressed[-1]
@@ -57,6 +59,7 @@ func _process(_delta: float) -> void:
 		else:
 			$/root/play/ui/container/box/enemystuff.visible = false
 	movetimer = max(movetimer - 1, 0)
+	offset = lerp(offset, Vector2(0, -16), 0.5)
 func moveinput(inp: String) -> void:
 	if Input.is_action_just_pressed(inp):
 		if !dirspressed.has(dirs[inp]):
