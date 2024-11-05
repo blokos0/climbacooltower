@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://byqec3krrnrl5"
-path="res://.godot/imported/letterparticles.png-3208a8a1faede7a91abef4e241ba41df.ctex"
+uid="uid://wm5q8326ho37"
+path="res://.godot/imported/stardustportrait.png-f474b17fb1933990be24208099855cbd.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://sprites/letterparticles.png"
-dest_files=["res://.godot/imported/letterparticles.png-3208a8a1faede7a91abef4e241ba41df.ctex"]
+source_file="res://sprites/stardustportrait.png"
+dest_files=["res://.godot/imported/stardustportrait.png-f474b17fb1933990be24208099855cbd.ctex"]
 
 [params]
 

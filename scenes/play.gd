@@ -13,11 +13,9 @@ var stats: Dictionary = {
 	"lvl": 1
 }
 var theme: String = "digital"
-var time: float
 func _ready() -> void:
 	setuproom()
 	updatestats()
-	$ui/container/box/playername.text = global.playername
 	var bg: CanvasLayer = load("res://scenes/bg" + theme + ".tscn").instantiate()
 	add_child(bg)
 	move_child(bg, 2)
@@ -27,9 +25,6 @@ func _ready() -> void:
 		$gamelayer/gameworldcontainer/gameworld/shader.material.set_shader_parameter(&"shake_power", 0.003)
 		$gamelayer/gameworldcontainer/gameworld/shader.material.set_shader_parameter(&"shake_rate", 1)
 		$gamelayer/gameworldcontainer/gameworld/shader.material.set_shader_parameter(&"shake_color_rate", 0.005)
-func _process(_delta: float) -> void:
-	time += 1
-	$ui/container/box/playerbox/playerportrait.texture.region = Rect2i(wrap(floor(time / 20) * 100, 0, 300), 0, 100, 100)
 func setuproom() -> void:
 	if !rooms.is_empty():
 		$ui/container/box/roomname.text = rooms[room].name

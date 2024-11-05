@@ -1,6 +1,6 @@
 [gd_scene load_steps=7 format=3 uid="uid://cth72fb5mrt1k"]
 
-[ext_resource type="Texture2D" uid="uid://byqec3krrnrl5" path="res://sprites/letterparticles.png" id="1_inmmj"]
+[ext_resource type="Texture2D" uid="uid://cx8ytyeky5h55" path="res://sprites/digitalparticles.png" id="1_inmmj"]
 [ext_resource type="Texture2D" uid="uid://ccp4bvyn025vl" path="res://sprites/bgdigital.png" id="1_jfuj5"]
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_giygc"]

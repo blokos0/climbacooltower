@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=4 uid="uid://b3gic6q6tpwn8"]
+[gd_scene load_steps=9 format=3 uid="uid://b3gic6q6tpwn8"]
 
 [ext_resource type="Texture2D" uid="uid://dk6jolbfv45du" path="res://sprites/uiref.png" id="1_bkb1a"]
 [ext_resource type="Script" path="res://scenes/play.gd" id="1_fp3cq"]
@@ -62,14 +62,12 @@ render_target_update_mode = 4
 [node name="shader" type="CanvasGroup" parent="gamelayer/gameworldcontainer/gameworld"]
 
 [node name="floors" type="TileMapLayer" parent="gamelayer/gameworldcontainer/gameworld/shader"]
-tile_map_data = PackedByteArray("AAAFAAUAAAACAAAAAAAEAAUAAAACAAAAAAAEAAQAAAACAAAAAAAFAAQAAAACAAAAAAAGAAQAAAACAAAAAAAGAAUAAAACAAAAAAAGAAYAAAACAAAAAAAGAAcAAAACAAAAAAAFAAcAAAACAAAAAAAEAAcAAAACAAAAAAAEAAYAAAACAAAAAAAFAAYAAAACAAAAAAADAAYAAAACAAAAAAADAAcAAAACAAAAAAADAAUAAAACAAAAAAADAAQAAAACAAAAAAAHAAQAAAACAAAAAAAHAAUAAAACAAAAAAAHAAYAAAACAAAAAAAHAAMAAAACAAAAAAAGAAMAAAACAAAAAAAFAAMAAAACAAAAAAAEAAMAAAACAAAAAAADAAMAAAACAAAAAAAHAAcAAAACAAAAAAA=")
 tile_set = ExtResource("3_eu8ak")
 
 [node name="walls" type="TileMapLayer" parent="gamelayer/gameworldcontainer/gameworld/shader"]
 tile_set = ExtResource("3_eu8ak")
 
 [node name="player" parent="gamelayer/gameworldcontainer/gameworld/shader" instance=ExtResource("4_5ffw6")]
-position = Vector2(160, 160)
 
 [node name="env" type="WorldEnvironment" parent="gamelayer/gameworldcontainer/gameworld/shader"]
 environment = SubResource("Environment_140et")

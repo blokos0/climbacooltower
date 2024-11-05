@@ -20,6 +20,7 @@ var placedenemies: Array[Array]
 func _ready() -> void:
 	$ui/panel/uibox/propertiesbox/otherbox/roomlist.item_activated.connect(roomlistselect)
 	$ui/panel/uibox/propertiesbox/enemybox/enemylist.item_activated.connect(enemylistselect)
+	$backuptimer.timeout.connect(savelevel.bind("backup"))
 	$ui/panel/uibox/propertiesbox/tileroombox/roomtheme.select(0)
 	$ui/panel/uibox/propertiesbox/tileroombox/roomsong.select(0)
 	genenemylist()
@@ -65,7 +66,7 @@ func _process(_delta: float) -> void:
 				selectedroom = Rect2i(floor(get_local_mouse_position() / 32), Vector2i(0, 0))
 			elif selectedroom != null:
 				selectedroom.size = Vector2i(ceil(get_local_mouse_position() / 32)) - selectedroom.position
-	if Input.is_action_just_pressed("placetile") && placingenemy && !$ui/panel.visible && !didthepaneljustclose:
+	if Input.is_action_just_pressed(&"placetile") && placingenemy && !$ui/panel.visible && !didthepaneljustclose:
 		var pe: Array = [floor(get_local_mouse_position() / 32), placingenemykind, currentenemyvariant]
 		var invalid: bool = placedenemies.has(pe)
 		for i in placedenemies:
@@ -95,7 +96,7 @@ func _process(_delta: float) -> void:
 			$ui/tooltipthing.text = "sorry its too flat"
 	if Input.is_action_pressed(&"removetile"):
 		tm.erase_cell(floor(get_local_mouse_position() / 32))
-	if !$ui/panel.visible:
+	if !$ui/panel.visible && !Input.is_action_pressed(&"save"):
 		$camera.position += Input.get_vector(&"left", &"right", &"up", &"down") * 12 * (int(Input.is_action_pressed("sneak")) + 1) * (0.5 / $camera.zoom.x + 0.5)
 		if Input.is_action_just_pressed(&"zoomin") || Input.is_action_just_pressed(&"zoomout"):
 			var cammouse: Vector2 = get_global_mouse_position()
@@ -105,35 +106,15 @@ func _process(_delta: float) -> void:
 			$camera.position += cammouse - get_global_mouse_position()
 		$camera/grid.region_rect.position = $camera.position
 	if Input.is_action_just_pressed(&"save"):
-		var arr: PackedStringArray = []
-		for pos in $floors.get_used_cells():
-			var i: int = $floors.get_cell_atlas_coords(pos).x
-			arr.append(str(i) + "," + str(pos.x) + "," + str(pos.y))
-		var strr: String = "/".join(arr)
-		global.leveldata["floors"] = strr
-		arr = []
-		for pos in $walls.get_used_cells():
-			var i: int = $walls.get_cell_atlas_coords(pos).x
-			arr.append(str(i) + "," + str(pos.x) + "," + str(pos.y))
-		strr = "/".join(arr)
-		global.leveldata["walls"] = strr
-		global.leveldata["rooms"] = rooms
 		var towername: String = "tower"
 		if len($ui/panel/uibox/propertiesbox/otherbox/towername.text):
 			towername = $ui/panel/uibox/propertiesbox/otherbox/towername.text
-		global.leveldata["name"] = towername
-		DiscordRPC.details = "making " + towername
-		DiscordRPC.refresh()
-		global.leveldata["enemyplace"] = placedenemies
-		var file: FileAccess = FileAccess.open("user://" + towername.validate_filename() + ".cact", FileAccess.WRITE)
-		if file:
-			file.store_buffer(str(global.leveldata).to_utf8_buffer().compress(FileAccess.COMPRESSION_GZIP))
+		if savelevel(towername.validate_filename()):
 			global.notify("saved")
 		else:
 			global.notify("failed to save!!")
-	if Input.is_action_just_pressed(&"ui_paste"):
-		var file: PackedByteArray = FileAccess.get_file_as_bytes("user://tower.cact")
-		print(file.decompress_dynamic(100000000, FileAccess.COMPRESSION_GZIP).get_string_from_utf8())
+		DiscordRPC.details = "making " + towername
+		DiscordRPC.refresh()
 	if Input.is_action_just_pressed(&"back"):
 		get_tree().change_scene_to_file("res://scenes/title.tscn")
 	queue_redraw()
@@ -172,3 +153,29 @@ func genenemylist() -> void:
 		$ui/panel/uibox/propertiesbox/enemybox/enemylist.add_item(global.enemyvariants[currentenemyvariant] + " " + i, t)
 	if sel:
 		$ui/panel/uibox/propertiesbox/enemybox/enemylist.select(sel[0])
+func savelevel(filename: String) -> FileAccess:
+	var arr: PackedStringArray = []
+	for pos in $floors.get_used_cells():
+		var i: int = $floors.get_cell_atlas_coords(pos).x
+		arr.append(str(i) + "," + str(pos.x) + "," + str(pos.y))
+	var strr: String = "/".join(arr)
+	global.leveldata["floors"] = strr
+	arr = []
+	for pos in $walls.get_used_cells():
+		var i: int = $walls.get_cell_atlas_coords(pos).x
+		arr.append(str(i) + "," + str(pos.x) + "," + str(pos.y))
+	strr = "/".join(arr)
+	global.leveldata["walls"] = strr
+	global.leveldata["rooms"] = rooms
+	var towername: String = "tower"
+	if len($ui/panel/uibox/propertiesbox/otherbox/towername.text):
+		towername = $ui/panel/uibox/propertiesbox/otherbox/towername.text
+	global.leveldata["name"] = towername
+	global.leveldata["enemyplace"] = placedenemies
+	var file: FileAccess = FileAccess.open("user://" + filename + ".cact", FileAccess.WRITE)
+	if file:
+		file.store_buffer(str(global.leveldata).to_utf8_buffer().compress(FileAccess.COMPRESSION_GZIP))
+	return file
+func loadlevel(filename: String) -> void:
+	var file: PackedByteArray = FileAccess.get_file_as_bytes("user://" + filename + ".cact")
+	print(file.decompress_dynamic(100000000, FileAccess.COMPRESSION_GZIP).get_string_from_utf8())

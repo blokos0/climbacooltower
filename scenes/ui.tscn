@@ -1,5 +1,6 @@
-[gd_scene load_steps=5 format=3 uid="uid://c1puuc0ypqsjt"]
+[gd_scene load_steps=6 format=3 uid="uid://c1puuc0ypqsjt"]
 
+[ext_resource type="Script" path="res://scenes/ui.gd" id="1_av4eh"]
 [ext_resource type="Texture2D" uid="uid://c61duayxk074m" path="res://sprites/jellyportrait.png" id="1_vfdhx"]
 [ext_resource type="Texture2D" uid="uid://b68y5ybtb82sj" path="res://sprites/blob.png" id="2_4wbbf"]
 
@@ -13,6 +14,7 @@ region = Rect2(0, 0, 32, 32)
 
 [node name="ui" type="CanvasLayer"]
 layer = 0
+script = ExtResource("1_av4eh")
 
 [node name="container" type="PanelContainer" parent="."]
 offset_right = 276.0

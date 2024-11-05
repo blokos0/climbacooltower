@@ -179,3 +179,7 @@ tile_set = ExtResource("6_2xnlh")
 [node name="walls" type="TileMapLayer" parent="."]
 show_behind_parent = true
 tile_set = ExtResource("6_2xnlh")
+
+[node name="backuptimer" type="Timer" parent="."]
+wait_time = 10.0
+autostart = true
