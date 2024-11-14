@@ -46,3 +46,9 @@ func notify(text: String) -> void:
 		var n: CanvasLayer = preload("res://scenes/notification.tscn").instantiate()
 		add_child(n)
 		n.addlabel(text)
+func setupdialog(pages: PackedStringArray, events: String, talker: String) -> Sprite2D:
+	var i: Sprite2D = preload("res://scenes/dialog.tscn").instantiate()
+	i.pages = pages
+	i.events = events
+	i.talker = talker
+	return i

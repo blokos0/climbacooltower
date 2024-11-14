@@ -1,0 +1,37 @@
+[gd_scene load_steps=7 format=3 uid="uid://mshrhsiub2yi"]
+
+[ext_resource type="Texture2D" uid="uid://ch8lcxm0cic4" path="res://sprites/dialogbox.png" id="1_sq4qo"]
+[ext_resource type="Texture2D" uid="uid://c61duayxk074m" path="res://sprites/jellyportrait.png" id="2_lakyx"]
+[ext_resource type="Script" path="res://scenes/dialog.gd" id="2_m85sm"]
+[ext_resource type="AudioStream" uid="uid://dmkde4b2g62ix" path="res://sounds/diasound_.ogg" id="4_niipd"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_svqq6"]
+atlas = ExtResource("2_lakyx")
+region = Rect2(0, 0, 100, 100)
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_oobla"]
+playback_mode = 2
+random_pitch = 1.1
+streams_count = 1
+stream_0/stream = ExtResource("4_niipd")
+
+[node name="dialog" type="Sprite2D"]
+texture = ExtResource("1_sq4qo")
+centered = false
+script = ExtResource("2_m85sm")
+
+[node name="portrait" type="Sprite2D" parent="."]
+position = Vector2(4, 4)
+texture = SubResource("AtlasTexture_svqq6")
+centered = false
+
+[node name="text" type="RichTextLabel" parent="."]
+offset_left = 109.0
+offset_top = 6.0
+offset_right = 631.0
+offset_bottom = 102.0
+bbcode_enabled = true
+scroll_active = false
+
+[node name="noise" type="AudioStreamPlayer" parent="."]
+stream = SubResource("AudioStreamRandomizer_oobla")
