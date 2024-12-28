@@ -31,9 +31,11 @@ script = ExtResource("1_ov0fw")
 [node name="music" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("1_ejrad")
 autoplay = true
+bus = &"music"
 
 [node name="focussound" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("3_bwrwy")
+bus = &"sfx"
 
 [node name="bg" type="Sprite2D" parent="."]
 texture_repeat = 2

@@ -107,8 +107,8 @@ func _process(_delta: float) -> void:
 		$camera/grid.region_rect.position = $camera.position
 	if Input.is_action_just_pressed(&"save"):
 		var towername: String = "tower"
-		if len($ui/panel/uibox/propertiesbox/otherbox/towername.text):
-			towername = $ui/panel/uibox/propertiesbox/otherbox/towername.text
+		if len($ui/panel/uibox/propertiesbox/otherbox/funbox/towername.text):
+			towername = $ui/panel/uibox/propertiesbox/otherbox/funbox/towername.text
 		if savelevel(towername.validate_filename()):
 			global.notify("saved")
 		else:
@@ -129,7 +129,7 @@ func _draw() -> void:
 		draw_string(ThemeDB.fallback_font, i.rect.position * 32 - Vector2i(0, 24), i.name)
 		ind += 1
 	for i in placedenemies:
-		draw_texture_rect_region(load("res://sprites/" + i[1] + ".png"), Rect2(i[0] * 32, Vector2(32, 32)), Rect2(i[2] * 32, 0, 32, 32))
+		draw_texture_rect_region(load("res://sprites/" + i[1] + ".png"), Rect2(i[0] * 32, Vector2(32, 32)), Rect2(i[2] * 32, 0, 32, 32), Color(1, 1, 1, 0.75 + int(Input.is_action_pressed("showasis")) * 0.25))
 func roomlistselect(index: int) -> void:
 	$ui/panel/uibox/propertiesbox/otherbox/roomlist.remove_item(index)
 	rooms.remove_at(index)
@@ -168,8 +168,8 @@ func savelevel(filename: String) -> FileAccess:
 	global.leveldata["walls"] = strr
 	global.leveldata["rooms"] = rooms
 	var towername: String = "tower"
-	if len($ui/panel/uibox/propertiesbox/otherbox/towername.text):
-		towername = $ui/panel/uibox/propertiesbox/otherbox/towername.text
+	if len($ui/panel/uibox/propertiesbox/otherbox/funbox/towername.text):
+		towername = $ui/panel/uibox/propertiesbox/otherbox/funbox/towername.text
 	global.leveldata["name"] = towername
 	global.leveldata["enemyplace"] = placedenemies
 	var file: FileAccess = FileAccess.open("user://" + filename + ".cact", FileAccess.WRITE)

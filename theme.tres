@@ -1,8 +1,10 @@
-[gd_resource type="Theme" load_steps=7 format=3 uid="uid://im7lovh8mede"]
+[gd_resource type="Theme" load_steps=10 format=3 uid="uid://im7lovh8mede"]
 
 [ext_resource type="StyleBox" uid="uid://bmeqqapev47q5" path="res://stylebox.tres" id="1_0o7wj"]
 [ext_resource type="StyleBox" uid="uid://shk7qqgcchw0" path="res://styleboxpressed.tres" id="1_o0nxr"]
 [ext_resource type="StyleBox" uid="uid://hcc8hh46dhti" path="res://styleboxhovered.tres" id="1_towrh"]
+[ext_resource type="StyleBox" uid="uid://cogq6dudwtdp4" path="res://stylebox2.tres" id="4_1vr5m"]
+[ext_resource type="StyleBox" uid="uid://bg8anwgauqn87" path="res://stylebox3.tres" id="5_fxknc"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8pgcv"]
 draw_center = false
@@ -23,6 +25,8 @@ grow_begin = 0.0
 grow_end = 0.0
 thickness = 2
 
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_4n7y6"]
+
 [sub_resource type="StyleBoxLine" id="StyleBoxLine_drn7s"]
 color = Color(1, 1, 1, 1)
 grow_begin = 0.0
@@ -38,6 +42,10 @@ Button/styles/normal = ExtResource("1_0o7wj")
 Button/styles/pressed = ExtResource("1_o0nxr")
 HSeparator/constants/separation = 2
 HSeparator/styles/separator = SubResource("StyleBoxLine_060hv")
+ItemList/styles/panel = ExtResource("4_1vr5m")
+ItemList/styles/selected = ExtResource("5_fxknc")
+LineEdit/styles/focus = SubResource("StyleBoxEmpty_4n7y6")
+LineEdit/styles/normal = ExtResource("4_1vr5m")
 Panel/styles/panel = ExtResource("1_o0nxr")
 PanelContainer/styles/panel = ExtResource("1_o0nxr")
 VSeparator/constants/separation = 2

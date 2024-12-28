@@ -33,6 +33,7 @@ texture = ExtResource("3_3lwjp")
 [node name="walksound" type="AudioStreamPlayer" parent="."]
 stream = SubResource("AudioStreamRandomizer_8m3nh")
 volume_db = 8.0
+bus = &"sfx"
 
 [node name="shapecast" type="ShapeCast2D" parent="."]
 position = Vector2(16, 16)

@@ -32,6 +32,7 @@ metadata/_edit_lock_ = true
 stream = ExtResource("3_6y7qo")
 volume_db = -3.0
 autoplay = true
+bus = &"music"
 
 [node name="ui" parent="." instance=ExtResource("7_5wxbp")]
 offset = Vector2(360, 4)
@@ -44,6 +45,7 @@ position = Vector2(320, 180)
 stream = ExtResource("8_l2j1u")
 volume_db = -3.0
 max_polyphony = 10
+bus = &"sfx"
 
 [node name="gamelayer" type="CanvasLayer" parent="."]
 

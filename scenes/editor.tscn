@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://bakroqjs5k4fk"]
+[gd_scene load_steps=12 format=3 uid="uid://bakroqjs5k4fk"]
 
 [ext_resource type="PackedScene" uid="uid://cth72fb5mrt1k" path="res://scenes/bgdigital.tscn" id="1_c2cl3"]
 [ext_resource type="Script" path="res://scenes/editor.gd" id="1_yt3fo"]
@@ -8,6 +8,7 @@
 [ext_resource type="TileSet" uid="uid://cifrghmfvrh7v" path="res://tileset.tres" id="6_2xnlh"]
 [ext_resource type="Theme" uid="uid://im7lovh8mede" path="res://theme.tres" id="6_frrc5"]
 [ext_resource type="Texture2D" uid="uid://ce06ho8jmxmxu" path="res://sprites/selectedtile.png" id="7_hjxn5"]
+[ext_resource type="Texture2D" uid="uid://xbxja0ugp8jk" path="res://sprites/jellysilly.png" id="8_7lhpr"]
 [ext_resource type="Texture2D" uid="uid://b04wh1di8es32" path="res://sprites/fuckingeditorthing.png" id="8_lqslm"]
 [ext_resource type="Texture2D" uid="uid://b5cx8m44ih6pm" path="res://sprites/enemyvariants.png" id="11_1sy0f"]
 
@@ -20,6 +21,7 @@ script = ExtResource("1_yt3fo")
 stream = ExtResource("3_7dgj0")
 volume_db = -3.0
 autoplay = true
+bus = &"music"
 
 [node name="ui" type="CanvasLayer" parent="."]
 
@@ -30,7 +32,6 @@ texture = ExtResource("8_lqslm")
 centered = false
 
 [node name="panel" type="PanelContainer" parent="ui"]
-visible = false
 offset_right = 640.0
 offset_bottom = 360.0
 theme = ExtResource("6_frrc5")
@@ -124,12 +125,21 @@ allow_search = false
 layout_mode = 2
 text = "tower name:"
 
-[node name="towername" type="LineEdit" parent="ui/panel/uibox/propertiesbox/otherbox"]
+[node name="funbox" type="HBoxContainer" parent="ui/panel/uibox/propertiesbox/otherbox"]
+layout_mode = 2
+
+[node name="towername" type="LineEdit" parent="ui/panel/uibox/propertiesbox/otherbox/funbox"]
 custom_minimum_size = Vector2(160, 0)
 layout_mode = 2
 size_flags_horizontal = 0
 theme = ExtResource("6_frrc5")
 placeholder_text = "tower"
+
+[node name="jellybutton" type="Button" parent="ui/panel/uibox/propertiesbox/otherbox/funbox"]
+layout_mode = 2
+size_flags_horizontal = 10
+focus_mode = 0
+icon = ExtResource("8_7lhpr")
 
 [node name="enemybox" type="VBoxContainer" parent="ui/panel/uibox/propertiesbox"]
 custom_minimum_size = Vector2(196, 0)
