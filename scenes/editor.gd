@@ -20,6 +20,7 @@ var placedenemies: Array[Array]
 func _ready() -> void:
 	$ui/panel/uibox/propertiesbox/otherbox/roomlist.item_activated.connect(roomlistselect)
 	$ui/panel/uibox/propertiesbox/enemybox/enemylist.item_activated.connect(enemylistselect)
+	$ui/panel/uibox/propertiesbox/otherbox/funbox/jellybutton.pressed.connect(jellybuttonpressed)
 	$backuptimer.timeout.connect(savelevel.bind("backup"))
 	$ui/panel/uibox/propertiesbox/tileroombox/roomtheme.select(0)
 	$ui/panel/uibox/propertiesbox/tileroombox/roomsong.select(0)
@@ -141,6 +142,8 @@ func enemylistselect(index: int) -> void:
 	didthepaneljustclose = true
 	$ui/panel/uibox/propertiesbox/enemybox/enemylist.get_item_icon(index) # this will be useful for drawing the preview
 	$ui/panel/uibox/propertiesbox/enemybox/enemylist.deselect_all()
+func jellybuttonpressed() -> void:
+	global.notify("holding the place")
 func mouseintexturerect(t: TextureRect) -> bool:
 	return Rect2(Vector2(0, 0), t.texture.get_size()).has_point(t.get_local_mouse_position())
 func genenemylist() -> void:
