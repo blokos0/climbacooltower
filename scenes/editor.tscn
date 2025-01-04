@@ -32,7 +32,6 @@ texture = ExtResource("8_lqslm")
 centered = false
 
 [node name="panel" type="PanelContainer" parent="ui"]
-visible = false
 offset_right = 640.0
 offset_bottom = 360.0
 theme = ExtResource("6_frrc5")
@@ -102,10 +101,11 @@ focus_mode = 0
 allow_search = false
 auto_height = true
 text_overrun_behavior = 1
-item_count = 3
+item_count = 4
 item_0/text = "placeholder"
 item_1/text = "gloomyfactory"
 item_2/text = "snowstorm"
+item_3/text = "gl!tch"
 
 [node name="otherbox" type="VBoxContainer" parent="ui/panel/uibox/propertiesbox"]
 custom_minimum_size = Vector2(256, 0)
