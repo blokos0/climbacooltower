@@ -17,6 +17,8 @@ var placingenemy: bool:
 var didthepaneljustclose: bool # i hate this
 var placingenemykind: String
 var placedenemies: Array[Array]
+var placingjelly: bool
+var playerpos: Vector2i
 func _ready() -> void:
 	$ui/panel/uibox/propertiesbox/otherbox/roomlist.item_activated.connect(roomlistselect)
 	$ui/panel/uibox/propertiesbox/enemybox/enemylist.item_activated.connect(enemylistselect)
@@ -34,10 +36,10 @@ func _process(_delta: float) -> void:
 		$ui/fuckingeditorthing.visible = false
 	elif $ui/fuckingeditorthing.get_local_mouse_position().y < -328:
 		$ui/panel.visible = false
-		$ui/fuckingeditorthing.visible = true
 	var tm: TileMapLayer = $floors
 	$walls.modulate.a = 0.5
 	$floors.modulate.a = 1
+	$camera/grid.modulate.a = lerpf(0.25, 0, 0.25 / $camera.zoom.x)
 	if currenttile.y == 1:
 		tm = $walls
 		$walls.modulate.a = 1
@@ -45,6 +47,10 @@ func _process(_delta: float) -> void:
 	if Input.is_action_pressed(&"showasis") && !$ui/panel.visible:
 		$walls.modulate.a = 1
 		$floors.modulate.a = 1
+		$camera/grid.modulate.a = 0
+		$ui/fuckingeditorthing.visible = false
+	elif !$ui/panel.visible:
+		$ui/fuckingeditorthing.visible = true
 	if Input.is_action_pressed(&"placetile"):
 		if $ui/panel.visible:
 			if Input.is_action_just_pressed(&"placetile"):
@@ -60,13 +66,17 @@ func _process(_delta: float) -> void:
 					$ui/panel.visible = false
 					$ui/fuckingeditorthing.visible = true
 					selectingroom = true
-		elif !selectingroom && !placingenemy:
+		elif !selectingroom && !placingenemy && !placingjelly:
 			tm.set_cell(floor(get_local_mouse_position() / 32), 0, currenttile)
 		elif selectingroom:
 			if Input.is_action_just_pressed(&"placetile"):
 				selectedroom = Rect2i(floor(get_local_mouse_position() / 32), Vector2i(0, 0))
 			elif selectedroom != null:
 				selectedroom.size = Vector2i(ceil(get_local_mouse_position() / 32)) - selectedroom.position
+		elif placingjelly:
+			playerpos = floor(get_local_mouse_position() / 32)
+			placingjelly = false
+			$ui/tooltipthing.visible = false
 	if Input.is_action_just_pressed(&"placetile") && placingenemy && !$ui/panel.visible && !didthepaneljustclose:
 		var pe: Array = [floor(get_local_mouse_position() / 32), placingenemykind, currentenemyvariant]
 		var invalid: bool = placedenemies.has(pe)
@@ -103,7 +113,6 @@ func _process(_delta: float) -> void:
 			var cammouse: Vector2 = get_global_mouse_position()
 			var zoomval: float = 1 + (int(Input.is_action_just_pressed(&"zoomin")) - int(Input.is_action_just_pressed(&"zoomout"))) * 0.2
 			$camera.zoom = clamp($camera.zoom * Vector2(zoomval, zoomval), Vector2(0.03125, 0.03125), Vector2(4, 4))
-			$camera/grid.modulate.a = lerpf(0.25, 0, 0.25 / $camera.zoom.x)
 			$camera.position += cammouse - get_global_mouse_position()
 		$camera/grid.region_rect.position = $camera.position
 	if Input.is_action_just_pressed(&"save"):
@@ -120,17 +129,19 @@ func _process(_delta: float) -> void:
 		get_tree().change_scene_to_file("res://scenes/title.tscn")
 	queue_redraw()
 func _draw() -> void:
-	if !$ui/panel.visible && !selectingroom && !placingenemy:
-		draw_texture_rect_region(preload("res://sprites/tiles.png"), Rect2(floor(get_local_mouse_position() / 32) * 32, Vector2(32, 32)), Rect2(currenttile * 32, Vector2i(32, 32)), Color(1, 1, 1, 0.5))
+	draw_texture(preload("res://sprites/jelly.png"), Vector2(playerpos.x * 32, playerpos.y * 32 - 16))
 	if selectedroom != null:
 		draw_rect(Rect2i(selectedroom.position * 32, selectedroom.size * 32), Color.RED, false, 4)
-	var ind: int = 0
-	for i in rooms:
-		draw_rect(Rect2i(i.rect.position * 32, i.rect.size * 32), Color.from_hsv(ind * 0.027, 1, 1), false, 8)
-		draw_string(ThemeDB.fallback_font, i.rect.position * 32 - Vector2i(0, 24), i.name)
-		ind += 1
+	if !(Input.is_action_pressed("showasis") && !$ui/panel.visible):
+		var ind: int = 0
+		for i in rooms:
+			draw_rect(Rect2i(i.rect.position * 32, i.rect.size * 32), Color.from_hsv(ind * 0.027, 1, 1), false, 8)
+			draw_string(ThemeDB.fallback_font, i.rect.position * 32 - Vector2i(0, 24), i.name)
+			ind += 1
+		if !$ui/panel.visible && !selectingroom && !placingenemy:
+			draw_texture_rect_region(preload("res://sprites/tiles.png"), Rect2(floor(get_local_mouse_position() / 32) * 32, Vector2(32, 32)), Rect2(currenttile * 32, Vector2i(32, 32)), Color(1, 1, 1, 0.5))
 	for i in placedenemies:
-		draw_texture_rect_region(load("res://sprites/" + i[1] + ".png"), Rect2(i[0] * 32, Vector2(32, 32)), Rect2(i[2] * 32, 0, 32, 32), Color(1, 1, 1, 0.75 + int(Input.is_action_pressed("showasis")) * 0.25))
+		draw_texture_rect_region(load("res://sprites/" + i[1] + ".png"), Rect2(i[0] * 32, Vector2(32, 32)), Rect2(i[2] * 32, 0, 32, 32), Color(1, 1, 1, 0.75 + int(Input.is_action_pressed("showasis") && !$ui/panel.visible) * 0.25))
 func roomlistselect(index: int) -> void:
 	$ui/panel/uibox/propertiesbox/otherbox/roomlist.remove_item(index)
 	rooms.remove_at(index)
@@ -140,10 +151,15 @@ func enemylistselect(index: int) -> void:
 	$ui/fuckingeditorthing.visible = true
 	placingenemy = true
 	didthepaneljustclose = true
-	$ui/panel/uibox/propertiesbox/enemybox/enemylist.get_item_icon(index) # this will be useful for drawing the preview
+	$ui/panel/uibox/propertiesbox/enemybox/enemylist.get_item_icon(index) # this will be useful for drawing the preview, does nothing right now
 	$ui/panel/uibox/propertiesbox/enemybox/enemylist.deselect_all()
 func jellybuttonpressed() -> void:
-	global.notify("holding the place")
+	placingjelly = true
+	$ui/panel.visible = false
+	$ui/fuckingeditorthing.visible = true
+	didthepaneljustclose = true
+	$ui/tooltipthing.text = "place jelly"
+	$ui/tooltipthing.visible = true
 func mouseintexturerect(t: TextureRect) -> bool:
 	return Rect2(Vector2(0, 0), t.texture.get_size()).has_point(t.get_local_mouse_position())
 func genenemylist() -> void:
@@ -175,6 +191,7 @@ func savelevel(filename: String) -> FileAccess:
 		towername = $ui/panel/uibox/propertiesbox/otherbox/funbox/towername.text
 	global.leveldata["name"] = towername
 	global.leveldata["enemyplace"] = placedenemies
+	global.leveldata["playerspawn"] = playerpos
 	var file: FileAccess = FileAccess.open("user://" + filename + ".cact", FileAccess.WRITE)
 	if file:
 		file.store_buffer(str(global.leveldata).to_utf8_buffer().compress(FileAccess.COMPRESSION_GZIP))
