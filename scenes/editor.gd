@@ -16,6 +16,7 @@ var placingenemy: bool:
 		$ui/tooltipthing.visible = placingenemy
 var didthepaneljustclose: bool # i hate this
 var placingenemykind: String
+var placingenemytexture: Texture2D
 var placedenemies: Array[Array]
 var placingjelly: bool
 var playerpos: Vector2i
@@ -31,7 +32,7 @@ func _ready() -> void:
 	DiscordRPC.details = "havent saved yet..."
 	DiscordRPC.refresh()
 func _process(_delta: float) -> void:
-	if !$ui/panel.visible && $ui/fuckingeditorthing.get_local_mouse_position().y > 0 && !selectingroom && !placingenemy:
+	if !$ui/panel.visible && $ui/fuckingeditorthing.get_local_mouse_position().y > 0 && !selectingroom && !placingenemy && !placingjelly:
 		$ui/panel.visible = true
 		$ui/fuckingeditorthing.visible = false
 	elif $ui/fuckingeditorthing.get_local_mouse_position().y < -328:
@@ -49,7 +50,7 @@ func _process(_delta: float) -> void:
 		$floors.modulate.a = 1
 		$camera/grid.modulate.a = 0
 		$ui/fuckingeditorthing.visible = false
-	elif !$ui/panel.visible:
+	elif !$ui/panel.visible && !selectingroom && !placingenemy && !placingjelly:
 		$ui/fuckingeditorthing.visible = true
 	if Input.is_action_pressed(&"placetile"):
 		if $ui/panel.visible:
@@ -64,7 +65,6 @@ func _process(_delta: float) -> void:
 					genenemylist()
 				elif $ui/panel/uibox/propertiesbox/tileroombox/createroom.is_hovered():
 					$ui/panel.visible = false
-					$ui/fuckingeditorthing.visible = true
 					selectingroom = true
 		elif !selectingroom && !placingenemy && !placingjelly:
 			tm.set_cell(floor(get_local_mouse_position() / 32), 0, currenttile)
@@ -138,8 +138,13 @@ func _draw() -> void:
 			draw_rect(Rect2i(i.rect.position * 32, i.rect.size * 32), Color.from_hsv(ind * 0.027, 1, 1), false, 8)
 			draw_string(ThemeDB.fallback_font, i.rect.position * 32 - Vector2i(0, 24), i.name)
 			ind += 1
-		if !$ui/panel.visible && !selectingroom && !placingenemy:
-			draw_texture_rect_region(preload("res://sprites/tiles.png"), Rect2(floor(get_local_mouse_position() / 32) * 32, Vector2(32, 32)), Rect2(currenttile * 32, Vector2i(32, 32)), Color(1, 1, 1, 0.5))
+		if !$ui/panel.visible:
+			if !selectingroom && !placingenemy && !placingjelly:
+				draw_texture_rect_region(preload("res://sprites/tiles.png"), Rect2(floor(get_local_mouse_position() / 32) * 32, Vector2(32, 32)), Rect2(currenttile * 32, Vector2i(32, 32)), Color(1, 1, 1, 0.5))
+			elif placingjelly:
+				draw_texture(preload("res://sprites/jelly.png"), Vector2(floor(get_local_mouse_position().x / 32) * 32, floor(get_local_mouse_position().y / 32) * 32 - 16), Color(1, 1, 1, 0.5))
+			elif placingenemy:
+				draw_texture(placingenemytexture, floor(get_local_mouse_position() / 32) * 32, Color(1, 1, 1, 0.5))
 	for i in placedenemies:
 		draw_texture_rect_region(load("res://sprites/" + i[1] + ".png"), Rect2(i[0] * 32, Vector2(32, 32)), Rect2(i[2] * 32, 0, 32, 32), Color(1, 1, 1, 0.75 + int(Input.is_action_pressed("showasis") && !$ui/panel.visible) * 0.25))
 func roomlistselect(index: int) -> void:
@@ -148,15 +153,13 @@ func roomlistselect(index: int) -> void:
 func enemylistselect(index: int) -> void:
 	placingenemykind = global.enemies.keys()[index]
 	$ui/panel.visible = false
-	$ui/fuckingeditorthing.visible = true
 	placingenemy = true
 	didthepaneljustclose = true
-	$ui/panel/uibox/propertiesbox/enemybox/enemylist.get_item_icon(index) # this will be useful for drawing the preview, does nothing right now
+	placingenemytexture = $ui/panel/uibox/propertiesbox/enemybox/enemylist.get_item_icon(index)
 	$ui/panel/uibox/propertiesbox/enemybox/enemylist.deselect_all()
 func jellybuttonpressed() -> void:
 	placingjelly = true
 	$ui/panel.visible = false
-	$ui/fuckingeditorthing.visible = true
 	didthepaneljustclose = true
 	$ui/tooltipthing.text = "place jelly"
 	$ui/tooltipthing.visible = true
