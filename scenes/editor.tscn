@@ -94,18 +94,18 @@ size_flags_horizontal = 0
 text = "song:"
 
 [node name="roomsong" type="ItemList" parent="ui/panel/uibox/propertiesbox/tileroombox"]
-custom_minimum_size = Vector2(160, 0)
+custom_minimum_size = Vector2(160, 92)
 layout_mode = 2
 size_flags_horizontal = 0
 focus_mode = 0
 allow_search = false
-auto_height = true
 text_overrun_behavior = 1
-item_count = 4
+item_count = 5
 item_0/text = "placeholder"
 item_1/text = "gloomyfactory"
 item_2/text = "snowstorm"
 item_3/text = "gl!tch"
+item_4/text = "interesting"
 
 [node name="otherbox" type="VBoxContainer" parent="ui/panel/uibox/propertiesbox"]
 custom_minimum_size = Vector2(256, 0)
