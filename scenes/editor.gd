@@ -198,6 +198,7 @@ func savelevel(filename: String) -> FileAccess:
 	var file: FileAccess = FileAccess.open("user://" + filename + ".cact", FileAccess.WRITE)
 	if file:
 		file.store_buffer(str(global.leveldata).to_utf8_buffer().compress(FileAccess.COMPRESSION_GZIP))
+	print(global.leveldata)
 	return file
 func loadlevel(filename: String) -> void:
 	var file: PackedByteArray = FileAccess.get_file_as_bytes("user://" + filename + ".cact")

@@ -1,11 +1,11 @@
 //https://godotshaders.com/shader/glitch-effect-shader-for-godot-engine-4
 shader_type canvas_item;
 
-uniform float shake_power = 0.03;
-uniform float shake_rate : hint_range( 0.0, 1.0 ) = 0.2;
+uniform float shake_power = 0.003;
+uniform float shake_rate : hint_range( 0.0, 1.0 ) = 1;
 uniform float shake_speed = 5.0;
 uniform float shake_block_size = 30.5;
-uniform float shake_color_rate : hint_range( 0.0, 1.0 ) = 0.01;
+uniform float shake_color_rate : hint_range( 0.0, 1.0 ) = 0.005;
 uniform sampler2D screen_texture : hint_screen_texture;
 
 float random( float seed )

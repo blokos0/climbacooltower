@@ -25,7 +25,8 @@ var leveldata: Dictionary = {
 	"rooms": [],
 	"enemydata": enemies,
 	"enemyplace": "",
-	"playerspawn": Vector2i()
+	"playerspawn": Vector2i(),
+	"teleporters": ""
 }
 var version: String = "0.1"
 func _ready() -> void:

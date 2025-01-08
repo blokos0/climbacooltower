@@ -22,9 +22,6 @@ func _ready() -> void:
 	if theme == "snowy":
 		$gamelayer/gameworldcontainer/gameworld/shader.material = ShaderMaterial.new()
 		$gamelayer/gameworldcontainer/gameworld/shader.material.shader = preload("res://shaders/glitch.gdshader")
-		$gamelayer/gameworldcontainer/gameworld/shader.material.set_shader_parameter(&"shake_power", 0.003)
-		$gamelayer/gameworldcontainer/gameworld/shader.material.set_shader_parameter(&"shake_rate", 1)
-		$gamelayer/gameworldcontainer/gameworld/shader.material.set_shader_parameter(&"shake_color_rate", 0.005)
 func setuproom() -> void:
 	if !rooms.is_empty():
 		$ui/container/box/roomname.text = rooms[room].name

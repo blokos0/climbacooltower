@@ -32,6 +32,7 @@ texture = ExtResource("8_lqslm")
 centered = false
 
 [node name="panel" type="PanelContainer" parent="ui"]
+visible = false
 offset_right = 640.0
 offset_bottom = 360.0
 theme = ExtResource("6_frrc5")
@@ -99,10 +100,10 @@ layout_mode = 2
 size_flags_horizontal = 0
 focus_mode = 0
 allow_search = false
-text_overrun_behavior = 1
+text_overrun_behavior = 0
 item_count = 5
-item_0/text = "placeholder"
-item_1/text = "gloomyfactory"
+item_0/text = "gloomyfactory"
+item_1/text = "placeholder"
 item_2/text = "snowstorm"
 item_3/text = "gl!tch"
 item_4/text = "interesting"
