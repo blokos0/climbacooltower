@@ -1,1 +1,1 @@
-note: the game is currently broken right now due to a rework
+https://blokos.itch.io/climbacooltower
