@@ -72,6 +72,7 @@ blend_mode = 1
 size = Vector2(32, 32)
 
 [node name="teleporter" type="AnimatedSprite2D"]
+z_index = -1
 sprite_frames = SubResource("SpriteFrames_4l64m")
 autoplay = "default"
 centered = false

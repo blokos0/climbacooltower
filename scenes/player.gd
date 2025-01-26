@@ -24,7 +24,7 @@ func _process(_delta: float) -> void:
 				var i: Object = $shapecast.get_collider(0)
 				if i.is_in_group(&"teleporter"):
 					$/root/play.room = i.get_node("..").roomid
-					position = (str_to_var(global.leveldata["rooms"][i.get_node("..").roomid].rect).position + i.get_node("..").pos) * 32
+					position = ($/root/play.rooms[i.get_node("..").roomid].pos + i.get_node("..").pos) * 32
 				elif i.is_in_group(&"enemy"):
 					invalidtile = true
 					var estats: Dictionary = formenemystats(i.get_node(".."))

@@ -8,7 +8,7 @@ var selectingroom: bool:
 		$ui/tooltipthing.text = "selecting room"
 		$ui/tooltipthing.visible = selectingroom
 var selectedroom: Variant
-var rooms: Array[Dictionary]
+var rooms: Array[Dictionary] = []
 var placingenemy: bool:
 	set(val):
 		placingenemy = val
@@ -20,14 +20,13 @@ var placingenemytexture: Texture2D
 var placedenemies: Array[Array]
 var placingjelly: bool
 var playerpos: Vector2i
-var panelpage: int
 func _ready() -> void:
-	$ui/panel/uiboxp0/propertiesbox/otherbox/roomlist.item_activated.connect(roomlistselect)
-	$ui/panel/uiboxp0/propertiesbox/enemybox/enemylist.item_activated.connect(enemylistselect)
-	$ui/panel/uiboxp0/propertiesbox/otherbox/funbox/jellybutton.pressed.connect(jellybuttonpressed)
+	$ui/panel/uibox/propertiesbox/otherbox/roomlist.item_activated.connect(roomlistselect)
+	$ui/panel/uibox/propertiesbox/enemybox/enemylist.item_activated.connect(enemylistselect)
+	$ui/panel/uibox/propertiesbox/otherbox/funbox/jellybutton.pressed.connect(jellybuttonpressed)
 	$backuptimer.timeout.connect(savelevel.bind("backup"))
-	$ui/panel/uiboxp0/propertiesbox/tileroombox/roomtheme.select(0)
-	$ui/panel/uiboxp0/propertiesbox/tileroombox/roomsong.select(0)
+	$ui/panel/uibox/propertiesbox/tileroombox/roomtheme.select(0)
+	$ui/panel/uibox/propertiesbox/tileroombox/roomsong.select(0)
 	genenemylist()
 	DiscordRPC.state = "in the editor"
 	DiscordRPC.details = "havent saved yet..."
@@ -55,16 +54,16 @@ func _process(_delta: float) -> void:
 		$ui/fuckingeditorthing.visible = true
 	if Input.is_action_pressed(&"placetile"):
 		if $ui/panel.visible:
-			if Input.is_action_just_pressed(&"placetile") && $ui/panel/uiboxp0.visible:
-				if mouseintexturerect($ui/panel/uiboxp0/tiles):
-					currenttile = floor($ui/panel/uiboxp0/tiles.get_local_mouse_position() / 32)
-					$ui/panel/uiboxp0/tiles/selectedtile.position = currenttile * 32
-				elif mouseintexturerect($ui/panel/uiboxp0/propertiesbox/enemybox/enemyvariants):
-					var pos: Vector2 = floor($ui/panel/uiboxp0/propertiesbox/enemybox/enemyvariants.get_local_mouse_position() / 32)
+			if Input.is_action_just_pressed(&"placetile"):
+				if mouseintexturerect($ui/panel/uibox/tiles):
+					currenttile = floor($ui/panel/uibox/tiles.get_local_mouse_position() / 32)
+					$ui/panel/uibox/tiles/selectedtile.position = currenttile * 32
+				elif mouseintexturerect($ui/panel/uibox/propertiesbox/enemybox/enemyvariants):
+					var pos: Vector2 = floor($ui/panel/uibox/propertiesbox/enemybox/enemyvariants.get_local_mouse_position() / 32)
 					currentenemyvariant = pos.x + pos.y * 4
-					$ui/panel/uiboxp0/propertiesbox/enemybox/enemyvariants/selectedenemyvariant.position = pos * 32
+					$ui/panel/uibox/propertiesbox/enemybox/enemyvariants/selectedenemyvariant.position = pos * 32
 					genenemylist()
-				elif $ui/panel/uiboxp0/propertiesbox/tileroombox/createroom.is_hovered():
+				elif $ui/panel/uibox/propertiesbox/tileroombox/createroom.is_hovered():
 					$ui/panel.visible = false
 					selectingroom = true
 		elif !selectingroom && !placingenemy && !placingjelly:
@@ -94,16 +93,16 @@ func _process(_delta: float) -> void:
 			selectedroom = selectedroom.abs()
 			selectingroom = false
 			rooms.append({
-				"name": $ui/panel/uiboxp0/propertiesbox/tileroombox/roomname.text,
-				"rect": var_to_str(selectedroom),
-				"theme": $ui/panel/uiboxp0/propertiesbox/tileroombox/roomtheme.get_item_text($ui/panel/uiboxp0/propertiesbox/tileroombox/roomtheme.get_selected_items()[0]),
-				"song": $ui/panel/uiboxp0/propertiesbox/tileroombox/roomsong.get_item_text($ui/panel/uiboxp0/propertiesbox/tileroombox/roomsong.get_selected_items()[0])
+				"name": $ui/panel/uibox/propertiesbox/tileroombox/roomname.text,
+				"rect": selectedroom,
+				"theme": $ui/panel/uibox/propertiesbox/tileroombox/roomtheme.get_item_text($ui/panel/uibox/propertiesbox/tileroombox/roomtheme.get_selected_items()[0]),
+				"song": $ui/panel/uibox/propertiesbox/tileroombox/roomsong.get_item_text($ui/panel/uibox/propertiesbox/tileroombox/roomsong.get_selected_items()[0])
 			})
 			selectedroom = null
 			var roomname: String = " " # for easier selecting
-			if $ui/panel/uiboxp0/propertiesbox/tileroombox/roomname.text != "":
-				roomname = $ui/panel/uiboxp0/propertiesbox/tileroombox/roomname.text
-			$ui/panel/uiboxp0/propertiesbox/otherbox/roomlist.add_item(roomname)
+			if $ui/panel/uibox/propertiesbox/tileroombox/roomname.text != "":
+				roomname = $ui/panel/uibox/propertiesbox/tileroombox/roomname.text
+			$ui/panel/uibox/propertiesbox/otherbox/roomlist.add_item(roomname)
 		else:
 			$ui/tooltipthing.text = "sorry its too flat"
 	if Input.is_action_pressed(&"removetile"):
@@ -118,18 +117,14 @@ func _process(_delta: float) -> void:
 		$camera/grid.region_rect.position = $camera.position
 	if Input.is_action_just_pressed(&"save"):
 		var towername: String = "tower"
-		if len($ui/panel/uiboxp0/propertiesbox/otherbox/funbox/towername.text):
-			towername = $ui/panel/uiboxp0/propertiesbox/otherbox/funbox/towername.text
+		if len($ui/panel/uibox/propertiesbox/otherbox/funbox/towername.text):
+			towername = $ui/panel/uibox/propertiesbox/otherbox/funbox/towername.text
 		if savelevel(towername.validate_filename()):
 			global.notify("saved")
 		else:
 			global.notify("failed to save!!")
 		DiscordRPC.details = "making " + towername
 		DiscordRPC.refresh()
-	if Input.is_action_just_pressed("editorpage") && $ui/panel.visible && !$ui/panel/uiboxp0/propertiesbox/otherbox/funbox/towername.has_focus() && !$ui/panel/uiboxp0/propertiesbox/tileroombox/roomname.has_focus():
-		$ui/panel.get_node("uiboxp" + str(panelpage)).visible = false
-		panelpage = wrap(panelpage + 1, 0, 2)
-		$ui/panel.get_node("uiboxp" + str(panelpage)).visible = true
 	if Input.is_action_just_pressed(&"back"):
 		get_tree().change_scene_to_file("res://scenes/title.tscn")
 	queue_redraw()
@@ -140,9 +135,8 @@ func _draw() -> void:
 	if !(Input.is_action_pressed("showasis") && !$ui/panel.visible):
 		var ind: int = 0
 		for i in rooms:
-			var r: Rect2i = str_to_var(i.rect)
-			draw_rect(Rect2i(r.position * 32, r.size * 32), Color.from_hsv(ind * 0.027, 1, 1), false, 8)
-			draw_string(ThemeDB.fallback_font, r.position * 32 - Vector2i(0, 24), i.name)
+			draw_rect(Rect2i(i.rect.position * 32, i.rect.size * 32), Color.from_hsv(ind * 0.027, 1, 1), false, 8)
+			draw_string(ThemeDB.fallback_font, i.rect.position * 32 - Vector2i(0, 24), i.name)
 			ind += 1
 		if !$ui/panel.visible:
 			if !selectingroom && !placingenemy && !placingjelly:
@@ -154,15 +148,15 @@ func _draw() -> void:
 	for i in placedenemies:
 		draw_texture_rect_region(load("res://sprites/" + i[1] + ".png"), Rect2(i[0] * 32, Vector2(32, 32)), Rect2(i[2] * 32, 0, 32, 32), Color(1, 1, 1, 0.75 + int(Input.is_action_pressed("showasis") && !$ui/panel.visible) * 0.25))
 func roomlistselect(index: int) -> void:
-	$ui/panel/uiboxp0/propertiesbox/otherbox/roomlist.remove_item(index)
+	$ui/panel/uibox/propertiesbox/otherbox/roomlist.remove_item(index)
 	rooms.remove_at(index)
 func enemylistselect(index: int) -> void:
 	placingenemykind = global.enemies.keys()[index]
 	$ui/panel.visible = false
 	placingenemy = true
 	didthepaneljustclose = true
-	placingenemytexture = $ui/panel/uiboxp0/propertiesbox/enemybox/enemylist.get_item_icon(index)
-	$ui/panel/uiboxp0/propertiesbox/enemybox/enemylist.deselect_all()
+	placingenemytexture = $ui/panel/uibox/propertiesbox/enemybox/enemylist.get_item_icon(index)
+	$ui/panel/uibox/propertiesbox/enemybox/enemylist.deselect_all()
 func jellybuttonpressed() -> void:
 	placingjelly = true
 	$ui/panel.visible = false
@@ -172,15 +166,15 @@ func jellybuttonpressed() -> void:
 func mouseintexturerect(t: TextureRect) -> bool:
 	return Rect2(Vector2(0, 0), t.texture.get_size()).has_point(t.get_local_mouse_position())
 func genenemylist() -> void:
-	var sel: PackedInt32Array = $ui/panel/uiboxp0/propertiesbox/enemybox/enemylist.get_selected_items()
-	$ui/panel/uiboxp0/propertiesbox/enemybox/enemylist.clear()
+	var sel: PackedInt32Array = $ui/panel/uibox/propertiesbox/enemybox/enemylist.get_selected_items()
+	$ui/panel/uibox/propertiesbox/enemybox/enemylist.clear()
 	for i in global.enemies.keys():
 		var t: AtlasTexture = AtlasTexture.new()
 		t.atlas = load("res://sprites/" + i + ".png")
 		t.region = Rect2(currentenemyvariant * 32, 0, 32, 32)
-		$ui/panel/uiboxp0/propertiesbox/enemybox/enemylist.add_item(global.enemyvariants[currentenemyvariant] + " " + i, t)
+		$ui/panel/uibox/propertiesbox/enemybox/enemylist.add_item(global.enemyvariants[currentenemyvariant] + " " + i, t)
 	if sel:
-		$ui/panel/uiboxp0/propertiesbox/enemybox/enemylist.select(sel[0])
+		$ui/panel/uibox/propertiesbox/enemybox/enemylist.select(sel[0])
 func savelevel(filename: String) -> FileAccess:
 	var arr: PackedStringArray = []
 	for pos in $floors.get_used_cells():
@@ -196,17 +190,16 @@ func savelevel(filename: String) -> FileAccess:
 	global.leveldata["walls"] = strr
 	global.leveldata["rooms"] = rooms
 	var towername: String = "tower"
-	if len($ui/panel/uiboxp0/propertiesbox/otherbox/funbox/towername.text):
-		towername = $ui/panel/uiboxp0/propertiesbox/otherbox/funbox/towername.text
+	if len($ui/panel/uibox/propertiesbox/otherbox/funbox/towername.text):
+		towername = $ui/panel/uibox/propertiesbox/otherbox/funbox/towername.text
 	global.leveldata["name"] = towername
 	global.leveldata["enemyplace"] = placedenemies
 	global.leveldata["playerspawn"] = playerpos
 	var file: FileAccess = FileAccess.open("user://" + filename + ".cact", FileAccess.WRITE)
 	if file:
-		file.store_buffer(JSON.stringify(global.leveldata).to_utf8_buffer().compress(FileAccess.COMPRESSION_GZIP))
+		file.store_buffer(str(global.leveldata).to_utf8_buffer().compress(FileAccess.COMPRESSION_GZIP))
 	print(global.leveldata)
 	return file
 func loadlevel(filename: String) -> void:
 	var file: PackedByteArray = FileAccess.get_file_as_bytes("user://" + filename + ".cact")
-	global.leveldata = JSON.parse_string(file.decompress_dynamic(100000000, FileAccess.COMPRESSION_GZIP).get_string_from_utf8())
-	# todo
+	print(file.decompress_dynamic(100000000, FileAccess.COMPRESSION_GZIP).get_string_from_utf8())

@@ -2,8 +2,8 @@
 
 [ext_resource type="Texture2D" uid="uid://dk6jolbfv45du" path="res://sprites/uiref.png" id="1_bkb1a"]
 [ext_resource type="Script" path="res://scenes/play.gd" id="1_fp3cq"]
+[ext_resource type="AudioStream" uid="uid://cj3l8xd6rpu7c" path="res://music/snowstorm.ogg" id="3_6y7qo"]
 [ext_resource type="TileSet" uid="uid://cifrghmfvrh7v" path="res://tileset.tres" id="3_eu8ak"]
-[ext_resource type="AudioStream" uid="uid://g1i2mwegbvrd" path="res://music/placeholder.ogg" id="3_h5lpc"]
 [ext_resource type="PackedScene" uid="uid://bttlfq0v7dtkv" path="res://scenes/player.tscn" id="4_5ffw6"]
 [ext_resource type="PackedScene" uid="uid://c1puuc0ypqsjt" path="res://scenes/ui.tscn" id="7_5wxbp"]
 [ext_resource type="AudioStream" uid="uid://bwxc5b7yw2c2h" path="res://sounds/room.ogg" id="8_l2j1u"]
@@ -29,7 +29,7 @@ centered = false
 metadata/_edit_lock_ = true
 
 [node name="music" type="AudioStreamPlayer" parent="."]
-stream = ExtResource("3_h5lpc")
+stream = ExtResource("3_6y7qo")
 volume_db = -3.0
 autoplay = true
 bus = &"music"
@@ -37,6 +37,9 @@ bus = &"music"
 [node name="ui" parent="." instance=ExtResource("7_5wxbp")]
 offset = Vector2(360, 4)
 transform = Transform2D(1, 0, 0, 1, 360, 4)
+
+[node name="camera" type="Camera2D" parent="."]
+position = Vector2(320, 180)
 
 [node name="roomsound" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("8_l2j1u")
@@ -53,7 +56,6 @@ offset_right = 356.0
 offset_bottom = 356.0
 
 [node name="gameworld" type="SubViewport" parent="gamelayer/gameworldcontainer"]
-transparent_bg = true
 handle_input_locally = false
 canvas_item_default_texture_filter = 0
 size = Vector2i(352, 352)
@@ -68,9 +70,6 @@ tile_set = ExtResource("3_eu8ak")
 tile_set = ExtResource("3_eu8ak")
 
 [node name="player" parent="gamelayer/gameworldcontainer/gameworld/shader" instance=ExtResource("4_5ffw6")]
-
-[node name="camera" type="Camera2D" parent="gamelayer/gameworldcontainer/gameworld/shader"]
-position = Vector2(320, 180)
 
 [node name="env" type="WorldEnvironment" parent="gamelayer/gameworldcontainer/gameworld/shader"]
 environment = SubResource("Environment_140et")

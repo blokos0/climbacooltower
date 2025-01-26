@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://bakroqjs5k4fk"]
+[gd_scene load_steps=12 format=3 uid="uid://bakroqjs5k4fk"]
 
 [ext_resource type="PackedScene" uid="uid://cth72fb5mrt1k" path="res://scenes/bgdigital.tscn" id="1_c2cl3"]
 [ext_resource type="Script" path="res://scenes/editor.gd" id="1_yt3fo"]
@@ -10,7 +10,6 @@
 [ext_resource type="Texture2D" uid="uid://ce06ho8jmxmxu" path="res://sprites/selectedtile.png" id="7_hjxn5"]
 [ext_resource type="Texture2D" uid="uid://xbxja0ugp8jk" path="res://sprites/jellysilly.png" id="8_7lhpr"]
 [ext_resource type="Texture2D" uid="uid://b04wh1di8es32" path="res://sprites/fuckingeditorthing.png" id="8_lqslm"]
-[ext_resource type="Texture2D" uid="uid://bhxllhc82hmjv" path="res://sprites/teleporter.png" id="10_f2m53"]
 [ext_resource type="Texture2D" uid="uid://b5cx8m44ih6pm" path="res://sprites/enemyvariants.png" id="11_1sy0f"]
 
 [node name="editor" type="Node2D"]
@@ -33,31 +32,32 @@ texture = ExtResource("8_lqslm")
 centered = false
 
 [node name="panel" type="PanelContainer" parent="ui"]
+visible = false
 offset_right = 640.0
 offset_bottom = 360.0
 theme = ExtResource("6_frrc5")
 
-[node name="uiboxp0" type="VBoxContainer" parent="ui/panel"]
+[node name="uibox" type="VBoxContainer" parent="ui/panel"]
 layout_mode = 2
 
-[node name="tiles" type="TextureRect" parent="ui/panel/uiboxp0"]
+[node name="tiles" type="TextureRect" parent="ui/panel/uibox"]
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 0
 texture = ExtResource("3_36nse")
 
-[node name="selectedtile" type="Sprite2D" parent="ui/panel/uiboxp0/tiles"]
+[node name="selectedtile" type="Sprite2D" parent="ui/panel/uibox/tiles"]
 modulate = Color(1, 1, 1, 0.5)
 texture = ExtResource("7_hjxn5")
 centered = false
 
-[node name="propertiesbox" type="HBoxContainer" parent="ui/panel/uiboxp0"]
+[node name="propertiesbox" type="HBoxContainer" parent="ui/panel/uibox"]
 layout_mode = 2
 
-[node name="tileroombox" type="VBoxContainer" parent="ui/panel/uiboxp0/propertiesbox"]
+[node name="tileroombox" type="VBoxContainer" parent="ui/panel/uibox/propertiesbox"]
 layout_mode = 2
 
-[node name="createroom" type="Button" parent="ui/panel/uiboxp0/propertiesbox/tileroombox"]
+[node name="createroom" type="Button" parent="ui/panel/uibox/propertiesbox/tileroombox"]
 custom_minimum_size = Vector2(160, 0)
 layout_mode = 2
 size_flags_horizontal = 0
@@ -66,19 +66,19 @@ theme = ExtResource("6_frrc5")
 text = "create room"
 alignment = 0
 
-[node name="roomname" type="LineEdit" parent="ui/panel/uiboxp0/propertiesbox/tileroombox"]
+[node name="roomname" type="LineEdit" parent="ui/panel/uibox/propertiesbox/tileroombox"]
 custom_minimum_size = Vector2(160, 0)
 layout_mode = 2
 size_flags_horizontal = 0
 theme = ExtResource("6_frrc5")
 placeholder_text = "room name"
 
-[node name="roomthemelabel" type="Label" parent="ui/panel/uiboxp0/propertiesbox/tileroombox"]
+[node name="roomthemelabel" type="Label" parent="ui/panel/uibox/propertiesbox/tileroombox"]
 layout_mode = 2
 size_flags_horizontal = 0
 text = "theme:"
 
-[node name="roomtheme" type="ItemList" parent="ui/panel/uiboxp0/propertiesbox/tileroombox"]
+[node name="roomtheme" type="ItemList" parent="ui/panel/uibox/propertiesbox/tileroombox"]
 custom_minimum_size = Vector2(160, 0)
 layout_mode = 2
 size_flags_horizontal = 0
@@ -89,12 +89,12 @@ item_count = 2
 item_0/text = "digital"
 item_1/text = "snowy"
 
-[node name="roomsonglabel" type="Label" parent="ui/panel/uiboxp0/propertiesbox/tileroombox"]
+[node name="roomsonglabel" type="Label" parent="ui/panel/uibox/propertiesbox/tileroombox"]
 layout_mode = 2
 size_flags_horizontal = 0
 text = "song:"
 
-[node name="roomsong" type="ItemList" parent="ui/panel/uiboxp0/propertiesbox/tileroombox"]
+[node name="roomsong" type="ItemList" parent="ui/panel/uibox/propertiesbox/tileroombox"]
 custom_minimum_size = Vector2(160, 92)
 layout_mode = 2
 size_flags_horizontal = 0
@@ -108,72 +108,61 @@ item_2/text = "snowstorm"
 item_3/text = "gl!tch"
 item_4/text = "interesting"
 
-[node name="otherbox" type="VBoxContainer" parent="ui/panel/uiboxp0/propertiesbox"]
+[node name="otherbox" type="VBoxContainer" parent="ui/panel/uibox/propertiesbox"]
 custom_minimum_size = Vector2(256, 0)
 layout_mode = 2
 
-[node name="roomlistlabel" type="Label" parent="ui/panel/uiboxp0/propertiesbox/otherbox"]
+[node name="roomlistlabel" type="Label" parent="ui/panel/uibox/propertiesbox/otherbox"]
 layout_mode = 2
 text = "rooms:"
 
-[node name="roomlist" type="ItemList" parent="ui/panel/uiboxp0/propertiesbox/otherbox"]
+[node name="roomlist" type="ItemList" parent="ui/panel/uibox/propertiesbox/otherbox"]
 custom_minimum_size = Vector2(96, 128)
 layout_mode = 2
 size_flags_vertical = 3
 focus_mode = 0
 allow_search = false
 
-[node name="towernamelabel" type="Label" parent="ui/panel/uiboxp0/propertiesbox/otherbox"]
+[node name="towernamelabel" type="Label" parent="ui/panel/uibox/propertiesbox/otherbox"]
 layout_mode = 2
 text = "tower name:"
 
-[node name="funbox" type="HBoxContainer" parent="ui/panel/uiboxp0/propertiesbox/otherbox"]
+[node name="funbox" type="HBoxContainer" parent="ui/panel/uibox/propertiesbox/otherbox"]
 layout_mode = 2
 
-[node name="towername" type="LineEdit" parent="ui/panel/uiboxp0/propertiesbox/otherbox/funbox"]
+[node name="towername" type="LineEdit" parent="ui/panel/uibox/propertiesbox/otherbox/funbox"]
 custom_minimum_size = Vector2(160, 0)
 layout_mode = 2
 size_flags_horizontal = 0
 theme = ExtResource("6_frrc5")
 placeholder_text = "tower"
 
-[node name="jellybutton" type="Button" parent="ui/panel/uiboxp0/propertiesbox/otherbox/funbox"]
+[node name="jellybutton" type="Button" parent="ui/panel/uibox/propertiesbox/otherbox/funbox"]
 layout_mode = 2
 size_flags_horizontal = 10
 focus_mode = 0
 icon = ExtResource("8_7lhpr")
 
-[node name="enemybox" type="VBoxContainer" parent="ui/panel/uiboxp0/propertiesbox"]
+[node name="enemybox" type="VBoxContainer" parent="ui/panel/uibox/propertiesbox"]
 custom_minimum_size = Vector2(196, 0)
 layout_mode = 2
 
-[node name="enemylist" type="ItemList" parent="ui/panel/uiboxp0/propertiesbox/enemybox"]
+[node name="enemylist" type="ItemList" parent="ui/panel/uibox/propertiesbox/enemybox"]
 layout_mode = 2
 size_flags_vertical = 3
 focus_mode = 0
 allow_search = false
 
-[node name="enemyvariants" type="TextureRect" parent="ui/panel/uiboxp0/propertiesbox/enemybox"]
+[node name="enemyvariants" type="TextureRect" parent="ui/panel/uibox/propertiesbox/enemybox"]
 layout_mode = 2
 size_flags_horizontal = 4
 texture = ExtResource("11_1sy0f")
 stretch_mode = 3
 
-[node name="selectedenemyvariant" type="Sprite2D" parent="ui/panel/uiboxp0/propertiesbox/enemybox/enemyvariants"]
+[node name="selectedenemyvariant" type="Sprite2D" parent="ui/panel/uibox/propertiesbox/enemybox/enemyvariants"]
 modulate = Color(1, 1, 1, 0.5)
 texture = ExtResource("7_hjxn5")
 centered = false
-
-[node name="uiboxp1" type="VBoxContainer" parent="ui/panel"]
-visible = false
-layout_mode = 2
-
-[node name="teleporterbox" type="HBoxContainer" parent="ui/panel/uiboxp1"]
-layout_mode = 2
-
-[node name="placeholder" type="TextureRect" parent="ui/panel/uiboxp1/teleporterbox"]
-layout_mode = 2
-texture = ExtResource("10_f2m53")
 
 [node name="tooltipthing" type="Label" parent="ui"]
 visible = false
