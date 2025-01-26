@@ -33,7 +33,7 @@ gravity = Vector3(0, 0, 0)
 color_ramp = SubResource("GradientTexture1D_juew1")
 anim_offset_max = 1.0
 
-[node name="bgdigital" type="CanvasLayer"]
+[node name="bgsnowy" type="CanvasLayer"]
 layer = -1
 
 [node name="bg" type="Sprite2D" parent="."]

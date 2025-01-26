@@ -29,6 +29,7 @@ var leveldata: Dictionary = {
 	"teleporters": ""
 }
 var version: String = "0.1"
+var towername: String = "none"
 func _ready() -> void:
 	DiscordRPC.app_id = 1302687543187210402
 	DiscordRPC.start_timestamp = int(Time.get_unix_time_from_system())
