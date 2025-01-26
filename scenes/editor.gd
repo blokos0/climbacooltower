@@ -8,7 +8,7 @@ var selectingroom: bool:
 		$ui/tooltipthing.text = "selecting room"
 		$ui/tooltipthing.visible = selectingroom
 var selectedroom: Variant
-var rooms: Array[Dictionary] = []
+var rooms: Array[Dictionary]
 var placingenemy: bool:
 	set(val):
 		placingenemy = val
@@ -179,27 +179,29 @@ func savelevel(filename: String) -> FileAccess:
 	var arr: PackedStringArray = []
 	for pos in $floors.get_used_cells():
 		var i: int = $floors.get_cell_atlas_coords(pos).x
-		arr.append(str(i) + "," + str(pos.x) + "," + str(pos.y))
-	var strr: String = "/".join(arr)
-	global.leveldata["floors"] = strr
-	arr = []
+		arr.append(str(i) + "," + str(pos.x) + "," + str(pos.y) + ",0")
 	for pos in $walls.get_used_cells():
 		var i: int = $walls.get_cell_atlas_coords(pos).x
-		arr.append(str(i) + "," + str(pos.x) + "," + str(pos.y))
-	strr = "/".join(arr)
-	global.leveldata["walls"] = strr
-	global.leveldata["rooms"] = rooms
+		arr.append(str(i) + "," + str(pos.x) + "," + str(pos.y) + ",1")
+	global.leveldata["tiles"] = "/".join(arr)
+	arr = []
+	for r in rooms:
+		arr.append(r.name + "," + str(r.rect.position.x) + "," + str(r.rect.position.y) + "," + str(r.rect.size.x) + "," + str(r.rect.size.y) + "," + r.theme + "," + r.song)
+	global.leveldata["rooms"] = "/".join(arr)
 	var towername: String = "tower"
 	if len($ui/panel/uibox/propertiesbox/otherbox/funbox/towername.text):
 		towername = $ui/panel/uibox/propertiesbox/otherbox/funbox/towername.text
 	global.leveldata["name"] = towername
 	global.leveldata["enemyplace"] = placedenemies
-	global.leveldata["playerspawn"] = playerpos
+	global.leveldata["playerspawn"] = str(playerpos.x) + "," + str(playerpos.y)
 	var file: FileAccess = FileAccess.open("user://" + filename + ".cact", FileAccess.WRITE)
 	if file:
-		file.store_buffer(str(global.leveldata).to_utf8_buffer().compress(FileAccess.COMPRESSION_GZIP))
-	print(global.leveldata)
+		file.store_buffer(JSON.stringify(global.leveldata).to_utf8_buffer().compress(FileAccess.COMPRESSION_GZIP))
+	global.leveldata["rooms"] = rooms
+	global.leveldata["playerspawn"] = playerpos
 	return file
 func loadlevel(filename: String) -> void:
 	var file: PackedByteArray = FileAccess.get_file_as_bytes("user://" + filename + ".cact")
-	print(file.decompress_dynamic(100000000, FileAccess.COMPRESSION_GZIP).get_string_from_utf8())
+	var rawld: Dictionary = JSON.parse_string(file.decompress_dynamic(100000000, FileAccess.COMPRESSION_GZIP).get_string_from_utf8())
+	print(rawld)
+	# todo

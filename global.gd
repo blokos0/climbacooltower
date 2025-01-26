@@ -20,8 +20,7 @@ var enemies: Dictionary = {
 }
 var leveldata: Dictionary = {
 	"name": "",
-	"floors": "",
-	"walls": "",
+	"tiles": "",
 	"rooms": [],
 	"enemydata": enemies,
 	"enemyplace": "",
