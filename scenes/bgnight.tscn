@@ -1,0 +1,48 @@
+[gd_scene load_steps=7 format=3 uid="uid://c260rh64hl38c"]
+
+[ext_resource type="Texture2D" uid="uid://dacag5pw6abks" path="res://sprites/bgnight.png" id="1_pr4j2"]
+[ext_resource type="Texture2D" uid="uid://b6hmbgon2btsq" path="res://sprites/nightparticles.png" id="2_xcqw2"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_1mxdx"]
+particles_animation = true
+particles_anim_h_frames = 4
+particles_anim_v_frames = 1
+particles_anim_loop = false
+
+[sub_resource type="Gradient" id="Gradient_egkoo"]
+offsets = PackedFloat32Array(0, 0.557377, 0.92623, 1)
+colors = PackedColorArray(1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_o0tq0"]
+gradient = SubResource("Gradient_egkoo")
+width = 6
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_agulr"]
+particle_flag_disable_z = true
+emission_shape = 3
+emission_box_extents = Vector3(320, 180, 1)
+spread = 180.0
+initial_velocity_min = 4.0
+initial_velocity_max = 4.0
+angular_velocity_min = -64.0
+angular_velocity_max = 64.0
+gravity = Vector3(0, 0, 0)
+color_ramp = SubResource("GradientTexture1D_o0tq0")
+anim_offset_max = 1.0
+
+[node name="bg" type="CanvasLayer"]
+layer = -1
+
+[node name="bg" type="Sprite2D" parent="."]
+texture = ExtResource("1_pr4j2")
+centered = false
+
+[node name="particles" type="GPUParticles2D" parent="."]
+material = SubResource("CanvasItemMaterial_1mxdx")
+position = Vector2(320, 180)
+amount = 32
+process_material = SubResource("ParticleProcessMaterial_agulr")
+texture = ExtResource("2_xcqw2")
+lifetime = 2.0
+preprocess = 2.0
+visibility_rect = Rect2(-362.124, -218.478, 733.924, 446.924)
