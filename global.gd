@@ -23,7 +23,7 @@ var leveldata: Dictionary = {
 	"tiles": "",
 	"rooms": [],
 	"enemydata": enemies,
-	"enemyplace": "",
+	"enemyplace": [],
 	"playerspawn": Vector2i(),
 	"teleporters": ""
 }
@@ -53,3 +53,30 @@ func setupdialog(pages: PackedStringArray, events: String, talker: String) -> Sp
 	i.events = events
 	i.talker = talker
 	return i
+func filetoleveldata(filename: String) -> bool:
+	# converts a tower file to global.leveldata while doing the necessary conversions, returns true on success, false otherwise
+	var file: PackedByteArray = FileAccess.get_file_as_bytes("user://" + filename + ".cact")
+	if file == PackedByteArray():
+		return false
+	var rawld: Dictionary = JSON.parse_string(file.decompress_dynamic(100000000, FileAccess.COMPRESSION_GZIP).get_string_from_utf8())
+	leveldata.merge(rawld, true)
+	var arr: PackedStringArray = rawld["rooms"].split("/")
+	var rconv: Array[Dictionary]
+	for r in arr:
+		rconv.append({
+			"name": r.get_slice(",", 0),
+			"rect": Rect2i(int(r.get_slice(",", 1)), int(r.get_slice(",", 2)), int(r.get_slice(",", 3)), int(r.get_slice(",", 4))),
+			"theme": r.get_slice(",", 5),
+			"song": r.get_slice(",", 6)
+		})
+	leveldata["rooms"] = rconv
+	arr = rawld["playerspawn"].split(",")
+	leveldata["playerspawn"] = Vector2i(int(arr[0]), int(arr[1]))
+	enemies = leveldata["enemydata"]
+	arr = rawld["enemyplace"].split("/")
+	var epconv: Array[Array]
+	for i in arr:
+		epconv.append([Vector2i(int(i.get_slice(",", 0)), int(i.get_slice(",", 1))), i.get_slice(",", 2), int(i.get_slice(",", 3))])
+	leveldata["enemyplace"] = epconv
+	return true
+	# no teleporter support yet...
