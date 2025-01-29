@@ -71,10 +71,10 @@ func setuproom() -> void:
 		song = global.leveldata["rooms"][room].song
 		$music.stream = load("res://music/" + global.leveldata["rooms"][room].song + ".ogg")
 		$music.play()
-	$gamelayer/gameworldcontainer/gameworld/shader/camera.limit_left = global.leveldata["rooms"][room].rect.position.x * 32
-	$gamelayer/gameworldcontainer/gameworld/shader/camera.limit_top = global.leveldata["rooms"][room].rect.position.y * 32 - max(352 - global.leveldata["rooms"][room].rect.size.y * 32, 0) / 2
-	$gamelayer/gameworldcontainer/gameworld/shader/camera.limit_right = global.leveldata["rooms"][room].rect.position.x * 32 + global.leveldata["rooms"][room].rect.size.x * 32 + max(352 - global.leveldata["rooms"][room].rect.size.x * 32, 0) / 2
-	$gamelayer/gameworldcontainer/gameworld/shader/camera.limit_bottom = global.leveldata["rooms"][room].rect.position.y * 32 + global.leveldata["rooms"][room].rect.size.y * 32
+	$gamelayer/gameworldcontainer/gameworld/shader/camera.limit_left = global.leveldata["rooms"][room].rect.position.x * 32 - 4
+	$gamelayer/gameworldcontainer/gameworld/shader/camera.limit_top = global.leveldata["rooms"][room].rect.position.y * 32 - max(352 - global.leveldata["rooms"][room].rect.size.y * 32, 0) / 2 - 4
+	$gamelayer/gameworldcontainer/gameworld/shader/camera.limit_right = global.leveldata["rooms"][room].rect.position.x * 32 + global.leveldata["rooms"][room].rect.size.x * 32 + max(352 - global.leveldata["rooms"][room].rect.size.x * 32, 0) / 2 - 4
+	$gamelayer/gameworldcontainer/gameworld/shader/camera.limit_bottom = global.leveldata["rooms"][room].rect.position.y * 32 + global.leveldata["rooms"][room].rect.size.y * 32 - 4
 	$roomsound.play()
 func updatestats(hp: int = 0, atk: int = 0, def: int = 0) -> void:
 	stats.hp += hp

@@ -105,8 +105,12 @@ func _process(_delta: float) -> void:
 			$ui/panel/uiboxp0/propertiesbox/otherbox/roomlist.add_item(roomname)
 		else:
 			$ui/tooltipthing.text = "sorry its too flat"
-	if Input.is_action_pressed(&"removetile"):
+	if Input.is_action_pressed(&"removetile") && !$ui/panel.visible:
 		tm.erase_cell(floor(get_local_mouse_position() / 32))
+	if Input.is_action_just_pressed(&"picktile"):
+		if tm.get_cell_source_id(floor(get_local_mouse_position() / 32)) != -1:
+			currenttile.x = tm.get_cell_atlas_coords(floor(get_local_mouse_position() / 32)).x
+			$ui/panel/uiboxp0/tiles/selectedtile.position = currenttile * 32
 	if !$ui/panel.visible && !Input.is_action_pressed(&"save"):
 		$camera.position += Input.get_vector(&"left", &"right", &"up", &"down") * 12 * (int(Input.is_action_pressed("sneak")) + 1) * (0.5 / $camera.zoom.x + 0.5)
 		if Input.is_action_just_pressed(&"zoomin") || Input.is_action_just_pressed(&"zoomout"):
@@ -126,8 +130,11 @@ func _process(_delta: float) -> void:
 		DiscordRPC.details = "making " + towername
 		DiscordRPC.refresh()
 	if Input.is_action_just_pressed(&"playtest"):
-		leveltoleveldata()
-		get_tree().change_scene_to_file("res://scenes/play.tscn")
+		if !rooms.is_empty():
+			leveltoleveldata()
+			get_tree().change_scene_to_file("res://scenes/play.tscn")
+		else:
+			global.notify("towers need to have atleast one room")
 	if Input.is_action_just_pressed(&"back"):
 		get_tree().change_scene_to_file("res://scenes/title.tscn")
 	queue_redraw()
@@ -222,7 +229,10 @@ func leveldatatolevel() -> void:
 	# converts global.leveldata into an editor level
 	rooms = global.leveldata["rooms"]
 	for r in global.leveldata["rooms"]:
-		$ui/panel/uiboxp0/propertiesbox/otherbox/roomlist.add_item(r.name)
+		var rnm = " " # for easier selecting
+		if r.name != "":
+			rnm = r.name
+		$ui/panel/uiboxp0/propertiesbox/otherbox/roomlist.add_item(rnm)
 	playerpos = global.leveldata["playerspawn"]
 	if global.leveldata["tiles"] != "":
 		for i in global.leveldata["tiles"].split("/"):

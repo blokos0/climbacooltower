@@ -72,7 +72,7 @@ func filetoleveldata(filename: String) -> bool:
 	leveldata["rooms"] = rconv
 	arr = rawld["playerspawn"].split(",")
 	leveldata["playerspawn"] = Vector2i(int(arr[0]), int(arr[1]))
-	enemies = leveldata["enemydata"]
+	enemies.merge(leveldata["enemydata"], true)
 	arr = rawld["enemyplace"].split("/")
 	var epconv: Array[Array]
 	for i in arr:
