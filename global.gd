@@ -28,6 +28,7 @@ var leveldata: Dictionary = {
 	"teleporters": ""
 }
 var version: String = "0.1"
+var dialogspawned: bool
 func _ready() -> void:
 	DiscordRPC.app_id = 1302687543187210402
 	DiscordRPC.start_timestamp = int(Time.get_unix_time_from_system())
@@ -47,7 +48,10 @@ func notify(text: String) -> void:
 		var n: CanvasLayer = preload("res://scenes/notification.tscn").instantiate()
 		add_child(n)
 		n.addlabel(text)
-func setupdialog(pages: PackedStringArray, events: String, talker: String) -> Sprite2D:
+func setupdialog(pages: PackedStringArray, events: String, talker: String) -> Variant:
+	if dialogspawned:
+		return false
+	dialogspawned = true
 	var i: Sprite2D = preload("res://scenes/dialog.tscn").instantiate()
 	i.pages = pages
 	i.events = events
@@ -62,21 +66,23 @@ func filetoleveldata(filename: String) -> bool:
 	leveldata.merge(rawld, true)
 	var arr: PackedStringArray = rawld["rooms"].split("/")
 	var rconv: Array[Dictionary]
-	for r in arr:
-		rconv.append({
-			"name": r.get_slice(",", 0),
-			"rect": Rect2i(int(r.get_slice(",", 1)), int(r.get_slice(",", 2)), int(r.get_slice(",", 3)), int(r.get_slice(",", 4))),
-			"theme": r.get_slice(",", 5),
-			"song": r.get_slice(",", 6)
-		})
+	if rawld["rooms"] != "":
+		for r in arr:
+			rconv.append({
+				"name": r.get_slice(",", 0),
+				"rect": Rect2i(int(r.get_slice(",", 1)), int(r.get_slice(",", 2)), int(r.get_slice(",", 3)), int(r.get_slice(",", 4))),
+				"theme": r.get_slice(",", 5),
+				"song": r.get_slice(",", 6)
+			})
 	leveldata["rooms"] = rconv
 	arr = rawld["playerspawn"].split(",")
 	leveldata["playerspawn"] = Vector2i(int(arr[0]), int(arr[1]))
 	enemies.merge(leveldata["enemydata"], true)
 	arr = rawld["enemyplace"].split("/")
 	var epconv: Array[Array]
-	for i in arr:
-		epconv.append([Vector2i(int(i.get_slice(",", 0)), int(i.get_slice(",", 1))), i.get_slice(",", 2), int(i.get_slice(",", 3))])
+	if rawld["enemyplace"] != "" && rawld["enemyplace"] != "0,0,,0": # this will haunt me forever
+		for i in arr:
+			epconv.append([Vector2i(int(i.get_slice(",", 0)), int(i.get_slice(",", 1))), i.get_slice(",", 2), int(i.get_slice(",", 3))])
 	leveldata["enemyplace"] = epconv
 	return true
 	# no teleporter support yet...

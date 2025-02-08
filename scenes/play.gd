@@ -5,6 +5,7 @@ var room: int = 0:
 		setuproom()
 var stats: Dictionary = {
 	"hp": 500.0,
+	"maxhp": 500.0,
 	"atk": 25.0,
 	"def": 0.0,
 	"lvl": 1
@@ -69,7 +70,8 @@ func setuproom() -> void:
 			$gamelayer/gameworldcontainer/gameworld/shader.material = null
 	if song != global.leveldata["rooms"][room].song:
 		song = global.leveldata["rooms"][room].song
-		$music.stream = load("res://music/" + global.leveldata["rooms"][room].song + ".ogg")
+		$music.stream.set_sync_stream(0, load("res://music/" + global.leveldata["rooms"][room].song + ".ogg"))
+		$music.stream.set_sync_stream(1, load("res://music/" + global.leveldata["rooms"][room].song + "_lowhp.ogg"))
 		$music.play()
 	$gamelayer/gameworldcontainer/gameworld/shader/camera.limit_left = global.leveldata["rooms"][room].rect.position.x * 32 - 4
 	$gamelayer/gameworldcontainer/gameworld/shader/camera.limit_top = global.leveldata["rooms"][room].rect.position.y * 32 - max(352 - global.leveldata["rooms"][room].rect.size.y * 32, 0) / 2 - 4
@@ -80,5 +82,18 @@ func updatestats(hp: int = 0, atk: int = 0, def: int = 0) -> void:
 	stats.hp += hp
 	stats.atk += atk
 	stats.def += def
+	if stats.hp <= 0:
+		stats.hp = 0
+		$music.volume_db = -80
+		$ui/container/box/playerbox/playerportrait.texture.region.position.y = 200
+		$gamelayer/gameworldcontainer/gameworld/shader/player.visible = false
+	elif stats.hp < stats.maxhp * 0.1:
+		$music.stream.set_sync_stream_volume(0, -60)
+		$music.stream.set_sync_stream_volume(1, 0)
+		$ui/container/box/playerbox/playerportrait.texture.region.position.y = 100
+	else:
+		$music.stream.set_sync_stream_volume(0, 0)
+		$music.stream.set_sync_stream_volume(1, -60)
+		$ui/container/box/playerbox/playerportrait.texture.region.position.y = 0
 	$ui/container/box/playerbox/level.text = "lvl" + str(stats.lvl)
-	$ui/container/box/playerbox/stats.text = "hp: " + str(stats.hp) + "\natk: " + str(stats.atk) + "\ndef: " + str(stats.def)
+	$ui/container/box/playerbox/stats.text = "hp: " + str(stats.hp) + "/" + str(stats.maxhp) + "\natk: " + str(stats.atk) + "\ndef: " + str(stats.def)

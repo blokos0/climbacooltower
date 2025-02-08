@@ -32,7 +32,6 @@ texture = ExtResource("8_lqslm")
 centered = false
 
 [node name="panel" type="PanelContainer" parent="ui"]
-visible = false
 offset_right = 640.0
 offset_bottom = 360.0
 theme = ExtResource("6_frrc5")
@@ -164,6 +163,24 @@ stretch_mode = 3
 modulate = Color(1, 1, 1, 0.5)
 texture = ExtResource("7_hjxn5")
 centered = false
+
+[node name="uiboxp1" type="VBoxContainer" parent="ui/panel"]
+visible = false
+layout_mode = 2
+
+[node name="teleporterlabel" type="Label" parent="ui/panel/uiboxp1"]
+layout_mode = 2
+text = "place a teleporter"
+
+[node name="teleporterroomlabel" type="Label" parent="ui/panel/uiboxp1"]
+layout_mode = 2
+text = "room id:"
+
+[node name="teleporterroom" type="LineEdit" parent="ui/panel/uiboxp1"]
+custom_minimum_size = Vector2(96, 0)
+layout_mode = 2
+size_flags_horizontal = 0
+placeholder_text = "room id"
 
 [node name="tooltipthing" type="Label" parent="ui"]
 visible = false

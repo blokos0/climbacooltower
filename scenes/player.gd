@@ -18,7 +18,7 @@ func _process(_delta: float) -> void:
 		if !Input.is_action_pressed(&"sneak"):
 			position += dirspressed[-1] * 32
 			offset -= dirspressed[-1] * 32
-			var invalidtile: bool = $"../walls".get_cell_atlas_coords(floor(position / 32)) != Vector2i(-1, -1) || $"../floors".get_cell_atlas_coords(floor(position / 32)) == Vector2i(-1, -1)
+			var invalidtile: bool = $"../walls".get_cell_atlas_coords(floor(position / 32)) != Vector2i(-1, -1) || $"../floors".get_cell_atlas_coords(floor(position / 32)) == Vector2i(-1, -1) || !visible
 			if !global.leveldata["rooms"].is_empty() && !global.leveldata["rooms"][$/root/play.room].rect.has_point(floor(position / 32)):
 				invalidtile = true
 			$shapecast.force_shapecast_update()

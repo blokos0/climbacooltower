@@ -1,11 +1,10 @@
-[gd_scene load_steps=14 format=3 uid="uid://c7an5o6fcsflw"]
+[gd_scene load_steps=13 format=3 uid="uid://c7an5o6fcsflw"]
 
 [ext_resource type="Texture2D" uid="uid://cfri3td18vid2" path="res://sprites/logo.png" id="1_8x8wf"]
 [ext_resource type="AudioStream" uid="uid://c2afnq2wkmmp5" path="res://music/musictoclimbcooltowersto.ogg" id="1_ejrad"]
 [ext_resource type="Script" path="res://scenes/title.gd" id="1_ov0fw"]
 [ext_resource type="Texture2D" uid="uid://dvqo628r6h10" path="res://sprites/bgmenu.png" id="2_les1t"]
 [ext_resource type="AudioStream" uid="uid://bmpflppx1rloe" path="res://sounds/focus.ogg" id="3_bwrwy"]
-[ext_resource type="Texture2D" uid="uid://dacag5pw6abks" path="res://sprites/bgnight.png" id="4_m7sr8"]
 [ext_resource type="Texture2D" uid="uid://bhxllhc82hmjv" path="res://sprites/teleporter.png" id="5_70kob"]
 [ext_resource type="Texture2D" uid="uid://co07650lga4kc" path="res://sprites/menuart_startbutton.png" id="6_r0ty3"]
 [ext_resource type="Texture2D" uid="uid://d3cf6csbkta5v" path="res://sprites/menuicons.png" id="7_5k7p5"]
@@ -37,14 +36,6 @@ bus = &"music"
 [node name="focussound" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("3_bwrwy")
 bus = &"sfx"
-
-[node name="i am simply a placeholder" type="Sprite2D" parent="."]
-texture_repeat = 2
-position = Vector2(640, 0)
-texture = ExtResource("4_m7sr8")
-centered = false
-region_enabled = true
-region_rect = Rect2(0, 0, 640, 360)
 
 [node name="bg" type="Sprite2D" parent="."]
 texture_repeat = 2

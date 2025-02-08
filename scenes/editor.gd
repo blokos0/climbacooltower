@@ -20,6 +20,7 @@ var placingenemytexture: Texture2D
 var placedenemies: Array
 var placingjelly: bool
 var playerpos: Vector2i
+var panelpage: int
 func _ready() -> void:
 	$ui/panel/uiboxp0/propertiesbox/otherbox/roomlist.item_activated.connect(roomlistselect)
 	$ui/panel/uiboxp0/propertiesbox/enemybox/enemylist.item_activated.connect(enemylistselect)
@@ -55,7 +56,7 @@ func _process(_delta: float) -> void:
 		$ui/fuckingeditorthing.visible = true
 	if Input.is_action_pressed(&"placetile"):
 		if $ui/panel.visible:
-			if Input.is_action_just_pressed(&"placetile"):
+			if Input.is_action_just_pressed(&"placetile") && $ui/panel/uiboxp0.visible:
 				if mouseintexturerect($ui/panel/uiboxp0/tiles):
 					currenttile = floor($ui/panel/uiboxp0/tiles.get_local_mouse_position() / 32)
 					$ui/panel/uiboxp0/tiles/selectedtile.position = currenttile * 32
@@ -119,6 +120,10 @@ func _process(_delta: float) -> void:
 			$camera.zoom = clamp($camera.zoom * Vector2(zoomval, zoomval), Vector2(0.03125, 0.03125), Vector2(4, 4))
 			$camera.position += cammouse - get_global_mouse_position()
 		$camera/grid.region_rect.position = $camera.position
+	if Input.is_action_just_pressed(&"page"):
+		$ui/panel.get_node("uiboxp" + str(panelpage)).visible = false
+		panelpage = wrapi(panelpage + 1, 0, 2)
+		$ui/panel.get_node("uiboxp" + str(panelpage)).visible = true
 	if Input.is_action_just_pressed(&"save"):
 		var towername: String = "tower"
 		if len($ui/panel/uiboxp0/propertiesbox/otherbox/funbox/towername.text):

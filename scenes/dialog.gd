@@ -18,6 +18,7 @@ func _process(_delta: float) -> void:
 			if Input.is_action_just_pressed(&"dialog"):
 				page += 1
 				if page == len(pages):
+					global.dialogspawned = false
 					queue_free()
 				else:
 					vischar = 0

@@ -22,7 +22,9 @@ func createbuttonpressed() -> void:
 func browsebuttonpressed() -> void:
 	global.notify("epic placeholder")
 func settingsbuttonpressed() -> void:
-	add_child(global.setupdialog(["johnathan!", "johnathan!!!!!!", "johnythannie,,,,,,", "[font_size=32][shake]we believe in johnathan supremacy!!!", "they really do"], "1,1,talker,stardust/1,2,talker,holland/1,3,talker,jelly/1,4,talker,", "jelly"))
+	var d: Variant = global.setupdialog(["it is i! mr sad"], "8,0,stop/9,0,face,1", "holland")
+	if d:
+		add_child(d)
 func focuschanged(node: Control) -> void:
 	$focussound.play()
 	$art.texture = load("res://sprites/menuart_" + node.name + ".png")
