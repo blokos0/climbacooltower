@@ -69,7 +69,7 @@ func moveinput(inp: String) -> void:
 			movetimer = 0
 	if Input.is_action_just_released(inp) && dirspressed.size():
 		dirspressed.remove_at(dirspressed.find(dirs[inp]))
-func formenemystats(enemy: Sprite2D):
+func formenemystats(enemy: Sprite2D) -> Dictionary:
 	return {
 		"hp": global.enemies.get(enemy.kind).hp[enemy.variant],
 		"atk": global.enemies.get(enemy.kind).atk[enemy.variant],

@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://bakroqjs5k4fk"]
+[gd_scene load_steps=14 format=3 uid="uid://bakroqjs5k4fk"]
 
 [ext_resource type="PackedScene" uid="uid://cth72fb5mrt1k" path="res://scenes/bgdigital.tscn" id="1_c2cl3"]
 [ext_resource type="Script" path="res://scenes/editor.gd" id="1_yt3fo"]
@@ -10,7 +10,12 @@
 [ext_resource type="Texture2D" uid="uid://ce06ho8jmxmxu" path="res://sprites/selectedtile.png" id="7_hjxn5"]
 [ext_resource type="Texture2D" uid="uid://xbxja0ugp8jk" path="res://sprites/jellysilly.png" id="8_7lhpr"]
 [ext_resource type="Texture2D" uid="uid://b04wh1di8es32" path="res://sprites/fuckingeditorthing.png" id="8_lqslm"]
+[ext_resource type="Texture2D" uid="uid://bhxllhc82hmjv" path="res://sprites/teleporter.png" id="10_q7tvk"]
 [ext_resource type="Texture2D" uid="uid://b5cx8m44ih6pm" path="res://sprites/enemyvariants.png" id="11_1sy0f"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vplmw"]
+atlas = ExtResource("10_q7tvk")
+region = Rect2(0, 0, 32, 32)
 
 [node name="editor" type="Node2D"]
 script = ExtResource("1_yt3fo")
@@ -32,6 +37,7 @@ texture = ExtResource("8_lqslm")
 centered = false
 
 [node name="panel" type="PanelContainer" parent="ui"]
+visible = false
 offset_right = 640.0
 offset_bottom = 360.0
 theme = ExtResource("6_frrc5")
@@ -168,19 +174,52 @@ centered = false
 visible = false
 layout_mode = 2
 
-[node name="teleporterlabel" type="Label" parent="ui/panel/uiboxp1"]
-layout_mode = 2
-text = "place a teleporter"
-
-[node name="teleporterroomlabel" type="Label" parent="ui/panel/uiboxp1"]
-layout_mode = 2
-text = "room id:"
-
-[node name="teleporterroom" type="LineEdit" parent="ui/panel/uiboxp1"]
-custom_minimum_size = Vector2(96, 0)
+[node name="teleporterbox" type="VBoxContainer" parent="ui/panel/uiboxp1"]
+custom_minimum_size = Vector2(192, 0)
 layout_mode = 2
 size_flags_horizontal = 0
-placeholder_text = "room id"
+
+[node name="label" type="Label" parent="ui/panel/uiboxp1/teleporterbox"]
+layout_mode = 2
+size_flags_horizontal = 0
+text = "place a teleporter"
+
+[node name="roomlabel" type="Label" parent="ui/panel/uiboxp1/teleporterbox"]
+layout_mode = 2
+size_flags_horizontal = 0
+text = "room name:"
+
+[node name="room" type="LineEdit" parent="ui/panel/uiboxp1/teleporterbox"]
+layout_mode = 2
+
+[node name="positionlabel" type="Label" parent="ui/panel/uiboxp1/teleporterbox"]
+layout_mode = 2
+size_flags_horizontal = 0
+text = "target position:"
+
+[node name="positionbox" type="HBoxContainer" parent="ui/panel/uiboxp1/teleporterbox"]
+layout_mode = 2
+
+[node name="x" type="LineEdit" parent="ui/panel/uiboxp1/teleporterbox/positionbox"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="y" type="LineEdit" parent="ui/panel/uiboxp1/teleporterbox/positionbox"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="alt" type="Button" parent="ui/panel/uiboxp1/teleporterbox/positionbox"]
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+icon = SubResource("AtlasTexture_vplmw")
+icon_alignment = 1
+
+[node name="teleporterplace" type="Button" parent="ui/panel/uiboxp1/teleporterbox"]
+layout_mode = 2
+focus_mode = 0
+text = "create teleporter"
+alignment = 0
 
 [node name="tooltipthing" type="Label" parent="ui"]
 visible = false
@@ -189,6 +228,15 @@ offset_top = 4.0
 offset_right = 331.0
 offset_bottom = 18.0
 text = "i dont think youre supposed to see this one"
+
+[node name="tilepos" type="Label" parent="ui"]
+modulate = Color(1, 1, 1, 0.501961)
+offset_left = 551.0
+offset_top = 2.0
+offset_right = 638.0
+offset_bottom = 16.0
+text = "(0, 0)"
+horizontal_alignment = 2
 
 [node name="camera" type="Camera2D" parent="."]
 offset = Vector2(320, 180)

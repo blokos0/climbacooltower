@@ -1,69 +1,12 @@
-[gd_scene load_steps=13 format=3 uid="uid://fykxnluaw7tw"]
+[gd_scene load_steps=7 format=3 uid="uid://fykxnluaw7tw"]
 
 [ext_resource type="Texture2D" uid="uid://bhxllhc82hmjv" path="res://sprites/teleporter.png" id="1_tr1mj"]
 [ext_resource type="Script" path="res://scenes/teleporter.gd" id="2_aahg8"]
 [ext_resource type="Texture2D" uid="uid://bato54gly6vwf" path="res://sprites/light.png" id="2_ql80s"]
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_ghgpx"]
-atlas = ExtResource("1_tr1mj")
-region = Rect2(0, 32, 32, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_epwoe"]
-atlas = ExtResource("1_tr1mj")
-region = Rect2(32, 32, 32, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_klkmf"]
-atlas = ExtResource("1_tr1mj")
-region = Rect2(64, 32, 32, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_3ky67"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_mlk31"]
 atlas = ExtResource("1_tr1mj")
 region = Rect2(0, 0, 32, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_btv7b"]
-atlas = ExtResource("1_tr1mj")
-region = Rect2(32, 0, 32, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_1xk5m"]
-atlas = ExtResource("1_tr1mj")
-region = Rect2(64, 0, 32, 32)
-
-[sub_resource type="SpriteFrames" id="SpriteFrames_4l64m"]
-animations = [{
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_ghgpx")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_epwoe")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_klkmf")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_epwoe")
-}],
-"loop": true,
-"name": &"alt",
-"speed": 5.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_3ky67")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_btv7b")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_1xk5m")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_btv7b")
-}],
-"loop": true,
-"name": &"default",
-"speed": 5.0
-}]
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_o1kb5"]
 blend_mode = 1
@@ -71,9 +14,8 @@ blend_mode = 1
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_sxpgd"]
 size = Vector2(32, 32)
 
-[node name="teleporter" type="AnimatedSprite2D"]
-sprite_frames = SubResource("SpriteFrames_4l64m")
-autoplay = "default"
+[node name="teleporter" type="Sprite2D"]
+texture = SubResource("AtlasTexture_mlk31")
 centered = false
 script = ExtResource("2_aahg8")
 
