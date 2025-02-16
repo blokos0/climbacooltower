@@ -1,11 +1,13 @@
 [gd_scene load_steps=7 format=3 uid="uid://fykxnluaw7tw"]
 
-[ext_resource type="Texture2D" uid="uid://bhxllhc82hmjv" path="res://sprites/teleporter.png" id="1_tr1mj"]
 [ext_resource type="Script" path="res://scenes/teleporter.gd" id="2_aahg8"]
 [ext_resource type="Texture2D" uid="uid://bato54gly6vwf" path="res://sprites/light.png" id="2_ql80s"]
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_mlk31"]
-atlas = ExtResource("1_tr1mj")
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_sa3n5"]
+load_path = "res://.godot/imported/teleporter.png-4a5f632d5ec26ffb95c6f6e05728234d.ctex"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_akaa5"]
+atlas = SubResource("CompressedTexture2D_sa3n5")
 region = Rect2(0, 0, 32, 32)
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_o1kb5"]
@@ -15,7 +17,7 @@ blend_mode = 1
 size = Vector2(32, 32)
 
 [node name="teleporter" type="Sprite2D"]
-texture = SubResource("AtlasTexture_mlk31")
+texture = SubResource("AtlasTexture_akaa5")
 centered = false
 script = ExtResource("2_aahg8")
 

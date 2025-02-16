@@ -187,10 +187,11 @@ text = "place a teleporter"
 [node name="roomlabel" type="Label" parent="ui/panel/uiboxp1/teleporterbox"]
 layout_mode = 2
 size_flags_horizontal = 0
-text = "room name:"
+text = "target room:"
 
 [node name="room" type="LineEdit" parent="ui/panel/uiboxp1/teleporterbox"]
 layout_mode = 2
+placeholder_text = "room name"
 
 [node name="positionlabel" type="Label" parent="ui/panel/uiboxp1/teleporterbox"]
 layout_mode = 2
@@ -203,10 +204,12 @@ layout_mode = 2
 [node name="x" type="LineEdit" parent="ui/panel/uiboxp1/teleporterbox/positionbox"]
 layout_mode = 2
 size_flags_horizontal = 3
+placeholder_text = "x"
 
 [node name="y" type="LineEdit" parent="ui/panel/uiboxp1/teleporterbox/positionbox"]
 layout_mode = 2
 size_flags_horizontal = 3
+placeholder_text = "y"
 
 [node name="alt" type="Button" parent="ui/panel/uiboxp1/teleporterbox/positionbox"]
 layout_mode = 2
@@ -220,6 +223,17 @@ layout_mode = 2
 focus_mode = 0
 text = "create teleporter"
 alignment = 0
+
+[node name="startroomlabel" type="Label" parent="ui/panel/uiboxp1"]
+layout_mode = 2
+size_flags_horizontal = 0
+text = "starting room:"
+
+[node name="startroom" type="LineEdit" parent="ui/panel/uiboxp1"]
+custom_minimum_size = Vector2(192, 0)
+layout_mode = 2
+size_flags_horizontal = 0
+placeholder_text = "room name"
 
 [node name="tooltipthing" type="Label" parent="ui"]
 visible = false

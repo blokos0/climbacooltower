@@ -18,6 +18,7 @@ var teleporterpos: Vector2i
 var teleporteralt: bool
 var placingteleporter: bool
 var teleporters: Array[Array]
+var startingroom: String
 func _ready() -> void:
 	$ui/panel/uiboxp0/propertiesbox/otherbox/roomlist.item_activated.connect(roomlistselect)
 	$ui/panel/uiboxp0/propertiesbox/enemybox/enemylist.item_activated.connect(enemylistselect)
@@ -124,7 +125,7 @@ func _process(_delta: float) -> void:
 			$camera.zoom = clamp($camera.zoom * Vector2(zoomval, zoomval), Vector2(0.03125, 0.03125), Vector2(4, 4))
 			$camera.position += cammouse - get_global_mouse_position()
 		$camera/grid.region_rect.position = $camera.position
-	if Input.is_action_just_pressed(&"page") && $ui/panel.visible && !$ui/panel/uiboxp0/propertiesbox/tileroombox/roomname.has_focus() && !$ui/panel/uiboxp1/teleporterbox/room.has_focus() && !$ui/panel/uiboxp0/propertiesbox/otherbox/funbox/towername.has_focus() && !$ui/panel/uiboxp1/teleporterbox/positionbox/x.has_focus() && !$ui/panel/uiboxp1/teleporterbox/positionbox/y.has_focus():
+	if Input.is_action_just_pressed(&"page") && $ui/panel.visible && !$ui/panel/uiboxp0/propertiesbox/tileroombox/roomname.has_focus() && !$ui/panel/uiboxp1/teleporterbox/room.has_focus() && !$ui/panel/uiboxp0/propertiesbox/otherbox/funbox/towername.has_focus() && !$ui/panel/uiboxp1/teleporterbox/positionbox/x.has_focus() && !$ui/panel/uiboxp1/teleporterbox/positionbox/y.has_focus() && !$ui/panel/uiboxp1/startroom.has_focus():
 		$ui/panel.get_node("uiboxp" + str(panelpage)).visible = false
 		panelpage = wrapi(panelpage + 1, 0, 2)
 		$ui/panel.get_node("uiboxp" + str(panelpage)).visible = true
@@ -140,22 +141,32 @@ func _process(_delta: float) -> void:
 		DiscordRPC.refresh()
 	if Input.is_action_just_pressed(&"playtest"):
 		if !$ui/panel.visible:
-			if !rooms.is_empty():
+			var sroom: bool
+			for i: Dictionary in rooms:
+				if i.name == startingroom:
+					sroom = true
+					break
+			if !rooms.is_empty() && sroom:
 				leveltoleveldata()
 				get_tree().change_scene_to_file("res://scenes/play.tscn")
-			else:
+				return
+			elif rooms.is_empty():
 				global.notify("towers need to have atleast one room")
+			elif !sroom:
+				global.notify("starting room doesnt exist")
 		else:
 			$ui/panel/uiboxp0/propertiesbox/tileroombox/roomname.release_focus()
 			$ui/panel/uiboxp0/propertiesbox/otherbox/funbox/towername.release_focus()
 			$ui/panel/uiboxp1/teleporterbox/room.release_focus()
 			$ui/panel/uiboxp1/teleporterbox/positionbox/x.release_focus()
 			$ui/panel/uiboxp1/teleporterbox/positionbox/y.release_focus()
+			$ui/panel/uiboxp1/startroom.release_focus()
 	if Input.is_action_just_pressed(&"back"):
 		get_tree().change_scene_to_file("res://scenes/title.tscn")
 		return
 	$ui/tilepos.text = str(floor(get_local_mouse_position() / 32))
 	$ui/tilepos.visible = !$ui/panel.visible
+	startingroom = $ui/panel/uiboxp1/startroom.text
 	queue_redraw()
 func _draw() -> void:
 	draw_texture(preload("res://sprites/jelly.png"), Vector2(playerpos.x * 32, playerpos.y * 32 - 16))
@@ -178,6 +189,8 @@ func _draw() -> void:
 				draw_texture_rect_region(preload("res://sprites/teleporter.png"), Rect2(floor(get_local_mouse_position() / 32) * 32, Vector2(32, 32)), Rect2(Vector2i(wrap(floor(float(Engine.get_process_frames()) / 12.5) * 32, 0, 96), 32 * int(teleporteralt)), Vector2i(32, 32)), Color(1, 1, 1, 0.5))
 	for i: Array in placedenemies:
 		draw_texture_rect_region(load("res://sprites/" + i[1] + ".png"), Rect2(i[0] * 32, Vector2(32, 32)), Rect2(i[2] * 32, 0, 32, 32), Color(1, 1, 1, 0.75 + int(Input.is_action_pressed("showasis") && !$ui/panel.visible) * 0.25))
+	for i: Array in teleporters:
+		draw_texture_rect_region(preload("res://sprites/teleporter.png"), Rect2(i[0] * 32, Vector2i(32, 32)), Rect2(Vector2i(wrap(floor(float(Engine.get_process_frames()) / 12.5) * 32, 0, 96), 32 * int(i[3])), Vector2i(32, 32)), Color(1, 1, 1, 0.75 + int(Input.is_action_pressed("showasis") && !$ui/panel.visible) * 0.25))
 func roomlistselect(index: int) -> void:
 	$ui/panel/uiboxp0/propertiesbox/otherbox/roomlist.remove_item(index)
 	rooms.remove_at(index)
@@ -251,7 +264,8 @@ func leveltoleveldata() -> void:
 	global.leveldata["name"] = towername
 	global.leveldata["rooms"] = rooms
 	global.leveldata["playerspawn"] = playerpos
-	# no teleporter support yet...
+	global.leveldata["teleporters"] = teleporters
+	global.leveldata["startingroom"] = startingroom
 func leveldatatofile(filename: String) -> FileAccess:
 	# does the necessary conversions and saves global.leveldata to a file, then reverts the changes
 	var arr: PackedStringArray = []
@@ -262,6 +276,10 @@ func leveldatatofile(filename: String) -> FileAccess:
 	for e: Array in placedenemies:
 		arr.append(str(e[0].x) + "," + str(e[0].y) + "," + e[1] + "," + str(e[2]))
 	global.leveldata["enemyplace"] = "/".join(arr)
+	arr = []
+	for t: Array in teleporters:
+		arr.append(str(t[0].x) + "," + str(t[0].y) + "," + str(t[1].x) + "," + str(t[1].y) + "," + str(t[2]) + "," + str(int(t[3])))
+	global.leveldata["teleporters"] = "/".join(arr)
 	global.leveldata["playerspawn"] = str(playerpos.x) + "," + str(playerpos.y)
 	var file: FileAccess = FileAccess.open("user://" + filename + ".cact", FileAccess.WRITE)
 	if file:
@@ -269,11 +287,12 @@ func leveldatatofile(filename: String) -> FileAccess:
 	global.leveldata["rooms"] = rooms
 	global.leveldata["enemyplace"] = placedenemies
 	global.leveldata["playerspawn"] = playerpos
+	global.leveldata["teleporters"] = teleporters
 	return file
-	# no teleporter support yet...
 func savelevel(filename: String) -> FileAccess:
 	# leveltoleveldata() and leveldatatofile(filename) in one function
 	leveltoleveldata()
+	print(global.leveldata)
 	return leveldatatofile(filename)
 func leveldatatolevel() -> void:
 	# converts global.leveldata into an editor level
@@ -293,8 +312,10 @@ func leveldatatolevel() -> void:
 				tm = $walls
 			tm.set_cell(pos, 0, Vector2i(ind, int(i.get_slice(",", 3))))
 	placedenemies = global.leveldata["enemyplace"]
+	teleporters = global.leveldata["teleporters"]
+	startingroom = global.leveldata["startingroom"]
+	$ui/panel/uiboxp1/startroom.text = startingroom
 	$ui/panel/uiboxp0/propertiesbox/otherbox/funbox/towername.text = global.leveldata["name"]
-	# no teleporter support yet...
 func loadlevel(filename: String) -> void:
 	# global.filetoleveldata() and leveldatatolevel() in one function
 	if global.filetoleveldata(filename):

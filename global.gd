@@ -25,7 +25,8 @@ var leveldata: Dictionary = {
 	"enemydata": enemies,
 	"enemyplace": [],
 	"playerspawn": Vector2i(),
-	"teleporters": ""
+	"teleporters": "",
+	"startingroom": ""
 }
 var version: String = "0.1"
 var dialogspawned: bool
@@ -84,5 +85,11 @@ func filetoleveldata(filename: String) -> bool:
 		for i in arr:
 			epconv.append([Vector2i(int(i.get_slice(",", 0)), int(i.get_slice(",", 1))), i.get_slice(",", 2), int(i.get_slice(",", 3))])
 	leveldata["enemyplace"] = epconv
+	arr = rawld["teleporters"].split("/")
+	var tconv: Array[Array]
+	if rawld["teleporters"] != "":
+		for i in arr:
+			tconv.append([Vector2i(int(i.get_slice(",", 0)), int(i.get_slice(",", 1))), Vector2i(int(i.get_slice(",", 2)), int(i.get_slice(",", 3))), i.get_slice(",", 4), bool(int(i.get_slice(",", 5)))])
+	leveldata["teleporters"] = tconv
 	return true
 	# no teleporter support yet...

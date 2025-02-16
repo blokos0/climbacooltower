@@ -19,14 +19,15 @@ func _process(_delta: float) -> void:
 			position += dirspressed[-1] * 32
 			offset -= dirspressed[-1] * 32
 			var invalidtile: bool = $"../walls".get_cell_atlas_coords(floor(position / 32)) != Vector2i(-1, -1) || $"../floors".get_cell_atlas_coords(floor(position / 32)) == Vector2i(-1, -1) || !visible
-			if !global.leveldata["rooms"].is_empty() && !global.leveldata["rooms"][$/root/play.room].rect.has_point(floor(position / 32)):
+			if !global.leveldata["rooms"].is_empty() && !$/root/play.roomdict.rect.has_point(floor(position / 32)):
 				invalidtile = true
 			$shapecast.force_shapecast_update()
 			if $shapecast.is_colliding():
 				var i: Object = $shapecast.get_collider(0)
 				if i.is_in_group(&"teleporter"):
-					$/root/play.room = i.get_node("..").roomid
-					position = (global.leveldata["rooms"][i.get_node("..").roomid].rect.position + i.get_node("..").pos) * 32
+					$/root/play.room = i.get_node("..").room
+					$/root/play.setuproom()
+					position = i.get_node("..").pos * 32
 				elif i.is_in_group(&"enemy"):
 					invalidtile = true
 					var estats: Dictionary = formenemystats(i.get_node(".."))
