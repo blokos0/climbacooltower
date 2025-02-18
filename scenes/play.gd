@@ -30,7 +30,7 @@ func leveldatatolevel() -> void:
 			tm.set_cell(pos, 0, Vector2i(ind, int(i.get_slice(",", 3))))
 	$gamelayer/gameworldcontainer/gameworld/shader/player.position = global.leveldata["playerspawn"] * 32
 	global.enemies = global.leveldata["enemydata"]
-	for i: Dictionary in global.leveldata["enemyplace"]:
+	for i: Array in global.leveldata["enemyplace"]:
 		var e: Sprite2D = preload("res://scenes/enemy.tscn").instantiate()
 		e.position = i[0] * 32
 		e.kind = i[1]

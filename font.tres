@@ -21,9 +21,7 @@ monospace = false
 descent = 14.0
 ascent = 0.0
 preview_color = Color(0.12549, 0.141176, 0.192157, 1)
-preview_chars = "new
-YEAH
-"
+preview_chars = "zyzy"
 
 [sub_resource type="Resource" id="Resource_wkjpv"]
 script = ExtResource("3_jvlak")
@@ -452,10 +450,10 @@ cache/0/16/0/glyphs/112/offset = Vector2(0, 0)
 cache/0/16/0/glyphs/112/size = Vector2(6, 12)
 cache/0/16/0/glyphs/112/uv_rect = Rect2(64, 36, 6, 12)
 cache/0/16/0/glyphs/112/texture_idx = 0
-cache/0/16/0/glyphs/113/advance = Vector2(9, 0)
+cache/0/16/0/glyphs/113/advance = Vector2(7, 0)
 cache/0/16/0/glyphs/113/offset = Vector2(0, 0)
-cache/0/16/0/glyphs/113/size = Vector2(8, 12)
-cache/0/16/0/glyphs/113/uv_rect = Rect2(72, 36, 8, 12)
+cache/0/16/0/glyphs/113/size = Vector2(6, 12)
+cache/0/16/0/glyphs/113/uv_rect = Rect2(73, 36, 6, 12)
 cache/0/16/0/glyphs/113/texture_idx = 0
 cache/0/16/0/glyphs/114/advance = Vector2(9, 0)
 cache/0/16/0/glyphs/114/offset = Vector2(0, 0)
@@ -487,10 +485,10 @@ cache/0/16/0/glyphs/119/offset = Vector2(0, 0)
 cache/0/16/0/glyphs/119/size = Vector2(8, 12)
 cache/0/16/0/glyphs/119/uv_rect = Rect2(120, 36, 8, 12)
 cache/0/16/0/glyphs/119/texture_idx = 0
-cache/0/16/0/glyphs/120/advance = Vector2(7, 0)
+cache/0/16/0/glyphs/120/advance = Vector2(8, 0)
 cache/0/16/0/glyphs/120/offset = Vector2(0, 0)
-cache/0/16/0/glyphs/120/size = Vector2(6, 12)
-cache/0/16/0/glyphs/120/uv_rect = Rect2(128, 36, 6, 12)
+cache/0/16/0/glyphs/120/size = Vector2(7, 12)
+cache/0/16/0/glyphs/120/uv_rect = Rect2(128, 36, 7, 12)
 cache/0/16/0/glyphs/120/texture_idx = 0
 cache/0/16/0/glyphs/121/advance = Vector2(7, 0)
 cache/0/16/0/glyphs/121/offset = Vector2(0, 0)

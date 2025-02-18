@@ -17,8 +17,10 @@ var teleporterroom: String
 var teleporterpos: Vector2i
 var teleporteralt: bool
 var placingteleporter: bool
-var teleporters: Array[Array]
+var teleporters: Array
 var startingroom: String
+var rectanglestart: Vector2
+var rectangleend: Vector2
 func _ready() -> void:
 	$ui/panel/uiboxp0/propertiesbox/otherbox/roomlist.item_activated.connect(roomlistselect)
 	$ui/panel/uiboxp0/propertiesbox/enemybox/enemylist.item_activated.connect(enemylistselect)
@@ -35,7 +37,7 @@ func _ready() -> void:
 	DiscordRPC.refresh()
 	leveldatatolevel()
 func _process(_delta: float) -> void:
-	if !$ui/panel.visible && $ui/fuckingeditorthing.get_local_mouse_position().y > 0 && !selectingroom && !placingenemy && !placingjelly:
+	if !$ui/panel.visible && $ui/fuckingeditorthing.get_local_mouse_position().y > 0 && !selectingroom && !placingenemy && !placingjelly && !Input.is_action_pressed(&"placetile") && !Input.is_action_pressed(&"rectangle"):
 		$ui/panel.visible = true
 		$ui/fuckingeditorthing.visible = false
 	elif $ui/fuckingeditorthing.get_local_mouse_position().y < -328:
@@ -66,11 +68,11 @@ func _process(_delta: float) -> void:
 					currentenemyvariant = pos.x + pos.y * 4
 					$ui/panel/uiboxp0/propertiesbox/enemybox/enemyvariants/selectedenemyvariant.position = pos * 32
 					genenemylist()
-		elif !selectingroom && !placingenemy && !placingjelly && !placingteleporter:
+		elif !selectingroom && !placingenemy && !placingjelly && !placingteleporter && !Input.is_action_pressed(&"rectangle"):
 			tm.set_cell(floor(get_local_mouse_position() / 32), 0, currenttile)
 		elif selectingroom:
 			if Input.is_action_just_pressed(&"placetile"):
-				selectedroom = Rect2i(floor(get_local_mouse_position() / 32), Vector2i(0, 0))
+				selectedroom = Rect2i(floor(get_local_mouse_position() / 32), Vector2i())
 			elif selectedroom != null:
 				selectedroom.size = Vector2i(ceil(get_local_mouse_position() / 32)) - selectedroom.position
 		elif placingjelly:
@@ -78,8 +80,16 @@ func _process(_delta: float) -> void:
 			placingjelly = false
 			$ui/tooltipthing.visible = false
 		elif placingteleporter:
-			teleporters.append([floor(get_local_mouse_position() / 32), teleporterpos, teleporterroom, teleporteralt])
-			print(teleporters)
+			var te: Array = [floor(get_local_mouse_position() / 32), teleporterpos, teleporterroom, teleporteralt]
+			var invalid: bool = teleporters.has(te)
+			for i: Array in teleporters:
+				if i[0] == floor(get_local_mouse_position() / 32):
+					invalid = true
+			for i: Array in placedenemies:
+				if Vector2i(i[0]) == Vector2i(floor(get_local_mouse_position() / 32)): # i[0] is either Vector2 or Vector2i every time idk why
+					invalid = true
+			if !invalid:
+				teleporters.append(te)
 			placingteleporter = false
 			$ui/tooltipthing.visible = false
 	if Input.is_action_just_pressed(&"placetile") && placingenemy && !$ui/panel.visible && !didthepaneljustclose:
@@ -87,6 +97,9 @@ func _process(_delta: float) -> void:
 		var invalid: bool = placedenemies.has(pe)
 		for i: Array in placedenemies:
 			if Vector2i(i[0]) == Vector2i(floor(get_local_mouse_position() / 32)): # i[0] is either Vector2 or Vector2i every time idk why
+				invalid = true
+		for i: Array in teleporters:
+			if i[0] == floor(get_local_mouse_position() / 32):
 				invalid = true
 		if !invalid:
 			placedenemies.append(pe)
@@ -113,10 +126,31 @@ func _process(_delta: float) -> void:
 			$ui/tooltipthing.text = "sorry its too flat"
 	if Input.is_action_pressed(&"removetile") && !$ui/panel.visible:
 		tm.erase_cell(floor(get_local_mouse_position() / 32))
+	if Input.is_action_just_pressed(&"removetile") && !$ui/panel.visible:
+		for i: Array in placedenemies:
+			if i[0] == floor(get_local_mouse_position() / 32):
+				placedenemies.erase(i)
+				break
+		for i: Array in teleporters:
+			if i[0] == floor(get_local_mouse_position() / 32):
+				teleporters.erase(i)
+				break
 	if Input.is_action_just_pressed(&"picktile"):
 		if tm.get_cell_source_id(floor(get_local_mouse_position() / 32)) != -1:
 			currenttile.x = tm.get_cell_atlas_coords(floor(get_local_mouse_position() / 32)).x
 			$ui/panel/uiboxp0/tiles/selectedtile.position = currenttile * 32
+	if Input.is_action_just_pressed(&"rectangle"):
+		rectanglestart = floor(get_local_mouse_position() / 32)
+	if Input.is_action_pressed(&"rectangle"):
+		rectangleend = floor(get_local_mouse_position() / 32)
+	if Input.is_action_just_released(&"rectangle"):
+		# please forgive me
+		var c: Vector2i = currenttile
+		if Input.is_action_pressed(&"sneak"):
+			c = Vector2i(-1, -1)
+		for x in range(rectanglestart.x, rectangleend.x - sign(rectanglestart.x - rectangleend.x) + int(rectanglestart.x == rectangleend.x), clamp(sign(rectangleend.x - rectanglestart.x) + int(rectanglestart.x == rectangleend.x), -1, 1)):
+			for y in range(rectanglestart.y, rectangleend.y - sign(rectanglestart.y - rectangleend.y) + int(rectanglestart.y == rectangleend.y), clamp(sign(rectangleend.y - rectanglestart.y) + int(rectanglestart.y == rectangleend.y), -1, 1)):
+				tm.set_cell(Vector2i(x, y), 0, c)
 	if !$ui/panel.visible && !Input.is_action_pressed(&"save"):
 		$camera.position += Input.get_vector(&"left", &"right", &"up", &"down") * 12 * (int(Input.is_action_pressed("sneak")) + 1) * (0.5 / $camera.zoom.x + 0.5)
 		if Input.is_action_just_pressed(&"zoomin") || Input.is_action_just_pressed(&"zoomout"):
@@ -178,7 +212,7 @@ func _draw() -> void:
 			draw_rect(Rect2i(i.rect.position * 32, i.rect.size * 32), Color.from_hsv(ind * 0.027, 1, 1), false, 8)
 			draw_string(ThemeDB.fallback_font, i.rect.position * 32 - Vector2i(0, 24), i.name)
 			ind += 1
-		if !$ui/panel.visible:
+		if !$ui/panel.visible && !Input.is_action_pressed(&"rectangle"):
 			if !selectingroom && !placingenemy && !placingjelly && !placingteleporter:
 				draw_texture_rect_region(preload("res://sprites/tiles.png"), Rect2(floor(get_local_mouse_position() / 32) * 32, Vector2(32, 32)), Rect2(currenttile * 32, Vector2i(32, 32)), Color(1, 1, 1, 0.5))
 			elif placingjelly:
@@ -191,6 +225,13 @@ func _draw() -> void:
 		draw_texture_rect_region(load("res://sprites/" + i[1] + ".png"), Rect2(i[0] * 32, Vector2(32, 32)), Rect2(i[2] * 32, 0, 32, 32), Color(1, 1, 1, 0.75 + int(Input.is_action_pressed("showasis") && !$ui/panel.visible) * 0.25))
 	for i: Array in teleporters:
 		draw_texture_rect_region(preload("res://sprites/teleporter.png"), Rect2(i[0] * 32, Vector2i(32, 32)), Rect2(Vector2i(wrap(floor(float(Engine.get_process_frames()) / 12.5) * 32, 0, 96), 32 * int(i[3])), Vector2i(32, 32)), Color(1, 1, 1, 0.75 + int(Input.is_action_pressed("showasis") && !$ui/panel.visible) * 0.25))
+	if Input.is_action_pressed(&"rectangle"):
+		var rect: Rect2
+		rect.position.x = rectanglestart.x * 32 - max((rectanglestart.x - rectangleend.x) * 32, 0)
+		rect.position.y = rectanglestart.y * 32 - max((rectanglestart.y - rectangleend.y) * 32, 0)
+		rect.end.x = rectangleend.x * 32 + 32 + max((rectanglestart.x - rectangleend.x) * 32, 0)
+		rect.end.y = rectangleend.y * 32 + 32 + max((rectanglestart.y - rectangleend.y) * 32, 0)
+		draw_rect(rect, Color(1, 1 - int(Input.is_action_pressed("sneak")), 1 - int(Input.is_action_pressed("sneak"))), false, 8)
 func roomlistselect(index: int) -> void:
 	$ui/panel/uiboxp0/propertiesbox/otherbox/roomlist.remove_item(index)
 	rooms.remove_at(index)
@@ -237,7 +278,7 @@ func createteleporterpressed() -> void:
 	$ui/panel.visible = false
 	placingteleporter = true
 func mouseintexturerect(t: TextureRect) -> bool:
-	return Rect2(Vector2(0, 0), t.texture.get_size()).has_point(t.get_local_mouse_position())
+	return Rect2(Vector2(), t.texture.get_size()).has_point(t.get_local_mouse_position())
 func genenemylist() -> void:
 	var sel: PackedInt32Array = $ui/panel/uiboxp0/propertiesbox/enemybox/enemylist.get_selected_items()
 	$ui/panel/uiboxp0/propertiesbox/enemybox/enemylist.clear()
@@ -292,7 +333,6 @@ func leveldatatofile(filename: String) -> FileAccess:
 func savelevel(filename: String) -> FileAccess:
 	# leveltoleveldata() and leveldatatofile(filename) in one function
 	leveltoleveldata()
-	print(global.leveldata)
 	return leveldatatofile(filename)
 func leveldatatolevel() -> void:
 	# converts global.leveldata into an editor level

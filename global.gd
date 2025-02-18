@@ -25,7 +25,7 @@ var leveldata: Dictionary = {
 	"enemydata": enemies,
 	"enemyplace": [],
 	"playerspawn": Vector2i(),
-	"teleporters": "",
+	"teleporters": [],
 	"startingroom": ""
 }
 var version: String = "0.1"
