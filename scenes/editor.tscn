@@ -2,8 +2,8 @@
 
 [ext_resource type="PackedScene" uid="uid://cth72fb5mrt1k" path="res://scenes/bgdigital.tscn" id="1_c2cl3"]
 [ext_resource type="Script" path="res://scenes/editor.gd" id="1_yt3fo"]
-[ext_resource type="AudioStream" uid="uid://b38cfdaku0xa8" path="res://music/gloomyfactory.ogg" id="3_7dgj0"]
 [ext_resource type="Texture2D" uid="uid://bwxrie6232fid" path="res://sprites/tiles.png" id="3_36nse"]
+[ext_resource type="AudioStream" uid="uid://15wf1w8kmt8s" path="res://music/unfortunatelycomplicatededitor.ogg" id="3_x46a6"]
 [ext_resource type="Texture2D" uid="uid://bbosxkksv3i0t" path="res://sprites/grid.png" id="4_b15pm"]
 [ext_resource type="TileSet" uid="uid://cifrghmfvrh7v" path="res://tileset.tres" id="6_2xnlh"]
 [ext_resource type="Theme" uid="uid://im7lovh8mede" path="res://theme.tres" id="6_frrc5"]
@@ -21,9 +21,10 @@ region = Rect2(0, 0, 32, 32)
 script = ExtResource("1_yt3fo")
 
 [node name="bg" parent="." instance=ExtResource("1_c2cl3")]
+visible = false
 
 [node name="music" type="AudioStreamPlayer" parent="."]
-stream = ExtResource("3_7dgj0")
+stream = ExtResource("3_x46a6")
 volume_db = -3.0
 autoplay = true
 bus = &"music"
