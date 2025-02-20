@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=14 format=3 uid="uid://im7lovh8mede"]
+[gd_resource type="Theme" load_steps=19 format=3 uid="uid://im7lovh8mede"]
 
 [ext_resource type="StyleBox" uid="uid://bmeqqapev47q5" path="res://stylebox.tres" id="1_0o7wj"]
 [ext_resource type="StyleBox" uid="uid://shk7qqgcchw0" path="res://styleboxpressed.tres" id="1_o0nxr"]
@@ -18,6 +18,21 @@ expand_margin_top = 4.0
 expand_margin_right = 4.0
 expand_margin_bottom = 4.0
 anti_aliasing = false
+
+[sub_resource type="ImageTexture" id="ImageTexture_vd7qe"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gqvib"]
+bg_color = Color(0.447462, 0.479375, 1, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bt4sx"]
+bg_color = Color(0.61, 0.6295, 1, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2hqcy"]
+bg_color = Color(0.3, 0.335, 1, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_avcw8"]
+content_margin_top = 8.0
+bg_color = Color(0.0483307, 0.0244967, 0.105469, 1)
 
 [sub_resource type="StyleBoxLine" id="StyleBoxLine_060hv"]
 color = Color(1, 1, 1, 1)
@@ -53,6 +68,16 @@ Button/styles/focus = SubResource("StyleBoxFlat_8pgcv")
 Button/styles/hover = ExtResource("1_towrh")
 Button/styles/normal = ExtResource("1_0o7wj")
 Button/styles/pressed = ExtResource("1_o0nxr")
+HScrollBar/icons/decrement = SubResource("ImageTexture_vd7qe")
+HScrollBar/icons/decrement_highlight = SubResource("ImageTexture_vd7qe")
+HScrollBar/icons/decrement_pressed = SubResource("ImageTexture_vd7qe")
+HScrollBar/icons/increment = SubResource("ImageTexture_vd7qe")
+HScrollBar/icons/increment_highlight = SubResource("ImageTexture_vd7qe")
+HScrollBar/icons/increment_pressed = SubResource("ImageTexture_vd7qe")
+HScrollBar/styles/grabber = SubResource("StyleBoxFlat_gqvib")
+HScrollBar/styles/grabber_highlight = SubResource("StyleBoxFlat_bt4sx")
+HScrollBar/styles/grabber_pressed = SubResource("StyleBoxFlat_2hqcy")
+HScrollBar/styles/scroll = SubResource("StyleBoxFlat_avcw8")
 HSeparator/constants/separation = 2
 HSeparator/styles/separator = SubResource("StyleBoxLine_060hv")
 ItemList/styles/panel = ExtResource("4_1vr5m")

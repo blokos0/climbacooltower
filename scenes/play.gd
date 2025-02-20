@@ -45,7 +45,7 @@ func leveldatatolevel() -> void:
 		$gamelayer/gameworldcontainer/gameworld/shader.add_child(t)
 	$gamelayer/gameworldcontainer/gameworld/shader.move_child($gamelayer/gameworldcontainer/gameworld/shader/player, $gamelayer/gameworldcontainer/gameworld/shader.get_child_count())
 func _process(_delta: float) -> void:
-	$gamelayer/gameworldcontainer/gameworld/shader/camera.position = Vector2($gamelayer/gameworldcontainer/gameworld/shader/player.position.x + 16, $gamelayer/gameworldcontainer/gameworld/shader/player.position.y - 16) + $gamelayer/gameworldcontainer/gameworld/shader/player.offset
+	$gamelayer/gameworldcontainer/gameworld/shader/camera.position = Vector2($gamelayer/gameworldcontainer/gameworld/shader/player.position.x + 16, $gamelayer/gameworldcontainer/gameworld/shader/player.position.y + 32) + $gamelayer/gameworldcontainer/gameworld/shader/player.offset
 	if Input.is_action_just_pressed(&"playtest"):
 		get_tree().change_scene_to_file("res://scenes/editor.tscn")
 func setuproom() -> void:
@@ -81,6 +81,7 @@ func setuproom() -> void:
 	$gamelayer/gameworldcontainer/gameworld/shader/camera.limit_top = roomdict.rect.position.y * 32 - max(352 - roomdict.rect.size.y * 32, 0) / 2 - 4
 	$gamelayer/gameworldcontainer/gameworld/shader/camera.limit_right = roomdict.rect.position.x * 32 + roomdict.rect.size.x * 32 + max(352 - roomdict.rect.size.x * 32, 0) / 2 - 4
 	$gamelayer/gameworldcontainer/gameworld/shader/camera.limit_bottom = roomdict.rect.position.y * 32 + roomdict.rect.size.y * 32 - 4
+	$gamelayer/gameworldcontainer/gameworld/shader/camera.position = Vector2($gamelayer/gameworldcontainer/gameworld/shader/player.position.x + 16, $gamelayer/gameworldcontainer/gameworld/shader/player.position.y + 32) + $gamelayer/gameworldcontainer/gameworld/shader/player.offset
 	$roomsound.play()
 func updatestats(hp: int = 0, atk: int = 0, def: int = 0) -> void:
 	stats.hp += hp

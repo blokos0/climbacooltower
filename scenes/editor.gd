@@ -23,6 +23,7 @@ var rectanglestart: Vector2
 var rectangleend: Vector2
 func _ready() -> void:
 	$ui/panel/uiboxp0/propertiesbox/otherbox/roomlist.item_activated.connect(roomlistselect)
+	$ui/panel/uiboxp0/propertiesbox/otherbox/roomlist.item_selected.connect(roomlistclick)
 	$ui/panel/uiboxp0/propertiesbox/enemybox/enemylist.item_activated.connect(enemylistselect)
 	$ui/panel/uiboxp0/propertiesbox/otherbox/funbox/jellybutton.pressed.connect(jellybuttonpressed)
 	$ui/panel/uiboxp0/propertiesbox/tileroombox/createroom.pressed.connect(createroompressed)
@@ -60,9 +61,9 @@ func _process(_delta: float) -> void:
 	if Input.is_action_pressed(&"placetile"):
 		if $ui/panel.visible:
 			if Input.is_action_just_pressed(&"placetile") && $ui/panel/uiboxp0.visible:
-				if mouseintexturerect($ui/panel/uiboxp0/tiles):
-					currenttile = floor($ui/panel/uiboxp0/tiles.get_local_mouse_position() / 32)
-					$ui/panel/uiboxp0/tiles/selectedtile.position = currenttile * 32
+				if mouseintexturerect($ui/panel/uiboxp0/tilescontainer/tiles):
+					currenttile = floor($ui/panel/uiboxp0/tilescontainer/tiles.get_local_mouse_position() / 32)
+					$ui/panel/uiboxp0/tilescontainer/tiles/selectedtile.position = currenttile * 32
 				elif mouseintexturerect($ui/panel/uiboxp0/propertiesbox/enemybox/enemyvariants):
 					var pos: Vector2 = floor($ui/panel/uiboxp0/propertiesbox/enemybox/enemyvariants.get_local_mouse_position() / 32)
 					currentenemyvariant = pos.x + pos.y * 4
@@ -85,9 +86,11 @@ func _process(_delta: float) -> void:
 			for i: Array in teleporters:
 				if i[0] == floor(get_local_mouse_position() / 32):
 					invalid = true
+					break
 			for i: Array in placedenemies:
 				if Vector2i(i[0]) == Vector2i(floor(get_local_mouse_position() / 32)): # i[0] is either Vector2 or Vector2i every time idk why
 					invalid = true
+					break
 			if !invalid:
 				teleporters.append(te)
 			placingteleporter = false
@@ -98,9 +101,11 @@ func _process(_delta: float) -> void:
 		for i: Array in placedenemies:
 			if Vector2i(i[0]) == Vector2i(floor(get_local_mouse_position() / 32)): # i[0] is either Vector2 or Vector2i every time idk why
 				invalid = true
+				break
 		for i: Array in teleporters:
 			if i[0] == floor(get_local_mouse_position() / 32):
 				invalid = true
+				break
 		if !invalid:
 			placedenemies.append(pe)
 		placingenemy = false
@@ -138,7 +143,10 @@ func _process(_delta: float) -> void:
 	if Input.is_action_just_pressed(&"picktile"):
 		if tm.get_cell_source_id(floor(get_local_mouse_position() / 32)) != -1:
 			currenttile.x = tm.get_cell_atlas_coords(floor(get_local_mouse_position() / 32)).x
-			$ui/panel/uiboxp0/tiles/selectedtile.position = currenttile * 32
+			$ui/panel/uiboxp0/tilescontainer/tiles/selectedtile.position = currenttile * 32
+	if Input.is_action_just_pressed(&"tileswap") && !Input.is_action_pressed(&"rectangle"):
+		currenttile.y = int(!bool(currenttile.y))
+		$ui/panel/uiboxp0/tilescontainer/tiles/selectedtile.position = currenttile * 32
 	if Input.is_action_just_pressed(&"rectangle"):
 		rectanglestart = floor(get_local_mouse_position() / 32)
 	if Input.is_action_pressed(&"rectangle"):
@@ -154,10 +162,14 @@ func _process(_delta: float) -> void:
 	if !$ui/panel.visible && !Input.is_action_pressed(&"save"):
 		$camera.position += Input.get_vector(&"left", &"right", &"up", &"down") * 12 * (int(Input.is_action_pressed("sneak")) + 1) * (0.5 / $camera.zoom.x + 0.5)
 		if Input.is_action_just_pressed(&"zoomin") || Input.is_action_just_pressed(&"zoomout"):
-			var cammouse: Vector2 = get_global_mouse_position()
-			var zoomval: float = 1 + (int(Input.is_action_just_pressed(&"zoomin")) - int(Input.is_action_just_pressed(&"zoomout"))) * 0.2
-			$camera.zoom = clamp($camera.zoom * Vector2(zoomval, zoomval), Vector2(0.03125, 0.03125), Vector2(4, 4))
-			$camera.position += cammouse - get_global_mouse_position()
+			if Input.is_action_pressed(&"sneak"):
+				currenttile.x = wrapi(currenttile.x + int(Input.is_action_just_pressed(&"zoomin")) - int(Input.is_action_just_pressed(&"zoomout")), 0, $ui/panel/uiboxp0/tilescontainer/tiles.texture.get_size().x / 32)
+				$ui/panel/uiboxp0/tilescontainer/tiles/selectedtile.position = currenttile * 32
+			else:
+				var cammouse: Vector2 = get_global_mouse_position()
+				var zoomval: float = 1 + (int(Input.is_action_just_pressed(&"zoomin")) - int(Input.is_action_just_pressed(&"zoomout"))) * 0.2
+				$camera.zoom = clamp($camera.zoom * Vector2(zoomval, zoomval), Vector2(0.03125, 0.03125), Vector2(4, 4))
+				$camera.position += cammouse - get_global_mouse_position()
 		$camera/grid.region_rect.position = $camera.position
 	if Input.is_action_just_pressed(&"page") && $ui/panel.visible && !$ui/panel/uiboxp0/propertiesbox/tileroombox/roomname.has_focus() && !$ui/panel/uiboxp1/teleporterbox/room.has_focus() && !$ui/panel/uiboxp0/propertiesbox/otherbox/funbox/towername.has_focus() && !$ui/panel/uiboxp1/teleporterbox/positionbox/x.has_focus() && !$ui/panel/uiboxp1/teleporterbox/positionbox/y.has_focus() && !$ui/panel/uiboxp1/startroom.has_focus():
 		$ui/panel.get_node("uiboxp" + str(panelpage)).visible = false
@@ -235,6 +247,17 @@ func _draw() -> void:
 func roomlistselect(index: int) -> void:
 	$ui/panel/uiboxp0/propertiesbox/otherbox/roomlist.remove_item(index)
 	rooms.remove_at(index)
+func roomlistclick(index: int) -> void:
+	$ui/panel/uiboxp0/propertiesbox/tileroombox/roomname.text = rooms[index].name
+	# aw seriously
+	for i: int in $ui/panel/uiboxp0/propertiesbox/tileroombox/roomtheme.item_count:
+		if $ui/panel/uiboxp0/propertiesbox/tileroombox/roomtheme.get_item_text(i) == rooms[index].theme:
+			$ui/panel/uiboxp0/propertiesbox/tileroombox/roomtheme.select(i)
+			break
+	for i: int in $ui/panel/uiboxp0/propertiesbox/tileroombox/roomsong.item_count:
+		if $ui/panel/uiboxp0/propertiesbox/tileroombox/roomsong.get_item_text(i) == rooms[index].song:
+			$ui/panel/uiboxp0/propertiesbox/tileroombox/roomsong.select(i)
+			break
 func enemylistselect(index: int) -> void:
 	placingenemykind = global.enemies.keys()[index]
 	$ui/panel.visible = false

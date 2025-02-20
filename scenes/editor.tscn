@@ -38,7 +38,6 @@ texture = ExtResource("8_lqslm")
 centered = false
 
 [node name="panel" type="PanelContainer" parent="ui"]
-visible = false
 offset_right = 640.0
 offset_bottom = 360.0
 theme = ExtResource("6_frrc5")
@@ -46,13 +45,17 @@ theme = ExtResource("6_frrc5")
 [node name="uiboxp0" type="VBoxContainer" parent="ui/panel"]
 layout_mode = 2
 
-[node name="tiles" type="TextureRect" parent="ui/panel/uiboxp0"]
+[node name="tilescontainer" type="ScrollContainer" parent="ui/panel/uiboxp0"]
+layout_mode = 2
+vertical_scroll_mode = 0
+
+[node name="tiles" type="TextureRect" parent="ui/panel/uiboxp0/tilescontainer"]
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 0
 texture = ExtResource("3_36nse")
 
-[node name="selectedtile" type="Sprite2D" parent="ui/panel/uiboxp0/tiles"]
+[node name="selectedtile" type="Sprite2D" parent="ui/panel/uiboxp0/tilescontainer/tiles"]
 modulate = Color(1, 1, 1, 0.5)
 texture = ExtResource("7_hjxn5")
 centered = false
