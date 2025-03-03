@@ -38,3 +38,11 @@ func focuschanged(node: Control) -> void:
 	$focussound.play()
 	if !menu:
 		$art.texture = load("res://sprites/menuart_" + node.name + ".png")
+	if $createbox/backbutton.has_focus():
+		$art.texture = load("res://sprites/menuart_createbutton.png")
+func _on_backbutton_pressed() -> void:
+	menu = 0
+	$homebox/startbutton.grab_focus()
+	$focussound.play()
+func _on_newtowerbutton_pressed() -> void:
+	get_tree().change_scene_to_file("res://scenes/editor.tscn")

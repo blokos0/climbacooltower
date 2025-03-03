@@ -22,6 +22,7 @@ var startingroom: String
 var rectanglestart: Vector2
 var rectangleend: Vector2
 func _ready() -> void:
+	$ui/panel.visible = false
 	$ui/panel/uiboxp0/propertiesbox/otherbox/roomlist.item_activated.connect(roomlistselect)
 	$ui/panel/uiboxp0/propertiesbox/otherbox/roomlist.item_selected.connect(roomlistclick)
 	$ui/panel/uiboxp0/propertiesbox/enemybox/enemylist.item_activated.connect(enemylistselect)
