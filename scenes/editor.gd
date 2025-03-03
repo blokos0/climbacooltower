@@ -22,7 +22,6 @@ var startingroom: String
 var rectanglestart: Vector2
 var rectangleend: Vector2
 func _ready() -> void:
-	$ui/panel.visible = false
 	$ui/panel/uiboxp0/propertiesbox/otherbox/roomlist.item_activated.connect(roomlistselect)
 	$ui/panel/uiboxp0/propertiesbox/otherbox/roomlist.item_selected.connect(roomlistclick)
 	$ui/panel/uiboxp0/propertiesbox/enemybox/enemylist.item_activated.connect(enemylistselect)
@@ -37,8 +36,8 @@ func _ready() -> void:
 	DiscordRPC.state = "in the editor"
 	DiscordRPC.details = "havent saved yet..."
 	DiscordRPC.refresh()
-	#leveldatatolevel()
-	loadlevel("just a tower")
+	if !global.leveldata.is_empty():
+		leveldatatolevel()
 func _process(_delta: float) -> void:
 	if !$ui/panel.visible && $ui/fuckingeditorthing.get_local_mouse_position().y > 0 && !selectingroom && !placingenemy && !placingjelly && !Input.is_action_pressed(&"placetile") && !Input.is_action_pressed(&"rectangle"):
 		$ui/panel.visible = true
@@ -215,6 +214,7 @@ func _process(_delta: float) -> void:
 			$ui/panel/uiboxp1/teleporterbox/positionbox/y.release_focus()
 			$ui/panel/uiboxp1/startroom.release_focus()
 	if Input.is_action_just_pressed(&"back"):
+		leveltoleveldata()
 		get_tree().change_scene_to_file("res://scenes/title.tscn")
 		return
 	$ui/tilepos.text = str(Vector2i(floor(get_local_mouse_position() / 32)))
@@ -329,14 +329,12 @@ func leveltoleveldata() -> void:
 		var i: int = $walls.get_cell_atlas_coords(pos).x
 		arr.append(str(i) + "," + str(pos.x) + "," + str(pos.y) + ",1")
 	global.leveldata["tiles"] = "/".join(arr)
-	var towername: String = "tower"
-	if len($ui/panel/uiboxp0/propertiesbox/otherbox/funbox/towername.text):
-		towername = $ui/panel/uiboxp0/propertiesbox/otherbox/funbox/towername.text
-	global.leveldata["name"] = towername
+	global.leveldata["name"] = $ui/panel/uiboxp0/propertiesbox/otherbox/funbox/towername.text
 	global.leveldata["rooms"] = rooms
 	global.leveldata["playerspawn"] = playerpos
 	global.leveldata["teleporters"] = teleporters
 	global.leveldata["startingroom"] = startingroom
+	global.leveldata["enemyplace"] = placedenemies
 func leveldatatofile(filename: String) -> FileAccess:
 	# does the necessary conversions and saves global.leveldata to a file, then reverts the changes
 	var arr: PackedStringArray = []

@@ -38,6 +38,7 @@ texture = ExtResource("8_lqslm")
 centered = false
 
 [node name="panel" type="PanelContainer" parent="ui"]
+visible = false
 offset_right = 640.0
 offset_bottom = 360.0
 theme = ExtResource("6_frrc5")

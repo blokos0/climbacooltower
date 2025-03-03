@@ -7,6 +7,9 @@ func _ready() -> void:
 	$homebox/createbutton.pressed.connect(createbuttonpressed)
 	$homebox/browsebutton.pressed.connect(browsebuttonpressed)
 	$homebox/settingsbutton.pressed.connect(settingsbuttonpressed)
+	$createbox/backbutton.pressed.connect(createbackbuttonpressed)
+	$createbox/newtowerbutton.pressed.connect(createnewtowerbuttonpressed)
+	$createbox/edittowerbutton.pressed.connect(createnewtowerbuttonpressed.bind(false))
 	$"/root".gui_focus_changed.connect(focuschanged)
 	$credits.text = "v" + global.version + " [wave freq=5][rainbow sat=0.5 freq=0.1]made by blokos"
 	DiscordRPC.state = "on the titlescreen"
@@ -25,7 +28,6 @@ func _process(_delta: float) -> void:
 func startbuttonpressed() -> void:
 	global.notify("not yet!")
 func createbuttonpressed() -> void:
-	#get_tree().change_scene_to_file("res://scenes/editor.tscn")
 	menu = 1
 	$createbox/backbutton.grab_focus()
 func browsebuttonpressed() -> void:
@@ -34,15 +36,16 @@ func settingsbuttonpressed() -> void:
 	var d: Variant = global.setupdialog(["it is i! mr sad"], "8,0,stop/9,0,face,1", "holland")
 	if d:
 		add_child(d)
+func createbackbuttonpressed() -> void:
+	menu = 0
+	$homebox/startbutton.grab_focus()
+	$focussound.play()
+func createnewtowerbuttonpressed(reset: bool = true) -> void:
+	if reset:
+		global.leveldata.clear()
+	print(global.leveldata)
+	get_tree().change_scene_to_file("res://scenes/editor.tscn")
 func focuschanged(node: Control) -> void:
 	$focussound.play()
 	if !menu:
 		$art.texture = load("res://sprites/menuart_" + node.name + ".png")
-	if $createbox/backbutton.has_focus():
-		$art.texture = load("res://sprites/menuart_createbutton.png")
-func _on_backbutton_pressed() -> void:
-	menu = 0
-	$homebox/startbutton.grab_focus()
-	$focussound.play()
-func _on_newtowerbutton_pressed() -> void:
-	get_tree().change_scene_to_file("res://scenes/editor.tscn")
