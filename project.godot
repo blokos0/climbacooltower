@@ -12,7 +12,7 @@ config_version=5
 
 config/name="climb a cool tower"
 run/main_scene="res://scenes/title.tscn"
-config/features=PackedStringArray("4.3", "Forward Plus")
+config/features=PackedStringArray("4.4", "Forward Plus")
 config/icon="res://sprites/icon.png"
 
 [audio]

@@ -1,7 +1,7 @@
 [gd_scene load_steps=6 format=3 uid="uid://fq72viq4y1n7"]
 
 [ext_resource type="Texture2D" uid="uid://b68y5ybtb82sj" path="res://sprites/blob.png" id="1_bm4ir"]
-[ext_resource type="Script" path="res://scenes/enemy.gd" id="2_7smh1"]
+[ext_resource type="Script" uid="uid://vlxs36035scm" path="res://scenes/enemy.gd" id="2_7smh1"]
 [ext_resource type="Texture2D" uid="uid://bato54gly6vwf" path="res://sprites/light.png" id="2_ja4km"]
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_nul1c"]

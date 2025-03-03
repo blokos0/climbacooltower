@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://ud2mcabp2mg0"]
 
-[ext_resource type="Script" path="res://addons/texture_fonts/UI/mapping.gd" id="1_uoe0t"]
+[ext_resource type="Script" uid="uid://dq2h0wxdliyhq" path="res://addons/texture_fonts/UI/mapping.gd" id="1_uoe0t"]
 [ext_resource type="PackedScene" uid="uid://cf8py46vfqbf4" path="res://addons/texture_fonts/UI/Components/Vector2Edit.tscn" id="2_mp5wm"]
 [ext_resource type="FontFile" uid="uid://vxqsbmlofgoq" path="res://addons/texture_fonts/Assets/Fonts/RobotoMono-Medium.ttf" id="3_hh27p"]
 [ext_resource type="PackedScene" uid="uid://cjca34ig077sx" path="res://addons/texture_fonts/UI/Components/TextureViewer/TextureViewer.tscn" id="4_ubswt"]

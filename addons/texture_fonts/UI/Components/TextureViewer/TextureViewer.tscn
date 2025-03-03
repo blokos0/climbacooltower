@@ -2,9 +2,9 @@
 
 [ext_resource type="FontFile" uid="uid://vxqsbmlofgoq" path="res://addons/texture_fonts/Assets/Fonts/RobotoMono-Medium.ttf" id="2"]
 [ext_resource type="Texture2D" uid="uid://yn34nyba10uy" path="res://addons/texture_fonts/Assets/TransparentBG.png" id="3"]
-[ext_resource type="Script" path="res://addons/texture_fonts/UI/Components/TextureViewer/TextureViewer.gd" id="4"]
-[ext_resource type="Script" path="res://addons/texture_fonts/UI/Components/TextureViewer/TextureView.gd" id="5"]
-[ext_resource type="Script" path="res://addons/texture_fonts/UI/Components/TextureViewer/TextureContainer.gd" id="6"]
+[ext_resource type="Script" uid="uid://cw2tig4ej2fmp" path="res://addons/texture_fonts/UI/Components/TextureViewer/TextureViewer.gd" id="4"]
+[ext_resource type="Script" uid="uid://r3780th4annr" path="res://addons/texture_fonts/UI/Components/TextureViewer/TextureView.gd" id="5"]
+[ext_resource type="Script" uid="uid://e7e0uh6fhm04" path="res://addons/texture_fonts/UI/Components/TextureViewer/TextureContainer.gd" id="6"]
 
 [node name="TextureViewer" type="VBoxContainer"]
 anchors_preset = 15

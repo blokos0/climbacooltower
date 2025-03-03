@@ -2,7 +2,7 @@
 
 [ext_resource type="Texture2D" uid="uid://ch8lcxm0cic4" path="res://sprites/dialogbox.png" id="1_sq4qo"]
 [ext_resource type="Texture2D" uid="uid://c61duayxk074m" path="res://sprites/jellyportrait.png" id="2_lakyx"]
-[ext_resource type="Script" path="res://scenes/dialog.gd" id="2_m85sm"]
+[ext_resource type="Script" uid="uid://cfli0w6xmht8p" path="res://scenes/dialog.gd" id="2_m85sm"]
 [ext_resource type="AudioStream" uid="uid://dmkde4b2g62ix" path="res://sounds/diasound_.ogg" id="4_niipd"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_svqq6"]

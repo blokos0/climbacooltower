@@ -1,8 +1,8 @@
 [gd_scene load_steps=6 format=3 uid="uid://drm7k5iue6ov4"]
 
-[ext_resource type="Script" path="res://addons/texture_fonts/UI/settings.gd" id="1_7tp4l"]
+[ext_resource type="Script" uid="uid://ccnrvo2elybjg" path="res://addons/texture_fonts/UI/settings.gd" id="1_7tp4l"]
 [ext_resource type="PackedScene" uid="uid://cf8py46vfqbf4" path="res://addons/texture_fonts/UI/Components/Vector2Edit.tscn" id="2_bji2q"]
-[ext_resource type="Script" path="res://addons/texture_fonts/UI/settings_preview.gd" id="3_giqhg"]
+[ext_resource type="Script" uid="uid://dj6h7s7hpbco2" path="res://addons/texture_fonts/UI/settings_preview.gd" id="3_giqhg"]
 
 [sub_resource type="StyleBoxFlat" id="3"]
 resource_local_to_scene = true

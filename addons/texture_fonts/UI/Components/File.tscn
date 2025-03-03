@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3 uid="uid://dsgw6jybkf5it"]
 
 [ext_resource type="Texture2D" uid="uid://c24sk3dajpxhs" path="res://addons/texture_fonts/Assets/TransparentBG_small.png" id="1"]
-[ext_resource type="Script" path="res://addons/texture_fonts/UI/Components/File.gd" id="2"]
+[ext_resource type="Script" uid="uid://cqnaedg4252ey" path="res://addons/texture_fonts/UI/Components/File.gd" id="2"]
 
 [sub_resource type="StyleBoxFlat" id="1"]
 resource_local_to_scene = true

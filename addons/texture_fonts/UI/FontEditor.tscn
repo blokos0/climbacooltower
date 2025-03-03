@@ -1,11 +1,11 @@
 [gd_scene load_steps=7 format=3 uid="uid://b5gbh4n4b3ocd"]
 
-[ext_resource type="Script" path="res://addons/texture_fonts/UI/font_editor.gd" id="1_c336f"]
+[ext_resource type="Script" uid="uid://bm3jdmhugoiys" path="res://addons/texture_fonts/UI/font_editor.gd" id="1_c336f"]
 [ext_resource type="Texture2D" uid="uid://sanipjn5peiu" path="res://addons/texture_fonts/Assets/ExternalLink.svg" id="2"]
-[ext_resource type="Script" path="res://addons/texture_fonts/UI/mapping_list.gd" id="2_cpen6"]
+[ext_resource type="Script" uid="uid://be153dah1inwo" path="res://addons/texture_fonts/UI/mapping_list.gd" id="2_cpen6"]
 [ext_resource type="PackedScene" uid="uid://ud2mcabp2mg0" path="res://addons/texture_fonts/UI/Mapping.tscn" id="3_ewae4"]
 [ext_resource type="PackedScene" uid="uid://drm7k5iue6ov4" path="res://addons/texture_fonts/UI/Settings.tscn" id="4_3ba0m"]
-[ext_resource type="Script" path="res://addons/texture_fonts/UI/help_button.gd" id="5_tnrwx"]
+[ext_resource type="Script" uid="uid://d12yrijev0uch" path="res://addons/texture_fonts/UI/help_button.gd" id="5_tnrwx"]
 
 [node name="FontEditor" type="MarginContainer" node_paths=PackedStringArray("file_list", "file_dialog", "mapping_settings", "no_selection_overlay", "font_settings")]
 custom_minimum_size = Vector2(0, 280)

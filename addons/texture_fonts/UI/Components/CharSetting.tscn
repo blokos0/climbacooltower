@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://qon4hdpj04mo"]
 
 [ext_resource type="PackedScene" uid="uid://cf8py46vfqbf4" path="res://addons/texture_fonts/UI/Components/Vector2Edit.tscn" id="1"]
-[ext_resource type="Script" path="res://addons/texture_fonts/UI/Components/CharSetting.gd" id="2"]
+[ext_resource type="Script" uid="uid://ch2eew8sb8q8a" path="res://addons/texture_fonts/UI/Components/CharSetting.gd" id="2"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jy3j1"]
 draw_center = false

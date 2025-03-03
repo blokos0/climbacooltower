@@ -1,9 +1,9 @@
 [gd_resource type="FontFile" script_class="TextureFont" load_steps=8 format=3 uid="uid://dmuemin3a5mix"]
 
-[ext_resource type="Script" path="res://addons/texture_fonts/Classes/TextureFontSettings.gd" id="1_aop3a"]
+[ext_resource type="Script" uid="uid://dh078p1uuuc1u" path="res://addons/texture_fonts/Classes/TextureFontSettings.gd" id="1_aop3a"]
 [ext_resource type="Image" uid="uid://cjuqh8vl26cuc" path="res://addons/texture_fonts/Assets/placeholder.png" id="1_s7rwh"]
-[ext_resource type="Script" path="res://addons/texture_fonts/Classes/TextureFont.gd" id="2_a5x76"]
-[ext_resource type="Script" path="res://addons/texture_fonts/Classes/TextureFontMapping.gd" id="3_jvlak"]
+[ext_resource type="Script" uid="uid://liqpc351ro4n" path="res://addons/texture_fonts/Classes/TextureFont.gd" id="2_a5x76"]
+[ext_resource type="Script" uid="uid://dwi64abp3nlq" path="res://addons/texture_fonts/Classes/TextureFontMapping.gd" id="3_jvlak"]
 [ext_resource type="Texture2D" uid="uid://t5ol3spcggsj" path="res://sprites/font.png" id="5_gi34e"]
 
 [sub_resource type="Resource" id="Resource_4srw3"]

@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://cbharh6asoliw"]
 
-[ext_resource type="Script" path="res://scenes/notification.gd" id="1_of8gu"]
+[ext_resource type="Script" uid="uid://b35sbmrlwfxfa" path="res://scenes/notification.gd" id="1_of8gu"]
 [ext_resource type="AudioStream" uid="uid://d0mvm5qnnvqqw" path="res://sounds/notification.ogg" id="2_ydyd0"]
 
 [node name="notification" type="CanvasLayer"]

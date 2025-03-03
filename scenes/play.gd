@@ -11,6 +11,7 @@ var stats: Dictionary = {
 var theme: String = ""
 var song: String = ""
 func _ready() -> void:
+	$ui/container/box/playername.text = global.playername
 	leveldatatolevel()
 	DiscordRPC.state = "playing " + global.leveldata["name"]
 	DiscordRPC.details = "placeholder"
@@ -45,6 +46,7 @@ func leveldatatolevel() -> void:
 		$gamelayer/gameworldcontainer/gameworld/shader.add_child(t)
 	$gamelayer/gameworldcontainer/gameworld/shader.move_child($gamelayer/gameworldcontainer/gameworld/shader/player, $gamelayer/gameworldcontainer/gameworld/shader.get_child_count())
 func _process(_delta: float) -> void:
+	$ui/container/box/playerbox/playerportrait.texture.region.position.x = wrap(floor(float(Engine.get_process_frames()) / 20) * 100, 0, 300)
 	$gamelayer/gameworldcontainer/gameworld/shader/camera.position = Vector2($gamelayer/gameworldcontainer/gameworld/shader/player.position.x + 16, $gamelayer/gameworldcontainer/gameworld/shader/player.position.y + 32) + $gamelayer/gameworldcontainer/gameworld/shader/player.offset
 	if Input.is_action_just_pressed(&"playtest"):
 		get_tree().change_scene_to_file("res://scenes/editor.tscn")
@@ -101,4 +103,4 @@ func updatestats(hp: int = 0, atk: int = 0, def: int = 0) -> void:
 		$music.stream.set_sync_stream_volume(1, -60)
 		$ui/container/box/playerbox/playerportrait.texture.region.position.y = 0
 	$ui/container/box/playerbox/level.text = "lvl" + str(stats.lvl)
-	$ui/container/box/playerbox/stats.text = "hp: " + str(stats.hp) + "/" + str(stats.maxhp) + "\natk: " + str(stats.atk) + "\ndef: " + str(stats.def)
+	$ui/container/box/playerbox/stats.text = "hp: " + str(int(stats.hp)) + "/" + str(int(stats.maxhp)) + "\natk: " + str(int(stats.atk)) + "\ndef: " + str(int(stats.def))

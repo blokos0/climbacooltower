@@ -144,7 +144,7 @@ func _process(_delta: float) -> void:
 		if tm.get_cell_source_id(floor(get_local_mouse_position() / 32)) != -1:
 			currenttile.x = tm.get_cell_atlas_coords(floor(get_local_mouse_position() / 32)).x
 			$ui/panel/uiboxp0/tilescontainer/tiles/selectedtile.position = currenttile * 32
-	if Input.is_action_just_pressed(&"tileswap") && !Input.is_action_pressed(&"rectangle"):
+	if Input.is_action_just_pressed(&"tileswap") && !Input.is_action_pressed(&"rectangle") && !$ui/panel.visible:
 		currenttile.y = int(!bool(currenttile.y))
 		$ui/panel/uiboxp0/tilescontainer/tiles/selectedtile.position = currenttile * 32
 	if Input.is_action_just_pressed(&"rectangle"):
@@ -210,8 +210,8 @@ func _process(_delta: float) -> void:
 	if Input.is_action_just_pressed(&"back"):
 		get_tree().change_scene_to_file("res://scenes/title.tscn")
 		return
-	$ui/tilepos.text = str(floor(get_local_mouse_position() / 32))
-	$ui/tilepos.visible = !$ui/panel.visible
+	$ui/tilepos.text = str(Vector2i(floor(get_local_mouse_position() / 32)))
+	$ui/tilepos.visible = !$ui/panel.visible && !Input.is_action_pressed(&"showasis")
 	startingroom = $ui/panel/uiboxp1/startroom.text
 	queue_redraw()
 func _draw() -> void:
@@ -301,7 +301,7 @@ func createteleporterpressed() -> void:
 	$ui/panel.visible = false
 	placingteleporter = true
 func mouseintexturerect(t: TextureRect) -> bool:
-	return Rect2(Vector2(), t.texture.get_size()).has_point(t.get_local_mouse_position())
+	return Rect2(Vector2(0, 0), t.texture.get_size()).has_point(t.get_local_mouse_position())
 func genenemylist() -> void:
 	var sel: PackedInt32Array = $ui/panel/uiboxp0/propertiesbox/enemybox/enemylist.get_selected_items()
 	$ui/panel/uiboxp0/propertiesbox/enemybox/enemylist.clear()

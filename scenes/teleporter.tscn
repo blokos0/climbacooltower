@@ -1,6 +1,6 @@
 [gd_scene load_steps=7 format=3 uid="uid://fykxnluaw7tw"]
 
-[ext_resource type="Script" path="res://scenes/teleporter.gd" id="2_aahg8"]
+[ext_resource type="Script" uid="uid://b31ldxgrlqq2g" path="res://scenes/teleporter.gd" id="2_aahg8"]
 [ext_resource type="Texture2D" uid="uid://bato54gly6vwf" path="res://sprites/light.png" id="2_ql80s"]
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_sa3n5"]
