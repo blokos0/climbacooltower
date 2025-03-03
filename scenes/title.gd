@@ -7,8 +7,6 @@ func _ready() -> void:
 	$homebox/createbutton.pressed.connect(createbuttonpressed)
 	$homebox/browsebutton.pressed.connect(browsebuttonpressed)
 	$homebox/settingsbutton.pressed.connect(settingsbuttonpressed)
-	$createbox/backbutton.pressed.connect(backbuttonpressed)
-	$createbox/newtowerbutton.pressed.connect(newbuttonpressed)
 	$"/root".gui_focus_changed.connect(focuschanged)
 	$credits.text = "v" + global.version + " [wave freq=5][rainbow sat=0.5 freq=0.1]made by blokos"
 	DiscordRPC.state = "on the titlescreen"
@@ -42,9 +40,9 @@ func focuschanged(node: Control) -> void:
 		$art.texture = load("res://sprites/menuart_" + node.name + ".png")
 	if $createbox/backbutton.has_focus():
 		$art.texture = load("res://sprites/menuart_createbutton.png")
-func backbuttonpressed() -> void:
+func _on_backbutton_pressed() -> void:
 	menu = 0
 	$homebox/startbutton.grab_focus()
 	$focussound.play()
-func newbuttonpressed() -> void:
+func _on_newtowerbutton_pressed() -> void:
 	get_tree().change_scene_to_file("res://scenes/editor.tscn")

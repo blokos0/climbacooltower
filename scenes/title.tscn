@@ -172,3 +172,6 @@ fit_content = true
 
 [node name="camera" type="Camera2D" parent="."]
 anchor_mode = 0
+
+[connection signal="pressed" from="createbox/backbutton" to="." method="_on_backbutton_pressed"]
+[connection signal="pressed" from="createbox/newtowerbutton" to="." method="_on_newtowerbutton_pressed"]
