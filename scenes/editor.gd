@@ -36,7 +36,8 @@ func _ready() -> void:
 	DiscordRPC.state = "in the editor"
 	DiscordRPC.details = "havent saved yet..."
 	DiscordRPC.refresh()
-	leveldatatolevel()
+	#leveldatatolevel()
+	loadlevel("just a tower")
 func _process(_delta: float) -> void:
 	if !$ui/panel.visible && $ui/fuckingeditorthing.get_local_mouse_position().y > 0 && !selectingroom && !placingenemy && !placingjelly && !Input.is_action_pressed(&"placetile") && !Input.is_action_pressed(&"rectangle"):
 		$ui/panel.visible = true
@@ -84,11 +85,11 @@ func _process(_delta: float) -> void:
 			var te: Array = [floor(get_local_mouse_position() / 32), teleporterpos, teleporterroom, teleporteralt]
 			var invalid: bool = teleporters.has(te)
 			for i: Array in teleporters:
-				if i[0] == floor(get_local_mouse_position() / 32):
+				if i[0] == Vector2i(get_local_mouse_position() / 32):
 					invalid = true
 					break
 			for i: Array in placedenemies:
-				if Vector2i(i[0]) == Vector2i(floor(get_local_mouse_position() / 32)): # i[0] is either Vector2 or Vector2i every time idk why
+				if i[0] == Vector2i(get_local_mouse_position() / 32):
 					invalid = true
 					break
 			if !invalid:
@@ -96,14 +97,14 @@ func _process(_delta: float) -> void:
 			placingteleporter = false
 			$ui/tooltipthing.visible = false
 	if Input.is_action_just_pressed(&"placetile") && placingenemy && !$ui/panel.visible && !didthepaneljustclose:
-		var pe: Array = [floor(get_local_mouse_position() / 32), placingenemykind, currentenemyvariant]
+		var pe: Array = [Vector2i(get_local_mouse_position() / 32), placingenemykind, currentenemyvariant]
 		var invalid: bool = placedenemies.has(pe)
 		for i: Array in placedenemies:
-			if Vector2i(i[0]) == Vector2i(floor(get_local_mouse_position() / 32)): # i[0] is either Vector2 or Vector2i every time idk why
+			if i[0] == Vector2i(get_local_mouse_position() / 32):
 				invalid = true
 				break
 		for i: Array in teleporters:
-			if i[0] == floor(get_local_mouse_position() / 32):
+			if i[0] == Vector2i(get_local_mouse_position() / 32):
 				invalid = true
 				break
 		if !invalid:
@@ -115,12 +116,14 @@ func _process(_delta: float) -> void:
 		if selectedroom.abs().has_area():
 			selectedroom = selectedroom.abs()
 			selectingroom = false
-			rooms.append({
+			var r: Dictionary[String, Variant]
+			r = {
 				"name": $ui/panel/uiboxp0/propertiesbox/tileroombox/roomname.text,
 				"rect": selectedroom,
 				"theme": $ui/panel/uiboxp0/propertiesbox/tileroombox/roomtheme.get_item_text($ui/panel/uiboxp0/propertiesbox/tileroombox/roomtheme.get_selected_items()[0]),
 				"song": $ui/panel/uiboxp0/propertiesbox/tileroombox/roomsong.get_item_text($ui/panel/uiboxp0/propertiesbox/tileroombox/roomsong.get_selected_items()[0])
-			})
+			}
+			rooms.append(r)
 			selectedroom = null
 			var roomname: String = " " # for easier selecting
 			if $ui/panel/uiboxp0/propertiesbox/tileroombox/roomname.text != "":
@@ -133,11 +136,11 @@ func _process(_delta: float) -> void:
 		tm.erase_cell(floor(get_local_mouse_position() / 32))
 	if Input.is_action_just_pressed(&"removetile") && !$ui/panel.visible:
 		for i: Array in placedenemies:
-			if i[0] == floor(get_local_mouse_position() / 32):
+			if i[0] == Vector2i(get_local_mouse_position() / 32):
 				placedenemies.erase(i)
 				break
 		for i: Array in teleporters:
-			if i[0] == floor(get_local_mouse_position() / 32):
+			if i[0] == Vector2i(get_local_mouse_position() / 32):
 				teleporters.erase(i)
 				break
 	if Input.is_action_just_pressed(&"picktile"):

@@ -18,7 +18,7 @@ var enemies: Dictionary = {
 		"def": [0.0, 2.0, 4.0, 6.0, 8.0, 10.0, 12.0, 14.0]
 	}
 }
-var leveldata: Dictionary = {
+var leveldata: Dictionary[String, Variant] = {
 	"name": "",
 	"tiles": "",
 	"rooms": [],
@@ -35,9 +35,9 @@ func _ready() -> void:
 	DiscordRPC.start_timestamp = int(Time.get_unix_time_from_system())
 	DiscordRPC.large_image = "icon"
 	DiscordRPC.refresh()
-func calcbattlevalues(pstats: Dictionary, estats: Dictionary) -> Dictionary:
-	var turncount: int = ceil(estats.hp / (pstats.atk - estats.def))
-	var damage: int = estats.atk * (turncount - 1) - pstats.def
+func calcbattlevalues(pstats: Dictionary[String, float], estats: Dictionary[String, float]) -> Dictionary[String, float]:
+	var turncount: float = ceil(estats.hp / (pstats.atk - estats.def))
+	var damage: float = estats.atk * (turncount - 1) - pstats.def
 	return {
 		"turncount": turncount,
 		"damage": damage

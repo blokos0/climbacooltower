@@ -1,5 +1,5 @@
 extends Sprite2D
-var dirs: Dictionary = {
+var dirs: Dictionary[String, Vector2] = {
 	"left": Vector2(-1, 0),
 	"right": Vector2(1, 0),
 	"up": Vector2(0, -1),
@@ -30,8 +30,8 @@ func _process(_delta: float) -> void:
 					position = i.get_node("..").pos * 32
 				elif i.is_in_group(&"enemy"):
 					invalidtile = true
-					var estats: Dictionary = formenemystats(i.get_node(".."))
-					var vals: Dictionary = global.calcbattlevalues($/root/play.stats, estats)
+					var estats: Dictionary[String, float] = formenemystats(i.get_node(".."))
+					var vals: Dictionary[String, float] = global.calcbattlevalues($/root/play.stats, estats)
 					if vals.turncount > 0:
 						$/root/play.updatestats(-vals.damage)
 						i.get_node("..").free()
@@ -50,13 +50,13 @@ func _process(_delta: float) -> void:
 			var spr: AtlasTexture = AtlasTexture.new()
 			spr.atlas = e.texture
 			spr.region = e.region_rect
-			var estats: Dictionary = formenemystats(e)
-			var vals: Dictionary = global.calcbattlevalues($/root/play.stats, estats)
+			var estats: Dictionary[String, float] = formenemystats(e)
+			var vals: Dictionary[String, float] = global.calcbattlevalues($/root/play.stats, estats)
 			$/root/play/ui/container/box/enemystuff/enemyname.text = global.enemyvariants[e.variant] + " " + e.kind
 			$/root/play/ui/container/box/enemystuff/enemybox/enemysprite.texture = spr
-			$/root/play/ui/container/box/enemystuff/enemybox/stats.text = "hp: " + str(estats.hp) + "\natk: " + str(estats.atk) + "\ndef: " + str(estats.def) + "\ndamage: "
+			$/root/play/ui/container/box/enemystuff/enemybox/stats.text = "hp: " + str(int(estats.hp)) + "\natk: " + str(int(estats.atk)) + "\ndef: " + str(int(estats.def)) + "\ndamage: "
 			if vals.turncount > 0:
-				$/root/play/ui/container/box/enemystuff/enemybox/stats.text += str(vals.damage) + " (" + str(vals.turncount) + " turns"
+				$/root/play/ui/container/box/enemystuff/enemybox/stats.text += str(int(vals.damage)) + " (" + str(int(vals.turncount)) + " turns"
 			else:
 				$/root/play/ui/container/box/enemystuff/enemybox/stats.text += "invalid"
 		else:
@@ -70,7 +70,7 @@ func moveinput(inp: String) -> void:
 			movetimer = 0
 	if Input.is_action_just_released(inp) && dirspressed.size():
 		dirspressed.remove_at(dirspressed.find(dirs[inp]))
-func formenemystats(enemy: Sprite2D) -> Dictionary:
+func formenemystats(enemy: Sprite2D) -> Dictionary[String, float]:
 	return {
 		"hp": global.enemies.get(enemy.kind).hp[enemy.variant],
 		"atk": global.enemies.get(enemy.kind).atk[enemy.variant],

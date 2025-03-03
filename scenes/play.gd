@@ -1,12 +1,12 @@
 extends Node2D
 var room: String = global.leveldata["startingroom"]
 var roomdict: Dictionary
-var stats: Dictionary = {
+var stats: Dictionary[String, float] = {
 	"hp": 500.0,
 	"maxhp": 500.0,
 	"atk": 25.0,
 	"def": 0.0,
-	"lvl": 1
+	"lvl": 1.0
 }
 var theme: String = ""
 var song: String = ""
@@ -102,5 +102,5 @@ func updatestats(hp: int = 0, atk: int = 0, def: int = 0) -> void:
 		$music.stream.set_sync_stream_volume(0, 0)
 		$music.stream.set_sync_stream_volume(1, -60)
 		$ui/container/box/playerbox/playerportrait.texture.region.position.y = 0
-	$ui/container/box/playerbox/level.text = "lvl" + str(stats.lvl)
+	$ui/container/box/playerbox/level.text = "lvl" + str(int(stats.lvl))
 	$ui/container/box/playerbox/stats.text = "hp: " + str(int(stats.hp)) + "/" + str(int(stats.maxhp)) + "\natk: " + str(int(stats.atk)) + "\ndef: " + str(int(stats.def))
