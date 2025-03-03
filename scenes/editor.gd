@@ -192,6 +192,9 @@ func _process(_delta: float) -> void:
 				if i.name == startingroom:
 					sroom = true
 					break
+			if rooms.size() == 1:
+				sroom = true
+				startingroom = rooms[0].name
 			if !rooms.is_empty() && sroom:
 				leveltoleveldata()
 				get_tree().change_scene_to_file("res://scenes/play.tscn")
@@ -199,7 +202,7 @@ func _process(_delta: float) -> void:
 			elif rooms.is_empty():
 				global.notify("towers need to have atleast one room")
 			elif !sroom:
-				global.notify("starting room doesnt exist")
+				global.notify("the starting room doesnt exist")
 		else:
 			$ui/panel/uiboxp0/propertiesbox/tileroombox/roomname.release_focus()
 			$ui/panel/uiboxp0/propertiesbox/otherbox/funbox/towername.release_focus()

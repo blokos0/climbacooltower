@@ -25,7 +25,7 @@ func _process(_delta: float) -> void:
 func startbuttonpressed() -> void:
 	global.notify("not yet!")
 func createbuttonpressed() -> void:
-	get_tree().change_scene_to_file("res://scenes/editor.tscn")
+	#get_tree().change_scene_to_file("res://scenes/editor.tscn")
 	menu = 1
 	$createbox/backbutton.grab_focus()
 func browsebuttonpressed() -> void:
