@@ -22,7 +22,7 @@ func leveldatatolevel() -> void:
 	# converts global.leveldata into a playable level
 	var arr: PackedStringArray = global.leveldata["tiles"].split("/")
 	if global.leveldata["tiles"] != "":
-		for i in arr:
+		for i: String in arr:
 			var ind: int = int(i.get_slice(",", 0))
 			var pos: Vector2i = Vector2i(int(i.get_slice(",", 1)), int(i.get_slice(",", 2)))
 			var tm: TileMapLayer = $gamelayer/gameworldcontainer/gameworld/shader/floors

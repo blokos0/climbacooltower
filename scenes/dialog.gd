@@ -28,7 +28,7 @@ func _process(_delta: float) -> void:
 		else:
 			var talkspeedreal: float = talkspeed / punctpause
 			vischar = min(vischar + talkspeedreal, len(pages[page]))
-			for i in events.split("/"):
+			for i: String in events.split("/"):
 				if int(vischar) == int(i.get_slice(",", 0)) && page == int(i.get_slice(",", 1)):
 					match i.get_slice(",", 2):
 						"stop":

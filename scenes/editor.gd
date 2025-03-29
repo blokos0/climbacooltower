@@ -82,31 +82,15 @@ func _process(_delta: float) -> void:
 			placingjelly = false
 			$ui/tooltipthing.visible = false
 		elif placingteleporter:
-			var te: Array = [floor(get_local_mouse_position() / 32), teleporterpos, teleporterroom, teleporteralt]
-			var invalid: bool = teleporters.has(te)
-			for i: Array in teleporters:
-				if i[0] == Vector2i(get_local_mouse_position() / 32):
-					invalid = true
-					break
-			for i: Array in placedenemies:
-				if i[0] == Vector2i(get_local_mouse_position() / 32):
-					invalid = true
-					break
+			var te: Array = [Vector2i(floor(get_local_mouse_position() / 32)), teleporterpos, teleporterroom, teleporteralt]
+			var invalid: bool = teleporters.has(te) || checktelsandenemies(te[0])
 			if !invalid:
 				teleporters.append(te)
 			placingteleporter = false
 			$ui/tooltipthing.visible = false
 	if Input.is_action_just_pressed(&"placetile") && placingenemy && !$ui/panel.visible && !didthepaneljustclose:
-		var pe: Array = [Vector2i(get_local_mouse_position() / 32), placingenemykind, currentenemyvariant]
-		var invalid: bool = placedenemies.has(pe)
-		for i: Array in placedenemies:
-			if i[0] == Vector2i(get_local_mouse_position() / 32):
-				invalid = true
-				break
-		for i: Array in teleporters:
-			if i[0] == Vector2i(get_local_mouse_position() / 32):
-				invalid = true
-				break
+		var pe: Array = [Vector2i(floor(get_local_mouse_position() / 32)), placingenemykind, currentenemyvariant]
+		var invalid: bool = placedenemies.has(pe) || checktelsandenemies(pe[0])
 		if !invalid:
 			placedenemies.append(pe)
 		placingenemy = false
@@ -159,8 +143,8 @@ func _process(_delta: float) -> void:
 		var c: Vector2i = currenttile
 		if Input.is_action_pressed(&"sneak"):
 			c = Vector2i(-1, -1)
-		for x in range(rectanglestart.x, rectangleend.x - sign(rectanglestart.x - rectangleend.x) + int(rectanglestart.x == rectangleend.x), clamp(sign(rectangleend.x - rectanglestart.x) + int(rectanglestart.x == rectangleend.x), -1, 1)):
-			for y in range(rectanglestart.y, rectangleend.y - sign(rectanglestart.y - rectangleend.y) + int(rectanglestart.y == rectangleend.y), clamp(sign(rectangleend.y - rectanglestart.y) + int(rectanglestart.y == rectangleend.y), -1, 1)):
+		for x: int in range(rectanglestart.x, rectangleend.x - sign(rectanglestart.x - rectangleend.x) + int(rectanglestart.x == rectangleend.x), clamp(sign(rectangleend.x - rectanglestart.x) + int(rectanglestart.x == rectangleend.x), -1, 1)):
+			for y: int in range(rectanglestart.y, rectangleend.y - sign(rectanglestart.y - rectangleend.y) + int(rectanglestart.y == rectangleend.y), clamp(sign(rectangleend.y - rectanglestart.y) + int(rectanglestart.y == rectangleend.y), -1, 1)):
 				tm.set_cell(Vector2i(x, y), 0, c)
 	if !$ui/panel.visible && !Input.is_action_pressed(&"save"):
 		$camera.position += Input.get_vector(&"left", &"right", &"up", &"down") * 12 * (int(Input.is_action_pressed("sneak")) + 1) * (0.5 / $camera.zoom.x + 0.5)
@@ -335,6 +319,7 @@ func leveltoleveldata() -> void:
 	global.leveldata["teleporters"] = teleporters
 	global.leveldata["startingroom"] = startingroom
 	global.leveldata["enemyplace"] = placedenemies
+	global.leveldata["enemydata"] = global.enemies
 func leveldatatofile(filename: String) -> FileAccess:
 	# does the necessary conversions and saves global.leveldata to a file, then reverts the changes
 	var arr: PackedStringArray = []
@@ -388,3 +373,11 @@ func loadlevel(filename: String) -> void:
 	# global.filetoleveldata() and leveldatatolevel() in one function
 	if global.filetoleveldata(filename):
 		leveldatatolevel()
+func checktelsandenemies(p: Vector2i) -> bool:
+	for i: Array in teleporters:
+		if i[0] == p:
+			return true
+	for i: Array in placedenemies:
+		if i[0] == p:
+			return true
+	return false

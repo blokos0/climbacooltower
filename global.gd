@@ -68,7 +68,7 @@ func filetoleveldata(filename: String) -> bool:
 	var arr: PackedStringArray = rawld["rooms"].split("/")
 	var rconv: Array[Dictionary]
 	if rawld["rooms"] != "":
-		for r in arr:
+		for r: String in arr:
 			rconv.append({
 				"name": r.get_slice(",", 0),
 				"rect": Rect2i(int(r.get_slice(",", 1)), int(r.get_slice(",", 2)), int(r.get_slice(",", 3)), int(r.get_slice(",", 4))),
@@ -82,13 +82,13 @@ func filetoleveldata(filename: String) -> bool:
 	arr = rawld["enemyplace"].split("/")
 	var epconv: Array[Array]
 	if rawld["enemyplace"] != "" && rawld["enemyplace"] != "0,0,,0": # this will haunt me forever
-		for i in arr:
+		for i: String in arr:
 			epconv.append([Vector2i(int(i.get_slice(",", 0)), int(i.get_slice(",", 1))), i.get_slice(",", 2), int(i.get_slice(",", 3))])
 	leveldata["enemyplace"] = epconv
 	arr = rawld["teleporters"].split("/")
 	var tconv: Array[Array]
 	if rawld["teleporters"] != "":
-		for i in arr:
+		for i: String in arr:
 			tconv.append([Vector2i(int(i.get_slice(",", 0)), int(i.get_slice(",", 1))), Vector2i(int(i.get_slice(",", 2)), int(i.get_slice(",", 3))), i.get_slice(",", 4), bool(int(i.get_slice(",", 5)))])
 	leveldata["teleporters"] = tconv
 	return true
