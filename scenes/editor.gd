@@ -188,6 +188,7 @@ func _process(_delta: float) -> void:
 				return
 			elif rooms.is_empty():
 				global.notify("towers need to have atleast one room")
+				createroompressed()
 			elif !sroom:
 				global.notify("the starting room doesnt exist")
 		else:
@@ -206,7 +207,7 @@ func _process(_delta: float) -> void:
 	startingroom = $ui/panel/uiboxp1/startroom.text
 	queue_redraw()
 func _draw() -> void:
-	draw_texture(preload("res://sprites/jelly.png"), Vector2(playerpos.x * 32, playerpos.y * 32 - 16))
+	draw_texture_rect_region(preload("res://sprites/jelly.png"), Rect2i(playerpos.x * 32, playerpos.y * 32 - 32, 32, 64), Rect2i(0, 0, 32, 64))
 	if selectedroom != null:
 		draw_rect(Rect2i(selectedroom.position * 32, selectedroom.size * 32), Color.RED, false, 4)
 	if !(Input.is_action_pressed("showasis") && !$ui/panel.visible):
@@ -219,7 +220,7 @@ func _draw() -> void:
 			if !selectingroom && !placingenemy && !placingjelly && !placingteleporter:
 				draw_texture_rect_region(preload("res://sprites/tiles.png"), Rect2(floor(get_local_mouse_position() / 32) * 32, Vector2(32, 32)), Rect2(currenttile * 32, Vector2i(32, 32)), Color(1, 1, 1, 0.5))
 			elif placingjelly:
-				draw_texture(preload("res://sprites/jelly.png"), Vector2(floor(get_local_mouse_position().x / 32) * 32, floor(get_local_mouse_position().y / 32) * 32 - 16), Color(1, 1, 1, 0.5))
+				draw_texture_rect_region(preload("res://sprites/jelly.png"), Rect2i(floor(get_local_mouse_position().x / 32) * 32, floor(get_local_mouse_position().y / 32) * 32 - 32, 32, 64), Rect2i(0, 0, 32, 64), Color(1, 1, 1, 0.5))
 			elif placingenemy:
 				draw_texture(placingenemytexture, floor(get_local_mouse_position() / 32) * 32, Color(1, 1, 1, 0.5))
 			elif placingteleporter:
@@ -234,7 +235,7 @@ func _draw() -> void:
 		rect.position.y = rectanglestart.y * 32 - max((rectanglestart.y - rectangleend.y) * 32, 0)
 		rect.end.x = rectangleend.x * 32 + 32 + max((rectanglestart.x - rectangleend.x) * 32, 0)
 		rect.end.y = rectangleend.y * 32 + 32 + max((rectanglestart.y - rectangleend.y) * 32, 0)
-		draw_rect(rect, Color(1, 1 - int(Input.is_action_pressed("sneak")), 1 - int(Input.is_action_pressed("sneak"))), false, 8)
+		draw_rect(rect, Color(1, 1 - int(Input.is_action_pressed(&"sneak")), 1 - int(Input.is_action_pressed(&"sneak"))), false, 8)
 func roomlistselect(index: int) -> void:
 	$ui/panel/uiboxp0/propertiesbox/otherbox/roomlist.remove_item(index)
 	rooms.remove_at(index)

@@ -1,13 +1,14 @@
 extends Sprite2D
 var dirs: Dictionary[String, Vector2] = {
-	"left": Vector2(-1, 0),
+	"down": Vector2(0, 1),
 	"right": Vector2(1, 0),
 	"up": Vector2(0, -1),
-	"down": Vector2(0, 1)
+	"left": Vector2(-1, 0)
 }
 var lastdir: Vector2 = dirs.down
 var dirspressed: PackedVector2Array
 var movetimer: int
+var steps: int
 func _process(_delta: float) -> void:
 	moveinput(&"left")
 	moveinput(&"right")
@@ -40,9 +41,12 @@ func _process(_delta: float) -> void:
 				offset += dirspressed[-1] * 32
 			else:
 				$walksound.play()
+				steps = wrapi(steps + 1, 0, 4)
+				region_rect.position.x = steps * 32
 		lastdir = dirspressed[-1]
 		$raycast.target_position = lastdir * 32
 		$raycast.force_raycast_update()
+		region_rect.position.y = dirs.values().find(lastdir) * 64
 		var area: Area2D = $raycast.get_collider()
 		if area != null && area.is_in_group(&"enemy"):
 			$/root/play/ui/container/box/enemystuff.visible = true
@@ -62,7 +66,7 @@ func _process(_delta: float) -> void:
 		else:
 			$/root/play/ui/container/box/enemystuff.visible = false
 	movetimer = max(movetimer - 1, 0)
-	offset = lerp(offset, Vector2(0, -16), 0.5)
+	offset = lerp(offset, Vector2(0, -32), 0.5)
 func moveinput(inp: String) -> void:
 	if Input.is_action_just_pressed(inp):
 		if !dirspressed.has(dirs[inp]):

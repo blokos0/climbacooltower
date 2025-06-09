@@ -26,26 +26,24 @@ func _process(_delta: float) -> void:
 		$homebox/startbutton.grab_focus()
 		$focussound.play()
 func startbuttonpressed() -> void:
-	global.notify("not yet!")
+	get_tree().change_scene_to_file("res://scenes/storymode.tscn")
 func createbuttonpressed() -> void:
 	menu = 1
 	$createbox/backbutton.grab_focus()
 func browsebuttonpressed() -> void:
 	global.notify("epic placeholder")
 func settingsbuttonpressed() -> void:
-	var d: Variant = global.setupdialog(["it is i! mr sad"], "8,0,stop/9,0,face,1", "holland")
-	if d:
-		add_child(d)
+	pass
 func createbackbuttonpressed() -> void:
 	menu = 0
 	$homebox/startbutton.grab_focus()
-	$focussound.play()
 func createnewtowerbuttonpressed(reset: bool = true) -> void:
 	if reset:
 		global.leveldata.clear()
 	print(global.leveldata)
 	get_tree().change_scene_to_file("res://scenes/editor.tscn")
 func focuschanged(node: Control) -> void:
-	$focussound.play()
+	if !Input.is_action_just_pressed(&"placetile"):
+		$focussound.play()
 	if !menu:
 		$art.texture = load("res://sprites/menuart_" + node.name + ".png")

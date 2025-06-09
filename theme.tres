@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=19 format=3 uid="uid://im7lovh8mede"]
+[gd_resource type="Theme" load_steps=20 format=3 uid="uid://im7lovh8mede"]
 
 [ext_resource type="StyleBox" uid="uid://bmeqqapev47q5" path="res://stylebox.tres" id="1_0o7wj"]
 [ext_resource type="StyleBox" uid="uid://shk7qqgcchw0" path="res://styleboxpressed.tres" id="1_o0nxr"]
@@ -40,6 +40,9 @@ grow_begin = 0.0
 grow_end = 0.0
 thickness = 2
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_05tig"]
+bg_color = Color(1, 1, 1, 0.14902)
+
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_4n7y6"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_r7hnc"]
@@ -80,6 +83,9 @@ HScrollBar/styles/grabber_pressed = SubResource("StyleBoxFlat_2hqcy")
 HScrollBar/styles/scroll = SubResource("StyleBoxFlat_avcw8")
 HSeparator/constants/separation = 2
 HSeparator/styles/separator = SubResource("StyleBoxLine_060hv")
+ItemList/styles/hovered = SubResource("StyleBoxFlat_05tig")
+ItemList/styles/hovered_selected = ExtResource("5_fxknc")
+ItemList/styles/hovered_selected_focus = ExtResource("5_fxknc")
 ItemList/styles/panel = ExtResource("4_1vr5m")
 ItemList/styles/selected = ExtResource("5_fxknc")
 LineEdit/styles/focus = SubResource("StyleBoxEmpty_4n7y6")

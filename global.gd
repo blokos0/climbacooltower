@@ -49,15 +49,6 @@ func notify(text: String) -> void:
 		var n: CanvasLayer = preload("res://scenes/notification.tscn").instantiate()
 		add_child(n)
 		n.addlabel(text)
-func setupdialog(pages: PackedStringArray, events: String, talker: String) -> Variant:
-	if dialogspawned:
-		return false
-	dialogspawned = true
-	var i: Sprite2D = preload("res://scenes/dialog.tscn").instantiate()
-	i.pages = pages
-	i.events = events
-	i.talker = talker
-	return i
 func filetoleveldata(filename: String) -> bool:
 	# converts a tower file to global.leveldata while doing the necessary conversions, returns true on success, false otherwise
 	var file: PackedByteArray = FileAccess.get_file_as_bytes("user://" + filename + ".cact")

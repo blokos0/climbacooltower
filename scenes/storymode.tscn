@@ -1,3 +1,8 @@
-[gd_scene format=3 uid="uid://cmeukovkx6xpd"]
+[gd_scene load_steps=2 format=3 uid="uid://cmeukovkx6xpd"]
+
+[ext_resource type="Script" uid="uid://dm0hrntwwv5dh" path="res://scenes/cutscene.gd" id="1_g6g50"]
 
 [node name="storymode" type="Node2D"]
+
+[node name="cutscene" type="Node" parent="."]
+script = ExtResource("1_g6g50")

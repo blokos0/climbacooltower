@@ -15,7 +15,7 @@ func _ready() -> void:
 func _process(_delta: float) -> void:
 	if talking:
 		if $text.visible_characters >= len($text.get_parsed_text()):
-			if Input.is_action_just_pressed(&"dialog"):
+			if Input.is_action_just_pressed(&"ui_accept"):
 				page += 1
 				if page == len(pages):
 					global.dialogspawned = false
@@ -30,25 +30,23 @@ func _process(_delta: float) -> void:
 			vischar = min(vischar + talkspeedreal, len(pages[page]))
 			for i: String in events.split("/"):
 				if int(vischar) == int(i.get_slice(",", 0)) && page == int(i.get_slice(",", 1)):
-					match i.get_slice(",", 2):
-						"stop":
-							talking = false
-						"speed":
-							talkspeed = float(i.get_slice(",", 3))
-						"talker":
-							talker = i.get_slice(",", 3)
-							loadtalker()
-						"face":
-							face = int(i.get_slice(",", 3))
-						"silent":
-							if i.get_slice(",", 3) == "true":
-								silent = true
-							else:
-								silent = false
-						_:
-							print("unknown event detected at position " + str(int(vischar)) + ", p" + str(page) + ": " + i.get_slice(",", 2))
-			if Input.is_action_just_pressed("dialog"):
-				vischar = len($text.get_parsed_text())
+					parseevent(i)
+			if Input.is_action_just_pressed(&"ui_accept"):
+				var eventsthispage: PackedStringArray # for optimization reasons: we wouldnt want to loop throguh ALL EVENTS for every symbol!
+				for i: String in events.split("/"):
+					if page == int(i.get_slice(",", 1)):
+						eventsthispage.append(i)
+				var stop: bool
+				for a: int in range(vischar, len($text.get_parsed_text())):
+					for i: String in eventsthispage:
+						if a == int(i.get_slice(",", 0)):
+							parseevent(i)
+							if i.get_slice(",", 2) == "stop":
+								stop = true
+								break
+					if stop:
+						break
+					vischar = a
 			var curvischar: String = $text.get_parsed_text()[min(vischar, len($text.get_parsed_text())) - 1]
 			if ".,!?:;".contains(curvischar):
 				punctpause = 10 - (1 - talkspeed) * 8
@@ -58,10 +56,28 @@ func _process(_delta: float) -> void:
 				$noise.play()
 			$text.visible_characters = int(vischar)
 	$portrait.texture.region = Rect2i(wrap(floor(float(Engine.get_process_frames()) / 20) * 100, 0, 300), face * 100, 100, 100)
-	if Input.is_action_just_pressed("dialog"):
+	if Input.is_action_just_pressed(&"ui_accept"):
 		talking = true
 		if talkspeed / punctpause < 1:
 			vischar += 1
+func parseevent(i: String) -> void:
+	match i.get_slice(",", 2):
+		"stop":
+			talking = false
+		"speed":
+			talkspeed = float(i.get_slice(",", 3))
+		"talker":
+			talker = i.get_slice(",", 3)
+			loadtalker()
+		"face":
+			face = int(i.get_slice(",", 3))
+		"silent":
+			if i.get_slice(",", 3) == "true":
+				silent = true
+			else:
+				silent = false
+		_:
+			print("unknown event detected at position " + str(int(vischar)) + ", p" + str(page) + ": " + i.get_slice(",", 2))
 func loadtalker() -> void:
 	face = 0
 	$noise.stream.set_stream(0, load("res://sounds/diasound_" + talker + ".ogg"))

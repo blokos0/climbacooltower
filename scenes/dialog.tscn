@@ -31,7 +31,12 @@ offset_top = 6.0
 offset_right = 631.0
 offset_bottom = 102.0
 bbcode_enabled = true
+text = "this text shouldnt be visible in the godot editor, otherwise, that may cause bugs!
+
+set visible_characters back to 0, please!"
 scroll_active = false
+visible_characters = 0
+visible_ratio = 0.0
 
 [node name="noise" type="AudioStreamPlayer" parent="."]
 stream = SubResource("AudioStreamRandomizer_oobla")
