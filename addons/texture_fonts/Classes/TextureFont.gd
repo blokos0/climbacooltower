@@ -158,7 +158,7 @@ func _set_real_images():
 		var mapping := texture_mappings[i]
 		set_texture_image(0, FONT_SIZE, i, mapping.scaled_image)
 
-	#emit_changed() UNCOMMENT ME LATER
+	emit_changed()
 
 func _set_placeholder_images():
 	for i in texture_mappings.size():

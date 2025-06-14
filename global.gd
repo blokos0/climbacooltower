@@ -83,4 +83,3 @@ func filetoleveldata(filename: String) -> bool:
 			tconv.append([Vector2i(int(i.get_slice(",", 0)), int(i.get_slice(",", 1))), Vector2i(int(i.get_slice(",", 2)), int(i.get_slice(",", 3))), i.get_slice(",", 4), bool(int(i.get_slice(",", 5)))])
 	leveldata["teleporters"] = tconv
 	return true
-	# no teleporter support yet...
