@@ -4,5 +4,7 @@
 
 [node name="storymode" type="Node2D"]
 
+[node name="music" type="AudioStreamPlayer" parent="."]
+
 [node name="cutscene" type="Node" parent="."]
 script = ExtResource("1_g6g50")

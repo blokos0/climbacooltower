@@ -94,10 +94,11 @@ layout_mode = 2
 size_flags_horizontal = 0
 focus_mode = 0
 allow_search = false
-item_count = 3
+item_count = 4
 item_0/text = "digital"
 item_1/text = "snowy"
 item_2/text = "night"
+item_3/text = "infection"
 
 [node name="roomsonglabel" type="Label" parent="ui/panel/uiboxp0/propertiesbox/tileroombox"]
 layout_mode = 2

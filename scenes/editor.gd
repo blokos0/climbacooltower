@@ -231,10 +231,10 @@ func _draw() -> void:
 		draw_texture_rect_region(preload("res://sprites/teleporter.png"), Rect2(i[0] * 32, Vector2i(32, 32)), Rect2(Vector2i(wrap(floor(float(Engine.get_process_frames()) / 12.5) * 32, 0, 96), 32 * int(i[3])), Vector2i(32, 32)), Color(1, 1, 1, 0.75 + int(Input.is_action_pressed("showasis") && !$ui/panel.visible) * 0.25))
 	if Input.is_action_pressed(&"rectangle"):
 		var rect: Rect2
-		rect.position.x = rectanglestart.x * 32 - max((rectanglestart.x - rectangleend.x) * 32, 0)
-		rect.position.y = rectanglestart.y * 32 - max((rectanglestart.y - rectangleend.y) * 32, 0)
-		rect.end.x = rectangleend.x * 32 + 32 + max((rectanglestart.x - rectangleend.x) * 32, 0)
-		rect.end.y = rectangleend.y * 32 + 32 + max((rectanglestart.y - rectangleend.y) * 32, 0)
+		rect.position.x = rectanglestart.x * 32 - maxf((rectanglestart.x - rectangleend.x) * 32, 0)
+		rect.position.y = rectanglestart.y * 32 - maxf((rectanglestart.y - rectangleend.y) * 32, 0)
+		rect.end.x = rectangleend.x * 32 + 32 + maxf((rectanglestart.x - rectangleend.x) * 32, 0)
+		rect.end.y = rectangleend.y * 32 + 32 + maxf((rectanglestart.y - rectangleend.y) * 32, 0)
 		draw_rect(rect, Color(1, 1 - int(Input.is_action_pressed(&"sneak")), 1 - int(Input.is_action_pressed(&"sneak"))), false, 8)
 func roomlistselect(index: int) -> void:
 	$ui/panel/uiboxp0/propertiesbox/otherbox/roomlist.remove_item(index)
